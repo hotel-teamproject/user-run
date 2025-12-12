@@ -1,0 +1,90 @@
+@use "../common/variables" as *;
+
+.floating-nav-wrap {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.floating-nav-wrap.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.floating-nav-wrap.hide {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+/* 토글 버튼 (항상 표시) */
+.fn-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  background: #0b6b63;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(2, 32, 27, 0.12);
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform .12s ease, background .12s;
+}
+.fn-toggle:active { transform: scale(.98); }
+
+.floating-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.7) translateY(12px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform-origin: bottom center;
+}
+
+/* 열린 상태에서 보여줌 */
+.floating-nav.open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+/* 각 버튼 스타일 */
+.fn-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: none;
+  background: #0b6b63;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(2, 32, 27, 0.12);
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+  font-size: 18px;
+}
+.fn-btn:active { transform: scale(.97); }
+
+/* 모바일에서도 표시 */
+@media (max-width: 768px) {
+  .floating-nav-wrap {
+    display: flex;
+  }
+}

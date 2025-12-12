@@ -1,0 +1,119 @@
+/* ============================================
+   🔥 HOTEL DETAIL PAGE — 전체 레이아웃
+============================================ */
+.hotel-detail-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 72px; /* 섹션 간 여백 크게 — 고급스럽게 */
+
+  &.loading,
+  &.error {
+    text-align: center;
+    padding: 100px 0;
+    font-size: 20px;
+    color: #777;
+  }
+}
+
+/* ============================================
+   🔥 모든 섹션 공통
+============================================ */
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+/* 카드형 섹션 Wrapper (Overview, Amenities 등) */
+.detail-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ============================================
+   🔥 개별 섹션 공통 스타일 (정렬용)
+============================================ */
+.hotel-detail-container > * {
+  width: 100%;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+============================================ */
+@media (max-width: 1200px) {
+  .hotel-detail-container {
+    max-width: 1100px;
+    padding: 36px 20px 90px;
+    gap: 60px;
+  }
+
+  .detail-section {
+    padding: 28px 30px;
+  }
+
+  .section-title {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hotel-detail-container {
+    max-width: 900px;
+    padding: 30px 18px 80px;
+    gap: 52px;
+  }
+
+  .detail-section {
+    padding: 24px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hotel-detail-container {
+    width: 100%;
+    padding: 20px 14px 60px;
+    gap: 40px;
+  }
+
+  .detail-section {
+    padding: 18px 16px;
+    border-radius: 10px;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hotel-detail-container {
+    padding: 18px 12px 48px;
+    gap: 32px;
+  }
+
+  .detail-section {
+    padding: 14px 12px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+}

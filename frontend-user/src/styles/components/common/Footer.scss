@@ -1,0 +1,243 @@
+@use "../../common/variables" as *;
+
+.footer {
+    background: $gradient-primary;
+    width: 100%;
+    padding: 140px 0 0 0;   /* 뉴스레터 카드 크기 축소에 맞춰 상단 여백 축소 */
+    border-radius: 30px 30px 0 0;
+    position: relative;      /* newsletter absolute 기준점 */
+    overflow: visible;
+}
+
+/* =========================================================
+   ========== Newsletter (떠 있는 카드 디자인) ==========
+   ========================================================= */
+
+.newsletter-wrapper {
+    position: absolute;
+    top: -70px;     /* 카드가 페이지를 덜 가리지 않도록 위로 끌어올림 */
+    left: 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    z-index: 5;
+}
+
+/* =========================================================
+   ========== MyPage에서는 겹치지 않게 배너 내리기 ==========
+   ========================================================= */
+
+/* 마이페이지 레이아웃 안에서는 footer 상단 여백을 줄이고,
+   newsletter를 일반 흐름(static)으로 내려서 겹침 제거 */
+.mypage-layout .footer {
+    padding-top: 80px;
+}
+
+.mypage-layout .footer .newsletter-wrapper {
+    position: static;
+    top: auto;
+    margin-top: 24px;
+}
+
+.newsletter {
+    width: 88%;
+    max-width: 1000px;
+
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 28px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* 텍스트 */
+
+.newsletter-left {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.newsletter-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #00234d;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.newsletter-desc {
+    .travel-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #00234d;
+        margin-bottom: 6px;
+    }
+
+    .travel-sub {
+        font-size: 14px;
+        color: #333;
+    }
+}
+
+/* 입력 영역 */
+.newsletter-input-wrapper {
+    display: flex;
+    margin-top: 8px;
+}
+
+.newsletter-input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-right: none;
+    padding: 10px 12px;
+    border-radius: 8px 0 0 8px;
+    font-size: 13px;
+}
+
+.newsletter-btn {
+    background: #00234d;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 0 8px 8px 0;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+
+    &:hover {
+        background: $color-blue;
+    }
+}
+
+.newsletter-right {
+    margin-left: 10px;
+}
+
+.newsletter-img {
+    width: 300px;
+    height: auto;
+    display: block;
+}
+
+/* =========================================================
+   ========== Footer Links ==========
+   ========================================================= */
+
+.footer-links {
+    margin-top: 0; /* 더 이상 음수 margin 필요 없음 */
+
+    .inner {
+        width: 90%;
+        max-width: 1240px;
+        margin: 0 auto;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+}
+
+.footer-menu {
+    display: flex;
+    gap: 80px;
+}
+
+.link-columns {
+    display: flex;
+    gap: 40px;
+
+    .link-column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+
+            li {
+                margin-bottom: 6px;
+
+                a {
+                    color: #1e2b26;
+                    font-size: 14px;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* =========================================================
+   ========== Footer Bottom ==========
+   ========================================================= */
+
+.footer-bottom {
+    margin-top: 40px;
+    background: #fafafa;
+    padding: 18px 0;
+
+    .inner {
+        width: 90%;
+        max-width: 1240px;
+        margin: 0 auto;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        font-size: 13px;
+        line-height: 1.4;
+        color: #00FF88;
+    }
+}
+
+.social-links {
+    .logo {
+        font-size: 22px;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 6px;
+    }
+
+    .description {
+        font-size: 14px;
+        font-weight: 500;
+        color: #e8f7ef;
+        line-height: 1.4;
+        max-width: 300px;
+    }
+}
+
+.follow-us {
+    .follow-icons {
+        display: flex;
+        align-items: center;
+        gap: 14px; /* 로고 간격 조절 */
+
+        img.icon-img {
+            width: 26px;
+            height: 26px;
+            display: inline-block;
+            object-fit: contain;
+        }
+    }
+}

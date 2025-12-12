@@ -1,0 +1,90 @@
+@use "../../common/variables" as *;
+@use "../../common/mixins";
+
+.hotel-reviews {
+ // 호텔 리뷰 스타일
+ padding: $spacing-section 0;
+ 
+ .dep {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xl;
+  
+  h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+  }
+  
+  .average-rating {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: 20px;
+    font-weight: 600;
+    
+    span {
+      font-size: 20px;
+    }
+  }
+ }
+ 
+ .review-list {
+  li {
+   display: flex;
+   flex-direction: column;
+   box-shadow: $shadow-md;
+   padding: $spacing-xxl;
+   margin-bottom: $spacing-xl;
+   border-radius: $border-radius-lg;
+   gap: $spacing-md;
+   background: #fff;
+   
+   .profile-image {
+     width: 64px;
+     height: 64px;
+     border-radius: 50%;
+     overflow: hidden;
+     margin-bottom: $spacing-md;
+     flex-shrink: 0;
+     
+     img {
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+     }
+   }
+   
+   .review-author {
+     font-size: 22px;
+     font-weight: 600;
+     color: #333;
+     margin-bottom: $spacing-xs;
+   }
+   
+   .review-rating {
+     font-size: 20px;
+     margin-bottom: $spacing-xs;
+     
+     svg, span {
+       font-size: 20px;
+     }
+   }
+   
+   .review-date {
+     font-size: 16px;
+     color: #666;
+     margin-bottom: $spacing-md;
+   }
+   
+   // 리뷰 본문 텍스트
+   & > *:not(.profile-image):not(.review-author):not(.review-rating):not(.review-date) {
+     font-size: 18px;
+     line-height: 1.8;
+     color: #555;
+     margin-top: $spacing-sm;
+   }
+  }
+ }
+}

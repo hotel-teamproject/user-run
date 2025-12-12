@@ -1,0 +1,95 @@
+@use "../../common/variables" as *;
+
+/* -------------------------------
+   Frame 117  →  section.container
+-------------------------------- */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 70px 104px 0;
+    gap: 80px;
+
+    width: 100%;
+    max-width: 1440px;
+    margin: 100px auto 0;
+    box-sizing: border-box;
+}
+
+/* 내부 영역 */
+.inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* -------------------------------
+   Section Header
+-------------------------------- */
+.section-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .text-box {
+        color: $color-blue;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-see-all {
+        padding: 10px 18px;
+        background: $color-blue;
+        color: #fff;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            background: $color-blue-dark;
+        }
+    }
+}
+
+/* -------------------------------
+   Swiper 영역
+-------------------------------- */
+.destinations-swiper {
+    width: 100%;
+    padding-bottom: 40px;
+
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: $color-blue;
+        transition: 0.2s;
+
+        &:hover {
+            color: $color-green;
+        }
+    }
+
+    .swiper-pagination-bullet {
+        background: #ccc;
+        opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: $color-blue;
+    }
+
+}
+
+.destinations-swiper .swiper-button-next,
+.destinations-swiper .swiper-button-prev {
+    display: none;
+}

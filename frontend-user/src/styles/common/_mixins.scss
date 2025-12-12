@@ -1,0 +1,19 @@
+@use "variables" as *;
+
+/* 부드러운 그림자 */
+@mixin shadow-soft {
+  box-shadow: $shadow-sm;
+}
+
+/* 중앙 정렬 */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-center-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

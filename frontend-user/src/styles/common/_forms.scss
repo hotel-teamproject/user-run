@@ -1,0 +1,142 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+/* 라벨 + 헬프텍스트 포함한 그룹 */
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: $color-text; // 라벨은 기본 텍스트 색
+  }
+
+  .help-text {
+    margin-top: 6px;
+    font-size: 12px;
+    color: $color-muted;
+  }
+}
+
+/* 텍스트 계열 입력 (input/textarea/select 공통) */
+.input,
+textarea,
+select {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: $border-radius-sm;
+  border: 0.1rem solid $color-border;
+  background: #fff;
+  color: $color-secondary;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+
+  &::placeholder {
+    color: $color-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-blue; /* 메인 테마 컬러 */
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
+    background: #fff;
+  }
+
+  &:disabled {
+    background: $color-bg-alt;
+    color: $color-muted;
+    cursor: not-allowed;
+  }
+}
+
+/* 높이 조정 */
+.input--sm {
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.input--lg {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+select {
+  background-color: #fff;
+}
+
+/* 유효성 상태 */
+.is-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.is-valid {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+}
+
+.form-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.form-success {
+  color: #10b981;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* 체크박스/라디오 */
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: $color-blue; /* 테마 컬러 적용 */
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
+  }
+}
+
+/* 인풋 + 버튼 한 줄 배치 */
+.input-group {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+
+  .input,
+  select {
+    flex: 1;
+  }
+  .btn {
+    flex: 0 0 auto;
+  }
+}
+
+/* 접근성 유틸 */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

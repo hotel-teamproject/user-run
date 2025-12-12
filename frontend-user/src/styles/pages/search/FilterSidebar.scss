@@ -1,0 +1,181 @@
+.filter-sidebar {
+  width: 100%;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  .filter-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a2a2a;
+    margin-bottom: 4px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    margin: 12px 0;
+  }
+
+  /* ======================
+     FILTER BLOCK
+  ====================== */
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .filter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      span {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #1a2a2a;
+      }
+
+      .toggle-btn {
+        border: none;
+        background: none;
+        font-size: 1.6rem;
+        cursor: pointer;
+        transform: rotate(180deg);
+        transition: transform 0.2s ease;
+        color: #1a2a2a;
+      }
+
+      &.collapsed .toggle-btn {
+        transform: rotate(0deg);
+      }
+    }
+
+    .filter-body {
+      padding-left: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+  }
+
+  /* ======================
+     PRICE SLIDER — main 버전
+  ====================== */
+  .price-slider {
+    position: relative;
+    width: 100%;
+    padding: 28px 0 16px;
+  }
+
+  /* 트랙 */
+  .price-slider-track {
+    position: absolute;
+    top: 65%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #cce7df;
+    border-radius: 5px;
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  /* 공통 range */
+  .price-slider input[type="range"] {
+    -webkit-appearance: none;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .price-slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: transparent;
+  }
+
+  .price-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #0066FF;
+    border-radius: 50%;
+    pointer-events: auto;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+  }
+
+  .price-slider .min-range {
+    z-index: 12;
+    pointer-events: auto;
+  }
+
+  .price-slider .max-range {
+    z-index: 11;
+  }
+
+  .price-values {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    color: #1a2a2a;
+  }
+
+  /* ======================
+     RATING BUTTONS
+  ====================== */
+  .rating-buttons {
+    display: flex;
+    gap: 8px;
+
+    button {
+      padding: 6px 12px;
+      border: 1px solid #0066FF;
+      background: #ffffff;
+      border-radius: 6px;
+      font-size: 1.4rem;
+      color: #0066FF;
+      cursor: pointer;
+      transition: 0.2s ease;
+
+      &:hover {
+        background: #0066FF;
+        color: #fff;
+      }
+    }
+  }
+
+  /* ======================
+     CHECKBOX LIST
+  ====================== */
+  .checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.4rem;
+      color: #1a2a2a;
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #0066FF;
+        cursor: pointer;
+      }
+    }
+  }
+}

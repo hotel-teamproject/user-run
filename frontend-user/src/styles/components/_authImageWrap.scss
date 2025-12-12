@@ -1,0 +1,17 @@
+.login-image-section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 🔥 파란 그라데이션 제거 + 이미지 넣기 */
+  background: url("/images/login-bg.jpg") no-repeat center center / cover !important;
+
+  position: relative;
+
+  .hotel-image-wrapper {
+    display: none; // 🔥 기존 이미지 구조 제거
+  }
+  
+}

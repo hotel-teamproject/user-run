@@ -1,0 +1,119 @@
+@use "sass:color";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+/* =======================
+   🎨 COLOR SYSTEM
+   ======================= */
+
+/* 메인 브랜드 컬러 (STAYBOOK 그라데이션: 파란색-그린) */
+$color-primary: #0066FF;
+$color-primary-end: #00FF88;
+$color-secondary: #1e293b;
+/* color.adjust 사용으로 deprecated 함수 대체 */
+$color-accent: #00CC70;
+
+/* STAYBOOK 색상 팔레트 */
+$color-blue: #0066FF;
+$color-blue-dark: #0052CC;
+$color-blue-light: #3385FF;
+$color-green: #00FF88;
+$color-green-dark: #00CC70;
+$color-green-light: #33FFAA;
+
+/* 그라데이션 변수 */
+$gradient-primary: linear-gradient(135deg, $color-blue 0%, $color-green 100%);
+$gradient-primary-hover: linear-gradient(135deg, $color-blue-dark 0%, $color-green-dark 100%);
+$gradient-primary-light: linear-gradient(135deg, $color-blue-light 0%, $color-green-light 100%);
+
+/* Background */
+$color-bg: #ffffff;
+$color-bg-alt: #f9fafb;
+
+/* Border & Muted */
+$color-border: #e5e7eb;
+$color-muted: #9ca3af;
+
+/* 텍스트 컬러 */
+$color-text: #1f2937;           // very dark gray
+$color-text-secondary: #6b7280; // gray-500
+$color-text-muted: #9ca3af;     // gray-400
+
+/* 추가 Background (first 유지) */
+$color-bg-light: #f9fafb;
+$color-bg-dark: #1f2937;
+
+/* Border variations (first) */
+$color-border-light: #f3f4f6;
+$color-border-dark: #374151;
+
+/* =======================
+   🖋 TYPOGRAPHY
+   ======================= */
+$font-family-base: "Inter", "Noto Sans KR", sans-serif;
+$font-size-base: 1.6rem;
+$font-size-sm: 1.4rem;
+$font-size-lg: 1.8rem;
+$font-size-xl: 2rem;
+
+$line-height-base: 1.5;
+$line-height-tight: 1.2;
+$line-height-relaxed: 1.75;
+
+/* =======================
+   📏 SPACING SYSTEM
+   ======================= */
+$spacing-xs: 0.8rem;
+$spacing-sm: 1.2rem;
+$spacing-md: 1.6rem;
+$spacing-lg: 2rem;
+$spacing-xl: 2.4rem;
+$spacing-xxl: 3rem;
+$spacing-xxxl: 4rem;
+$spacing-section: 10rem;
+
+/* =======================
+   📱 BREAKPOINTS
+   ======================= */
+$breakpoint-md: 76.8rem;  
+$max-width-container: 128rem;
+
+$gutter-sm: 1rem;
+$gutter-md: 1.6rem;
+$gutter-lg: 2rem;
+
+/* =======================
+   🧱 BORDERS
+   ======================= */
+$border: 0.1rem solid $color-border;
+$border-light: 0.1rem solid rgba($color-border, 0.5);
+$border-dark: 0.1rem solid color.adjust($color-border, $lightness: -10%);
+
+$border-radius-sm: 0.4rem;
+$border-radius-md: 0.8rem;
+$border-radius-lg: 1.2rem;
+$border-radius-full: 999.9rem;
+
+/* =======================
+   🧊 SHADOWS
+   ======================= */
+$shadow-sm: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+$shadow-md: 0 0.4rem 0.6rem -0.1rem rgba(0, 0, 0, 0.1),
+            0 0.2rem 0.4rem -0.1rem rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 1rem 1.5rem -0.3rem rgba(0, 0, 0, 0.1),
+            0 0.4rem 0.6rem -0.2rem rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 2rem 2.5rem -0.5rem rgba(0, 0, 0, 0.1),
+            0 1rem 1rem -0.5rem rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 2.5rem 5rem -1.2rem rgba(0, 0, 0, 0.25);
+
+/* =======================
+   🌈 GRADIENTS (STAYBOOK 브랜드 팔레트)
+   ======================= */
+$gradient-gray-light: linear-gradient(135deg, #f9fafb, #f3f4f6);
+$gradient-gray-medium: $gradient-primary;
+$gradient-gray-dark: linear-gradient(135deg, $color-blue-dark 0%, $color-green-dark 100%);
+$gradient-background: linear-gradient(135deg, rgba(0, 102, 255, 0.05) 0%, rgba(0, 255, 136, 0.05) 100%);
+
+/* =======================
+   📌 HEADER HEIGHT
+   ======================= */
+$header-height: 8rem;

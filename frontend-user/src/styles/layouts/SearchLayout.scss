@@ -1,0 +1,76 @@
+/* ===========================================
+   검색 레이아웃 전체
+=========================================== */
+.search-layout {
+  width: 100%;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+/* ===========================================
+   검색 컨테이너 (전체 여백 & 중앙 정렬)
+=========================================== */
+.search-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  box-sizing: border-box;
+}
+
+/* ===========================================
+   좌측 필터 + 우측 결과의 메인 구조
+=========================================== */
+.search-content {
+  margin-top: 20px;
+  display: flex;
+  gap: 28px;
+}
+
+/* 좌측 필터 */
+.filter-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+/* 우측 Outlet 결과 */
+.search-main {
+  flex: 1;
+  min-width: 0;  /* flex overflow 방지 */
+}
+
+/* ===========================================
+   상단 SearchFilterWrap (필터 박스)
+=========================================== */
+.search-filter-wrap {
+  width: 100%;
+  padding: 22px 24px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* ===========================================
+   반응형
+=========================================== */
+@media (max-width: 1024px) {
+  .search-content {
+    flex-direction: column;
+  }
+
+  .filter-sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-filter-wrap {
+    flex-direction: column;
+    gap: 14px;
+  }
+}

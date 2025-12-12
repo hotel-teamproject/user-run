@@ -1,0 +1,260 @@
+@use "../../common/variables" as *;
+
+/* ===========================================
+   찜하기 카드
+=========================================== */
+.wishlist-card {
+  display: flex;
+  gap: 24px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-items: stretch;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* ===========================================
+   호텔 이미지
+=========================================== */
+.wishlist-card__image {
+  position: relative;
+  width: 30%;
+  min-width: 280px;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 14px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  .image-count {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+  }
+}
+
+.wishlist-card:hover .wishlist-card__image img {
+  transform: scale(1.05);
+}
+
+/* ===========================================
+   텍스트 콘텐츠
+=========================================== */
+.wishlist-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===========================================
+   상단: 이름 + 메타 정보
+=========================================== */
+.wishlist-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.wishlist-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.hotel-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.hotel-location {
+  font-size: 1.4rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hotel-meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  font-size: 1.3rem;
+  flex-wrap: wrap;
+}
+
+.hotel-stars {
+  color: #ff6b6b;
+  font-weight: 500;
+}
+
+.hotel-amenities {
+  color: #6b7280;
+}
+
+.hotel-rating {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rating-score {
+  background: $color-blue;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.rating-label {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #1f2937;
+}
+
+.rating-reviews {
+  font-size: 1.3rem;
+  color: #9ca3af;
+}
+
+/* ===========================================
+   가격 영역
+=========================================== */
+.wishlist-card__price {
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.price-label {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.price-amount {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  margin-bottom: 4px;
+}
+
+.price-note {
+  font-size: 1.2rem;
+  color: #9ca3af;
+}
+
+/* ===========================================
+   하단 버튼 영역
+=========================================== */
+.wishlist-card__footer {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.remove-wishlist-button {
+  padding: 12px 24px;
+  background: #fff;
+  border: 2px solid #ff6b6b;
+  border-radius: 12px;
+  color: #ff6b6b;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: #ff6b6b;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+}
+
+.view-button {
+  flex: 1;
+  padding: 12px 24px;
+  background: $color-blue;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 180px;
+
+  &:hover {
+    background: #1e7d5f;
+    transform: translateY(-2px);
+  }
+}
+
+/* ===========================================
+   반응형 (모바일)
+=========================================== */
+@media (max-width: 768px) {
+  .wishlist-card {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .wishlist-card__image {
+    width: 100%;
+    min-width: unset;
+    height: 200px;
+  }
+
+  .wishlist-card__header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .wishlist-card__price {
+    text-align: left;
+  }
+
+  .hotel-name {
+    font-size: 1.8rem;
+  }
+
+  .wishlist-card__footer {
+    flex-direction: column;
+    gap: 10px;
+
+    button {
+      width: 100%;
+    }
+  }
+}

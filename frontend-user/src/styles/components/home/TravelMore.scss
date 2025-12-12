@@ -1,0 +1,80 @@
+@use "../../common/variables" as *;
+/* ===============================
+   TravelMore (Frame 118 기반)
+============================== */
+
+.travel-more {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 300px;
+}
+
+.travel-more .container {
+  width: 1232px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  gap: 24px;
+}
+
+/* ===============================
+   Section Header
+=============================== */
+.section-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: $color-blue;
+  }
+
+  /* PopularDestinations 버튼과 동일하게 통일 */
+  .see-all-btn {
+    padding: 10px 18px;
+    background: $color-blue;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background: $color-blue-dark;
+    }
+  }
+}
+
+/* ===============================
+   Sub Text
+=============================== */
+.section-subtitle {
+  width: 100%;
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ===============================
+   Content Layout
+=============================== */
+.travel-content {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.malaka-tour {
+  width: 43%;
+}
+
+.travel-gallery {
+  width: 57%;
+}

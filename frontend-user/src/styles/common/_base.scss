@@ -1,0 +1,64 @@
+/* src/styles/common/_base.scss */
+@use "sass:color";
+@use "variables" as *;
+@use "mixins" as *;
+
+.inner {
+  max-width: $max-width-container;
+  margin: 0 auto;
+  width: 100%;
+  // padding: 0 $gutter;
+}
+.top-container {
+  padding-top: $header-height;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+.text-muted {
+  color: $color-muted;
+}
+h1 {
+  font-size: 4.5rem;
+}
+h2 {
+  font-size: 3.2rem;
+}
+h3 {
+    font-size: 2.4rem;
+  }
+.btn-primary {
+  background: $color-blue;
+  color: #fff;
+  border-radius: 0.8rem;
+  padding: 1rem 1.6rem;
+  font-weight: 600;
+  @include shadow-soft;
+
+  &:hover {
+    background: $color-blue-dark;
+  }
+
+}
+header {
+  height: $header-height;
+  background: $color-bg;
+  border-bottom: $border;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  .inner {
+    // @include flex-center-space-between;
+    height: 100%;
+    max-width: $max-width-container;
+    margin: 0 auto;
+  }
+}

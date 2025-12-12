@@ -1,0 +1,265 @@
+<<<<<<< HEAD
+.hotel-list-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+
+  &.empty {
+    padding: 40px 0;
+    font-size: 1.6rem;
+    color: #7f8c8d;
+  }
+}
+
+=======
+>>>>>>> main
+.hotel-card {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: 0.15s ease;
+
+<<<<<<< HEAD
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* ========================
+   LEFT IMAGE SECTION
+======================== */
+.hotel-image {
+  position: relative;
+  width: 32%;
+  min-width: 250px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  .image-count {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a2a2a;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ========================
+   MIDDLE CONTENT
+======================== */
+.hotel-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .hotel-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a2a2a;
+  }
+
+  .hotel-location {
+    font-size: 1.4rem;
+    color: #4b5b5b;
+  }
+
+  .hotel-meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 4px;
+
+    .hotel-stars {
+      font-size: 1.4rem;
+      color: #ff6f6f;
+    }
+
+    .hotel-amenities {
+      font-size: 1.4rem;
+      color: #2c3e50;
+    }
+  }
+
+  .hotel-rating {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 8px;
+
+    .rating-score {
+      padding: 4px 10px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #0066FF;
+      border: 1px solid #0066FF;
+      border-radius: 6px;
+    }
+
+    .rating-label {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a2a2a;
+    }
+
+    .rating-reviews {
+      font-size: 1.3rem;
+      color: #7f8c8d;
+    }
+  }
+}
+
+/* ========================
+   RIGHT SIDE (PRICE + 버튼)
+======================== */
+.hotel-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+
+  .hotel-price {
+    text-align: right;
+
+    .price-label {
+      font-size: 1.2rem;
+      color: #7f8c8d;
+      margin-bottom: 2px;
+    }
+
+    .price-amount {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #ff6f6f;
+    }
+
+    .price-note {
+      font-size: 1.2rem;
+      color: #7f8c8d;
+    }
+  }
+
+  .wishlist-button {
+    width: 48px;
+    height: 48px;
+    font-size: 2rem;
+    border: 1px solid #0066FF;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background: #e1f7ef;
+    }
+  }
+
+  .view-button {
+    padding: 12px 22px;
+    background: #0066FF;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background: #1a8f73;
+    }
+  }
+=======
+  /* 이미지 + 오른쪽 높이를 동일하게 맞춤 */
+  align-items: stretch;
+}
+
+.hotel-card:hover {
+  transform: translateY(-3px);
+}
+
+/* ========= 왼쪽 이미지 전체 ========= */
+.hotel-image {
+  width: 32%;
+  min-width: 260px;
+  overflow: hidden;
+  border-radius: 14px;
+
+  display: flex;
+}
+
+.hotel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========= 오른쪽 전체 ========= */
+.hotel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* ↑ 위 텍스트 / 아래 버튼 */
+}
+
+/* ========= 상단 구조 (텍스트 + 가격) ========= */
+.hotel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* ========= 하단 버튼 영역 ========= */
+.hotel-bottom {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e5e5;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wishlist-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid #0066FF;
+  background: #fff;
+  font-size: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.view-button {
+  flex: 1;
+  padding: 12px 20px;
+  background: #0066FF;
+  color: #fff;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+>>>>>>> main
+}

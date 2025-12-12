@@ -1,0 +1,72 @@
+@use "../../common/variables" as *;
+.malaka-tour {
+  background: $color-blue;
+  padding: 32px;
+  border-radius: 20px;
+  width: 48%;
+  height: 380px;
+  max-width: 460px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0; /* 혹시 모를 간격 방지 */
+}
+
+.tour-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.price-tag {
+  background: #fff;
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  margin-top: -4px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 14px;
+
+  span {
+    font-size: 12px;
+    color: #555;
+  }
+
+  strong {
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+.tour-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1b1b1b;
+}
+
+.book-btn {
+  width: 100%;
+  padding: 14px;
+  background: #fff;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover {
+    background: $color-green;
+  }
+}

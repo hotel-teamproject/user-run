@@ -1,0 +1,159 @@
+/* =========================================================
+   전체 마이페이지 컨테이너
+========================================================= */
+.mypage-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 120px;
+  padding: 0 20px;
+}
+
+
+/* =========================================================
+   Account 카드 전체
+========================================================= */
+.account-content {
+  width: 100%;
+  background: #fff;
+  margin-top: 28px;
+
+  padding: 32px 36px;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.account-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   Account 리스트(가로형 UI)
+========================================================= */
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+/* 왼쪽(라벨 + 값) */
+.field-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #777;
+}
+
+.field-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+}
+
+/* input */
+.field-input {
+  font-size: 15px;
+  padding: 10px 12px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  width: 260px;
+
+  &:disabled {
+    background: #f5f5f5;
+  }
+}
+
+
+/* =========================================================
+   버튼 (Change / Save)
+========================================================= */
+.change-button {
+  padding: 10px 18px;
+
+  border: 1px solid #1d6e4f;
+  border-radius: 8px;
+
+  background: #fff;
+  color: #1d6e4f;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: #e9f7f3;
+  }
+}
+
+.change-button.active {
+  background: #1d6e4f;
+  color: #fff;
+
+  &:hover {
+    background: #145b40;
+  }
+}
+
+
+/* =========================================================
+   subscription section
+========================================================= */
+.subscription-section {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.subscription-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.subscription-subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   반응형
+========================================================= */
+@media (max-width: 768px) {
+  .form-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .field-input {
+    width: 100%;
+  }
+
+  .change-button {
+    width: 100%;
+    text-align: center;
+  }
+}

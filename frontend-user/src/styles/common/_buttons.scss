@@ -1,0 +1,134 @@
+@use "sass:color";
+@use "variables" as *;
+@use "mixins" as *;
+
+/* 기본 버튼 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1rem 1.6rem;
+  border-radius: $border-radius-sm;
+  border: 0.1rem solid transparent;
+  background: $color-bg;
+  color: $color-secondary;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  @include shadow-soft;
+
+  &:hover {
+    filter: brightness(0.98);
+  }
+  &:active {
+    transform: translateY(0.1rem);
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  > svg {
+    width: 1.1em;
+    height: 1.1em;
+    flex: 0 0 auto;
+  }
+}
+
+/* ================================
+   🔥 1. PRIMARY 버튼 (Login)
+   ================================ */
+.btn--primary {
+  background: $color-blue !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: $border-radius-sm;
+
+  &:hover {
+    background: $color-blue-dark !important;
+  }
+}
+
+/* ================================
+   🔥 2. ACCENT 버튼 (Sign Up)
+   ================================ */
+.btn--accent {
+  background: $color-green !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: $border-radius-sm;
+
+  &:hover {
+    background: $color-green-dark !important;
+  }
+}
+
+/* SNS 버튼 */
+.btn--social {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+/* 아웃라인 */
+.btn--outline {
+  background: transparent;
+  color: $color-blue !important;
+  border: 2px solid $color-blue;
+
+  &:hover {
+    background: rgba(0, 102, 255, 0.08);
+    border-color: $color-blue-dark;
+  }
+}
+
+/* 고스트 */
+.btn--ghost {
+  background: transparent;
+  color: $color-secondary;
+  border-color: transparent;
+
+  &:hover {
+    background: $color-bg-alt;
+  }
+}
+
+/* 사이즈 */
+.btn--sm {
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.8rem;
+  font-size: 1.4rem;
+}
+.btn--lg {
+  padding: 1.2rem 1.8rem;
+  border-radius: 1.2rem;
+  font-size: 1.8rem;
+}
+.btn--block {
+  width: 100%;
+}
+
+.btn--link {
+  background: transparent;
+  border-color: transparent;
+  color: $color-blue !important;
+  padding: 0;
+  box-shadow: none;
+
+  &:hover {
+    text-decoration: underline;
+    color: $color-blue-dark !important;
+  }
+}

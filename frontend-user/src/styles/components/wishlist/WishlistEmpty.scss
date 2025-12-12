@@ -1,0 +1,95 @@
+@use "../../common/variables" as *;
+
+/* ===========================================
+   찜 목록 비어있을 때
+=========================================== */
+.wishlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: #f9fafb;
+  border-radius: 20px;
+  min-height: 400px;
+}
+
+.wishlist-empty__icon {
+  font-size: 8rem;
+  margin-bottom: 24px;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.wishlist-empty__title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.wishlist-empty__description {
+  font-size: 1.6rem;
+  color: #6b7280;
+  margin-bottom: 32px;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.wishlist-empty__button {
+  padding: 16px 40px;
+  background: $color-blue;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $color-blue-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.3);
+  }
+}
+
+/* ===========================================
+   반응형 (모바일)
+=========================================== */
+@media (max-width: 768px) {
+  .wishlist-empty {
+    padding: 60px 20px;
+    min-height: 300px;
+  }
+
+  .wishlist-empty__icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+  }
+
+  .wishlist-empty__title {
+    font-size: 2rem;
+  }
+
+  .wishlist-empty__description {
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+  }
+
+  .wishlist-empty__button {
+    padding: 14px 32px;
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 300px;
+  }
+}

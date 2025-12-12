@@ -1,0 +1,70 @@
+@use "../../common/variables" as *;
+.hero-search-container {
+    /* 오토레이아웃 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+
+    padding: 32px 24px;
+    gap: 32px;
+
+    /* 웹 방식: 절대 위치 제거 */
+    position: relative;
+    width: 100%;
+    max-width: 1232px;
+    height: auto;
+
+    /* Hero 아래로 겹쳐 내려오게 하는 핵심 */
+    margin: -80px auto 40px;
+
+    /* Neutrals */
+    background: #FFFFFF;
+    box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+    border-radius: 16px;
+
+    z-index: 10; /* Hero 위, Popular 아래 */
+
+}
+
+/* 내부 구조 — JSX 매칭 */
+.search-form {
+    color: $color-blue;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-container {
+    display: flex;
+    width: 100%;
+    gap: 16px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+        font-size: 14px;
+        font-weight: 500;
+        color: $color-blue;
+    }
+    
+    input,
+    select {
+        padding: 10px 14px;
+        border: 1px solid $color-blue;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+    }
+}
+
+/* 개별 인풋 */
+.destination-input {}
+.date-input {}
+.guests-select {}

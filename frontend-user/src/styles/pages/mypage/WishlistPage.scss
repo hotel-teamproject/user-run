@@ -1,0 +1,99 @@
+/* ===========================================
+   위시리스트 페이지 전체
+=========================================== */
+.wishlist-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 250px;
+  min-height: 60vh;
+}
+
+/* ===========================================
+   헤더 영역
+=========================================== */
+.wishlist-page__header {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.wishlist-page__title {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.wishlist-page__subtitle {
+  font-size: 1.6rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* ===========================================
+   리스트 콘텐츠
+=========================================== */
+.wishlist-page__content {
+  width: 100%;
+}
+
+.wishlist-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===========================================
+   로딩 상태
+=========================================== */
+.wishlist-page__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 1.8rem;
+  color: #6b7280;
+}
+
+/* ===========================================
+   반응형 (데스크탑 이하)
+=========================================== */
+@media (max-width: 1024px) {
+  .wishlist-page {
+    padding: 30px 16px 200px;
+  }
+
+  .wishlist-page__title {
+    font-size: 2.8rem;
+  }
+
+  .wishlist-page__subtitle {
+    font-size: 1.5rem;
+  }
+}
+
+/* ===========================================
+   반응형 (모바일)
+=========================================== */
+@media (max-width: 768px) {
+  .wishlist-page {
+    padding: 20px 12px 180px;
+  }
+
+  .wishlist-page__header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
+
+  .wishlist-page__title {
+    font-size: 2.4rem;
+  }
+
+  .wishlist-page__subtitle {
+    font-size: 1.4rem;
+  }
+
+  .wishlist-page__list {
+    gap: 16px;
+  }
+}
