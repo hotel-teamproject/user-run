@@ -1,7 +1,14 @@
+.booking-page-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .booking-layout {
   max-width: 1200px;
-  margin: 40px auto 80px;
-  padding: 0 24px;
+  margin: 40px auto;
+  padding: 0 24px 120px; /* 하단 여백 추가 */
+  flex: 1;
 }
 
 .booking-content {

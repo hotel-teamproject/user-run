@@ -8,6 +8,7 @@ import Hotel from '../models/Hotel.js';
 import Room from '../models/Room.js';
 import Reservation from '../models/Reservation.js';
 import Review from '../models/Review.js';
+import Coupon from '../models/Coupon.js';
 import connectDB from '../config/db.js';
 
 dotenv.config();
@@ -25,6 +26,7 @@ const initData = async () => {
     await Room.deleteMany({});
     await Reservation.deleteMany({});
     await Review.deleteMany({});
+    await Coupon.deleteMany({});
 
     // 1. 사용자 생성
     console.log('👤 사용자 생성 중...');
@@ -434,6 +436,108 @@ const initData = async () => {
 
     console.log(`✅ ${reviews.length}개의 리뷰 생성 완료`);
 
+    // 6. 쿠폰 생성
+    console.log('🎫 쿠폰 생성 중...');
+    const today = new Date();
+    const nextMonth = new Date(today);
+    nextMonth.setMonth(today.getMonth() + 1);
+    const next3Months = new Date(today);
+    next3Months.setMonth(today.getMonth() + 3);
+
+    const coupons = await Coupon.insertMany([
+      {
+        code: 'WELCOME10',
+        name: '신규 회원 환영 쿠폰',
+        description: '첫 예약 시 10% 할인',
+        type: 'percent',
+        discount: 10,
+        minAmount: 50000,
+        maxDiscount: 20000,
+        validFrom: today,
+        validUntil: next3Months,
+        usageLimit: 1,
+        usedCount: 0,
+        isPublic: true,
+        target: 'first'
+      },
+      {
+        code: 'SAVE5000',
+        name: '5,000원 할인 쿠폰',
+        description: '5만원 이상 결제 시 사용 가능',
+        type: 'amount',
+        discount: 5000,
+        minAmount: 50000,
+        validFrom: today,
+        validUntil: nextMonth,
+        usageLimit: 10,
+        usedCount: 0,
+        isPublic: true,
+        target: 'all'
+      },
+      {
+        code: 'WEEKEND15',
+        name: '주말 특가 15% 할인',
+        description: '주말 예약 시 15% 할인 (최대 3만원)',
+        type: 'percent',
+        discount: 15,
+        minAmount: 100000,
+        maxDiscount: 30000,
+        validFrom: today,
+        validUntil: next3Months,
+        isPublic: true,
+        target: 'all'
+      },
+      {
+        code: 'SUMMER20',
+        name: '여름휴가 20% 할인',
+        description: '여름 시즌 특별 할인 쿠폰',
+        type: 'percent',
+        discount: 20,
+        minAmount: 200000,
+        maxDiscount: 50000,
+        validFrom: today,
+        validUntil: next3Months,
+        usageLimit: 5,
+        usedCount: 0,
+        isPublic: true,
+        target: 'all'
+      },
+      {
+        code: 'STAYBOOK50000',
+        name: '스테이북 5만원 할인',
+        description: '30만원 이상 결제 시 사용 가능',
+        type: 'amount',
+        discount: 50000,
+        minAmount: 300000,
+        validFrom: today,
+        validUntil: next3Months,
+        usageLimit: 3,
+        usedCount: 0,
+        isPublic: true,
+        target: 'member'
+      }
+    ]);
+
+    // 사용자별 쿠폰 할당
+    const userCoupon = await Coupon.create({
+      code: `USER${normalUser._id.toString().slice(-6).toUpperCase()}`,
+      name: '개인 전용 쿠폰',
+      description: '10,000원 할인 쿠폰',
+      type: 'amount',
+      discount: 10000,
+      minAmount: 50000,
+      validFrom: today,
+      validUntil: nextMonth,
+      usageLimit: 1,
+      usedCount: 0,
+      isPublic: false,
+      userId: normalUser._id,
+      target: 'member'
+    });
+
+    coupons.push(userCoupon);
+    console.log(`✅ ${coupons.length}개의 쿠폰 생성 완료`);
+
     // 호텔 평점 업데이트 (리뷰 기반)
     console.log('📊 호텔 평점 업데이트 중...');
     for (const hotel of hotels) {
@@ -454,6 +558,7 @@ const initData = async () => {
     console.log(`   - 객실: ${rooms.length}개`);
     console.log(`   - 예약: ${reservations.length}개`);
     console.log(`   - 리뷰: ${reviews.length}개`);
+    console.log(`   - 쿠폰: ${coupons.length}개`);
     console.log('\n🔑 테스트 계정:');
     console.log('   일반 사용자: user@gmail.com / 1234');
     console.log('   홍길동: hong@gmail.com / 1234');

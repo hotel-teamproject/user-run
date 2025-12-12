@@ -11,6 +11,7 @@ const SearchFilterWrap = () => {
         type="text"
         placeholder="예) 서울시 어머님댁 저희집"
         className="destination-input"
+        maxLength={100}
        />
       </div>
 

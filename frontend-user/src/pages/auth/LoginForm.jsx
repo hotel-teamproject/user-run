@@ -18,7 +18,7 @@ const LoginForm = () => {
  // 이미 로그인된 상태에서 로그인 페이지에 접근 시 리다이렉트
  useEffect(() => {
    if (isAuthed) {
-     navigate("/mypage", { replace: true });
+     navigate("/", { replace: true });
    }
  }, [isAuthed, navigate]);
 
@@ -48,18 +48,24 @@ const LoginForm = () => {
    // 백엔드 응답 구조 확인
    console.log("Login response:", response);
    
-   if (response && (response._id || response.data?._id)) {
+   // loginUser는 response.data.data 또는 response.data를 반환
+   const userData = response?._id ? response : (response?.data || null);
+   
+   if (userData && userData._id) {
     // userClient에서 이미 토큰을 저장하므로, 사용자 정보만 저장
-    const userData = response.data || response;
     const userInfo = {
-      _id: userData._id || userData.data?._id,
-      name: userData.name || userData.data?.name,
-      email: userData.email || userData.data?.email,
-      phone: userData.phone || userData.data?.phone,
-      role: userData.role || userData.data?.role,
+      _id: userData._id,
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone || "",
+      role: userData.role || "user",
     };
     
     console.log("User info to save:", userInfo);
+    console.log("Access token saved:", !!localStorage.getItem("accessToken"));
+    
+    // 사용자 정보를 localStorage에 저장 (페이지 새로고침 후에도 유지)
+    localStorage.setItem("user", JSON.stringify(userInfo));
     
     // 사용자 정보 저장
     login(userInfo);
@@ -69,13 +75,13 @@ const LoginForm = () => {
      // 추가 처리 필요시 여기에 구현
     }
 
-    // 로그인 성공 후 즉시 마이페이지로 이동
-    // window.location.href를 사용하여 전체 페이지 리로드로 상태 동기화
-    console.log("Navigating to /mypage");
-    setTimeout(() => {
-      window.location.href = "/mypage";
-    }, 100);
+    // 로그인 성공 후 즉시 메인 화면으로 이동
+    console.log("Navigating to /");
+    // window.location.href를 바로 사용하여 확실하게 이동
+    // 페이지 새로고침 후 AuthContext의 useEffect가 실행되어 사용자 정보를 다시 가져옴
+    window.location.href = "/";
    } else {
+    console.error("Invalid response:", response);
     setError("로그인 응답이 올바르지 않습니다.");
    }
   } catch (err) {
@@ -113,6 +119,7 @@ const LoginForm = () => {
       placeholder="user@test.com"
       value={formData.email}
       onChange={handleInputChange}
+      maxLength={100}
       required
      />
     </div>
@@ -126,6 +133,8 @@ const LoginForm = () => {
        placeholder="1234"
        value={formData.password}
        onChange={handleInputChange}
+       minLength={6}
+       maxLength={128}
        required
       />
       <button type="button" className="password-toggle">

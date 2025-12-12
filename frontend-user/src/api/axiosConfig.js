@@ -53,12 +53,15 @@ axiosInstance.interceptors.response.use(
       refreshToken,
      });
 
-     const { accessToken } = response.data;
-     localStorage.setItem("accessToken", accessToken);
+     // 백엔드 응답 구조: { resultCode, message, data: { accessToken } }
+     const accessToken = response.data.data?.accessToken || response.data.accessToken;
+     if (accessToken) {
+       localStorage.setItem("accessToken", accessToken);
 
-     // 원래 요청 재시도
-     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-     return axiosInstance(originalRequest);
+       // 원래 요청 재시도
+       originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+       return axiosInstance(originalRequest);
+     }
     }
    } catch (refreshError) {
     // 리프레시 토큰도 만료된 경우 로그인 페이지로 이동

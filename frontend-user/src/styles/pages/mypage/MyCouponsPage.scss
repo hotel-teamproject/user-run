@@ -1,0 +1,208 @@
+@use "../../common/variables" as *;
+
+.my-coupons-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 120px; /* Footer와 겹치지 않도록 여백 증가 */
+
+  .page-header {
+    margin-bottom: 40px;
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: $color-text;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 16px;
+      color: $color-text-secondary;
+    }
+  }
+
+  .coupon-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid $color-border;
+
+    .tab-button {
+      padding: 12px 24px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      color: $color-text-secondary;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+
+      &:hover {
+        color: $color-primary;
+      }
+
+      &.active {
+        color: $color-blue;
+        border-bottom-color: $color-blue;
+      }
+    }
+  }
+
+  .coupon-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .coupon-card {
+    background: #fff;
+    border: 2px solid $color-border;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    gap: 20px;
+    position: relative;
+    transition: all 0.3s;
+    overflow: hidden;
+
+    &:hover:not(.expired) {
+      box-shadow: $shadow-md;
+      transform: translateY(-2px);
+      border-color: $color-blue;
+    }
+
+    &.expired {
+      opacity: 0.6;
+      background: #f9fafb;
+    }
+
+    .coupon-left {
+      flex-shrink: 0;
+
+      .coupon-discount {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+        background: $gradient-primary;
+        border-radius: 12px;
+        color: #fff;
+
+        .discount-amount {
+          font-size: 28px;
+          font-weight: 700;
+          line-height: 1;
+        }
+
+        .discount-label {
+          font-size: 14px;
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .coupon-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .coupon-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+
+        .coupon-name {
+          font-size: 20px;
+          font-weight: 700;
+          color: $color-text;
+          margin: 0;
+        }
+
+        .coupon-code {
+          font-size: 12px;
+          padding: 4px 8px;
+          background: $color-bg-alt;
+          border-radius: 4px;
+          color: $color-text-secondary;
+          font-weight: 600;
+        }
+      }
+
+      .coupon-description {
+        font-size: 14px;
+        color: $color-text-secondary;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .coupon-info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: auto;
+
+        .info-item {
+          display: flex;
+          gap: 8px;
+          font-size: 13px;
+
+          .info-label {
+            color: $color-text-muted;
+          }
+
+          .info-value {
+            color: $color-text;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .coupon-expired-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 4px 12px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+
+    .empty-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .empty-text {
+      font-size: 16px;
+      color: $color-text-secondary;
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 80px 20px;
+    font-size: 16px;
+    color: $color-text-secondary;
+  }
+}
+

@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: [true, '전화번호를 입력해주세요']
+    default: ''
   },
   role: {
     type: String,

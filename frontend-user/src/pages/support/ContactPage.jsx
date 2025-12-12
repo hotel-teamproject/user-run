@@ -45,17 +45,37 @@ const ContactPage = () => {
               <form className="contact-form" onSubmit={handleSubmit}>
                 <label>
                   이름
-                  <input name="name" value={form.name} onChange={handleChange} required />
+                  <input 
+                    name="name" 
+                    value={form.name} 
+                    onChange={handleChange} 
+                    maxLength={50}
+                    required 
+                  />
                 </label>
 
                 <label>
                   이메일
-                  <input name="email" type="email" value={form.email} onChange={handleChange} required />
+                  <input 
+                    name="email" 
+                    type="email" 
+                    value={form.email} 
+                    onChange={handleChange} 
+                    maxLength={100}
+                    required 
+                  />
                 </label>
 
                 <label>
                   문의 내용
-                  <textarea name="message" value={form.message} onChange={handleChange} rows={6} required />
+                  <textarea 
+                    name="message" 
+                    value={form.message} 
+                    onChange={handleChange} 
+                    rows={6} 
+                    maxLength={2000}
+                    required 
+                  />
                 </label>
 
                 <button type="submit" className="help-btn">전송</button>

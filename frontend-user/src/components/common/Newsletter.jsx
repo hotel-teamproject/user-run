@@ -23,6 +23,7 @@ const Newsletter = () => {
               type="email"
               placeholder="Your email address"
               className="newsletter-input"
+              maxLength={100}
             />
             <button className="newsletter-btn">Subscribe</button>
           </div>

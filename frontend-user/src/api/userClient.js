@@ -15,7 +15,16 @@ import axiosInstance from "./axiosConfig";
  */
 export const registerUser = async (userData) => {
   const response = await axiosInstance.post("/auth/register", userData);
-  return response.data;
+  // 백엔드 응답 구조: { resultCode, message, data: { _id, name, email, phone, role, token, refreshToken } }
+  if (response.data.data) {
+    if (response.data.data.token) {
+      localStorage.setItem("accessToken", response.data.data.token);
+    }
+    if (response.data.data.refreshToken) {
+      localStorage.setItem("refreshToken", response.data.data.refreshToken);
+    }
+  }
+  return response.data.data || response.data; // 사용자 데이터 반환
 };
 
 /**

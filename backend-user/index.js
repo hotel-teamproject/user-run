@@ -11,6 +11,9 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import reservationRoutes from './routes/reservationRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import couponRoutes from './routes/couponRoutes.js';
+import wishlistRoutes from './routes/wishlistRoutes.js';
+import cardRoutes from './routes/cardRoutes.js';
 
 // Load env variables
 dotenv.config();
@@ -35,6 +38,9 @@ app.use('/api/hotels', hotelRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/coupons', couponRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/cards', cardRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

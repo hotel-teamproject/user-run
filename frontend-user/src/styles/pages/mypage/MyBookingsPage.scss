@@ -166,7 +166,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+}
+
+.reservation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .hotel-name {
@@ -174,6 +181,87 @@
   font-weight: 700;
   color: #222;
   margin: 0;
+}
+
+.hotel-location {
+  font-size: 13px;
+  color: #666;
+  margin-top: -4px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.status-pending {
+    background: #FFF3E0;
+    color: #F57C00;
+  }
+
+  &.status-confirmed {
+    background: #E8F5E9;
+    color: #2E7D32;
+  }
+
+  &.status-cancelled {
+    background: #FFEBEE;
+    color: #C62828;
+  }
+
+  &.status-completed {
+    background: #E3F2FD;
+    color: #1565C0;
+  }
+
+  &.status-no-show {
+    background: #F3E5F5;
+    color: #7B1FA2;
+  }
+}
+
+.reservation-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.guests-info,
+.nights-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #666;
+}
+
+.guests-icon,
+.nights-icon {
+  font-size: 14px;
+}
+
+.price-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid #eee;
+  margin-top: 8px;
+}
+
+.price-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.price-amount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0066FF;
 }
 
 .check-dates {

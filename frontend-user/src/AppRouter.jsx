@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import AuthLayout from "./components/layouts/AuthLayout";
 import MyPageLayout from "./components/layouts/MyPageLayout";
+import WishlistLayout from "./components/layouts/WishlistLayout";
 import SearchLayout from "./components/layouts/SearchLayout";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import AddPaymentPage from "./pages/payment/AddPaymentPage";
@@ -116,10 +117,21 @@ const AppRouter = () => {
      {/* 기존 라우트들 (필요시 제거 가능) */}
      <Route path="profile" element={<ProfilePage />} />
      <Route path="reviews" element={<MyReviewsPage />} />
-     <Route path="wishlist" element={<WishlistPage />} />
      <Route path="coupons" element={<MyCouponsPage />} />
      <Route path="points" element={<MyPointsPage />} />
      <Route path="inquiries" element={<MyInquiriesPage />} />
+    </Route>
+
+    {/* 찜하기 페이지 - 별도 레이아웃 (hero, nav 없음) */}
+    <Route
+     path="mypage/wishlist"
+     element={
+      <ProtectedRoute>
+       <WishlistLayout />
+      </ProtectedRoute>
+     }
+    >
+     <Route index element={<WishlistPage />} />
     </Route>
 
     {/* 인증 레이아웃: 헤더 최소, 센터 정렬 등 */}

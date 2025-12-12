@@ -1,11 +1,13 @@
+@use "../../common/variables" as *;
+
 /* ===========================
    Booking Page Wrapper
 =========================== */
 .booking-page.inner {
   max-width: 1200px;
-  margin: 32px auto 80px;
-  padding: 0 24px;
-  min-height: 100vh; 
+  margin: 32px auto;
+  padding: 0 24px 100px; /* 하단 여백 추가 */
+  min-height: auto; /* min-height 제거 */
 }
 
 /* ===========================
@@ -15,7 +17,7 @@
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 24px;
-  color: #0b6b63;
+  color: $color-text;
   line-height: 1.25;
 }
 
@@ -26,7 +28,7 @@
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 32px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 /* ===========================
@@ -35,14 +37,14 @@
 .booking-left {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .booking-panel {
   background: #fff;
   padding: 26px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-md;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -55,21 +57,616 @@
   gap: 8px;
   font-weight: 600;
   color: #333;
+  font-size: 14px;
 }
 
 .booking-panel input[type="date"],
 .booking-panel select {
   padding: 12px 14px;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid $color-border;
   background: #fff;
   font-size: 15px;
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 
   &:focus {
-    border-color: #0b6b63;
-    box-shadow: 0 0 0 3px rgba(10, 107, 99, 0.15);
+    border-color: $color-blue;
+    box-shadow: 0 0 0 3px rgba($color-blue, 0.15);
     outline: none;
+  }
+}
+
+/* 객실 리스트 */
+.rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.room-card {
+  background: #fff;
+  border: 2px solid $color-border;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: $color-blue;
+    box-shadow: $shadow-md;
+  }
+
+  &.selected {
+    border-color: $color-blue;
+    background: rgba($color-blue, 0.05);
+  }
+
+  .room-image {
+    width: 150px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .room-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .room-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: $color-text;
+      margin: 0;
+    }
+
+    .room-type {
+      font-size: 14px;
+      color: $color-text-secondary;
+    }
+
+    .room-details {
+      font-size: 13px;
+      color: $color-text-muted;
+      display: flex;
+      gap: 8px;
+    }
+
+    .room-amenities {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+
+      .amenity-tag {
+        font-size: 12px;
+        padding: 4px 8px;
+        background: $color-bg-alt;
+        border-radius: 4px;
+        color: $color-text-secondary;
+      }
+    }
+  }
+
+  .room-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    min-width: 150px;
+
+    .price-per-night {
+      font-size: 16px;
+      color: $color-text-secondary;
+    }
+
+    .price-total {
+      font-size: 20px;
+      font-weight: 700;
+      color: $color-blue;
+    }
+
+    .select-room-btn {
+      padding: 8px 20px;
+      border: 2px solid $color-blue;
+      background: #fff;
+      color: $color-blue;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: $color-blue;
+        color: #fff;
+      }
+
+      &.selected {
+        background: $color-blue;
+        color: #fff;
+      }
+    }
+  }
+}
+
+/* 옵션/쿠폰 섹션 */
+.extras-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: $shadow-sm;
+  margin-bottom: 24px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: $color-text;
+  }
+
+  .section-description {
+    font-size: 14px;
+    color: $color-text-secondary;
+    margin-bottom: 20px;
+  }
+
+  .no-coupons {
+    color: $color-text-secondary;
+    font-size: 14px;
+  }
+
+  .extras-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .extra-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid $color-border;
+    border-radius: 8px;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $color-blue;
+      box-shadow: 0 2px 8px rgba($color-blue, 0.1);
+    }
+
+    &.selected {
+      border-color: $color-blue;
+      background: rgba($color-blue, 0.05);
+    }
+
+    .extra-info {
+      flex: 1;
+
+      .extra-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+
+        input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          accent-color: $color-blue;
+        }
+
+        .extra-name {
+          font-size: 16px;
+          font-weight: 600;
+          color: $color-text;
+        }
+      }
+
+      .extra-description {
+        font-size: 13px;
+        color: $color-text-secondary;
+        margin: 6px 0 0 32px;
+      }
+    }
+
+    .extra-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: $color-text;
+      min-width: 120px;
+      text-align: right;
+    }
+  }
+
+  .coupons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .coupon-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid $color-border;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $color-blue;
+    }
+
+    &.selected {
+      border-color: $color-blue;
+      background: rgba($color-blue, 0.05);
+    }
+
+    .coupon-info {
+      flex: 1;
+
+      h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+        color: $color-text;
+      }
+
+      p {
+        font-size: 13px;
+        color: $color-text-secondary;
+        margin: 4px 0;
+      }
+
+      .coupon-code {
+        font-size: 12px;
+        padding: 2px 6px;
+        background: $color-bg-alt;
+        border-radius: 4px;
+        color: $color-text-muted;
+      }
+
+      .coupon-min {
+        font-size: 12px;
+        color: $color-text-muted;
+      }
+    }
+
+    .coupon-discount {
+      font-size: 18px;
+      font-weight: 700;
+      color: $color-blue;
+    }
+  }
+
+  .applied-coupon {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba($color-green, 0.1);
+    border: 1px solid $color-green;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: $color-green;
+  }
+
+  .special-requests {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+
+    &:focus {
+      outline: none;
+      border-color: $color-blue;
+      box-shadow: 0 0 0 3px rgba($color-blue, 0.1);
+    }
+  }
+}
+
+/* 쿠폰 섹션 (결제 페이지) */
+.coupon-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: $shadow-sm;
+  margin-bottom: 24px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: $color-text;
+  }
+}
+
+/* 결제 섹션 */
+.payment-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: $shadow-sm;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: $color-text;
+  }
+
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: $color-text;
+  }
+
+  .payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  /* 저장된 카드 섹션 */
+  .saved-cards-section {
+    margin-bottom: 20px;
+
+    .saved-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .saved-card-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 2px solid $color-border;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: $color-blue;
+        background: rgba($color-blue, 0.02);
+      }
+
+      &.selected {
+        border-color: $color-blue;
+        background: rgba($color-blue, 0.05);
+      }
+
+      input[type="radio"] {
+        accent-color: $color-blue;
+        cursor: pointer;
+      }
+
+      .saved-card-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .saved-card-number {
+          font-size: 14px;
+          font-weight: 600;
+          color: $color-text;
+        }
+
+        .saved-card-exp {
+          font-size: 13px;
+          color: $color-text-secondary;
+        }
+
+        .saved-card-default {
+          font-size: 11px;
+          padding: 2px 6px;
+          background: $color-blue;
+          color: white;
+          border-radius: 4px;
+        }
+      }
+
+      &.new-card-option {
+        color: $color-text-secondary;
+        font-size: 14px;
+
+        &.selected {
+          color: $color-blue;
+        }
+      }
+    }
+  }
+
+  .payment-method-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 2px solid $color-border;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $color-blue;
+    }
+
+    input[type="radio"] {
+      accent-color: $color-blue;
+    }
+
+    span {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+
+  .card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: $color-text;
+      }
+
+      input {
+        padding: 12px;
+        border: 1px solid $color-border;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: $color-blue;
+          box-shadow: 0 0 0 3px rgba($color-blue, 0.1);
+        }
+      }
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+  }
+
+  .payment-info {
+    padding: 16px;
+    background: $color-bg-alt;
+    border-radius: 8px;
+
+    p {
+      font-size: 14px;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+}
+
+/* 완료 페이지 */
+.booking-complete {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 0;
+
+  .complete-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+  }
+
+  .complete-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: $color-text;
+    margin-bottom: 12px;
+  }
+
+  .complete-message {
+    font-size: 16px;
+    color: $color-text-secondary;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .reservation-summary {
+    margin-bottom: 40px;
+  }
+
+  .summary-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: $shadow-md;
+    text-align: left;
+
+    h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: $color-text;
+    }
+  }
+
+  .summary-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $color-border;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .label {
+      font-size: 14px;
+      color: $color-text-secondary;
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: $color-text;
+
+      &.amount {
+        font-size: 20px;
+        color: $color-blue;
+        font-weight: 700;
+      }
+
+      &.status {
+        padding: 4px 12px;
+        background: rgba($color-green, 0.1);
+        color: $color-green;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .complete-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
   }
 }
 
@@ -84,36 +681,51 @@
 }
 
 .btn-primary {
-  background: #0b6b63;
+  background: $color-blue;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 8px;
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
+  font-size: 15px;
+  font-weight: 600;
 
-  &:hover {
-    background: #09584f;
+  &:hover:not(:disabled) {
+    background: #0052CC;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 
 .btn-secondary {
   background: transparent;
-  border: 1px solid #ccc;
-  padding: 10px 16px;
+  border: 2px solid $color-border;
+  color: $color-text;
+  padding: 12px 24px;
   border-radius: 8px;
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
+  font-size: 15px;
+  font-weight: 600;
 
-  &:hover {
-    background: #f5f5f5;
+  &:hover:not(:disabled) {
+    background: $color-bg-alt;
+    border-color: $color-text-secondary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 
 /* ===========================
    Right (Hotel Summary Card)
 =========================== */
-
 .booking-right {
   position: sticky;
   top: 120px;
@@ -121,18 +733,21 @@
   justify-content: flex-end;
 }
 
-/* 카드 전체 */
 .hotel-summary {
   width: 360px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
-  overflow: hidden;              /* 이미지 둥근 모서리 유지 */
+  box-shadow: $shadow-md;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* 상단 전체 이미지 */
+.hotel-header {
+  display: flex;
+  flex-direction: column;
+}
+
 .hotel-image {
   width: 100%;
   height: 200px;
@@ -142,56 +757,157 @@
 .hotel-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;             /* 이미지 꽉 차게 */
+  object-fit: cover;
   display: block;
 }
 
-/* 내용 */
-.hotel-content {
-  padding: 18px 20px 22px;
+.hotel-info {
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.hotel-name {
+.hotel-info h3 {
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  color: #0b6b63;
+  color: $color-text;
 }
 
 .hotel-location {
   font-size: 13px;
-  color: #777;
+  color: $color-text-secondary;
+  margin: 0;
 }
 
 .hotel-rating {
   font-size: 14px;
-  color: #444;
+  color: $color-text-muted;
 }
 
-/* 가격 */
-.hotel-price {
-  margin-top: 6px;
-  font-size: 20px;
-  font-weight: 800;
-  color: #e84b6b;
+.booking-details {
+  padding: 20px;
+  border-top: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.hotel-price span {
-  font-size: 13px;
-  font-weight: 400;
-  color: #666;
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+
+  span:first-child {
+    color: $color-text-secondary;
+  }
+
+  span:last-child {
+    color: $color-text;
+    font-weight: 500;
+  }
 }
 
-/* 예약 버튼 */
-.hotel-summary .btn-primary {
-  width: 100%;
-  padding: 12px 0;
-  margin-top: 12px;
-  font-size: 15px;
-  border-radius: 10px;
+.selected-room-summary {
+  padding: 20px;
+  background: $color-bg-alt;
+  border-radius: 8px;
+  margin: 20px;
+
+  h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: $color-text;
+  }
+
+  p {
+    font-size: 14px;
+    color: $color-text-secondary;
+    margin: 0 0 12px 0;
+  }
+
+  .room-price-summary {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+
+    .total {
+      font-weight: 700;
+      color: $color-blue;
+      font-size: 16px;
+    }
+  }
+}
+
+.price-summary {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+
+  span:first-child {
+    color: $color-text-secondary;
+  }
+
+  span:last-child {
+    color: $color-text;
+    font-weight: 500;
+  }
+
+  &.discount {
+    span:last-child {
+      color: $color-green;
+    }
+  }
+
+  &.extras {
+    span:last-child {
+      color: $color-text-secondary;
+    }
+  }
+
+  &.total {
+    padding-top: 12px;
+    border-top: 2px solid $color-border;
+    font-size: 18px;
+
+    span {
+      font-weight: 700;
+      color: $color-blue;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: $color-text-secondary;
+
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+  color: $color-text-secondary;
+}
+
+.error {
+  color: #ef4444;
 }
 
 /* ===========================
@@ -219,6 +935,19 @@
   }
 
   .booking-buttons {
-    justify-content: stretch;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .room-card {
+    flex-direction: column;
+
+    .room-image {
+      width: 100%;
+      height: 200px;
+    }
   }
 }

@@ -84,6 +84,8 @@ const BusinessSignupForm = () => {
             placeholder="예) 123-45-67890"
             value={formData.businessNumber}
             onChange={handleInputChange}
+            maxLength={15}
+            pattern="[0-9\-]+"
             required
           />
         </div>
@@ -98,6 +100,7 @@ const BusinessSignupForm = () => {
             placeholder="예) 서울 그랜드 호텔"
             value={formData.businessName}
             onChange={handleInputChange}
+            maxLength={100}
             required
           />
         </div>
@@ -112,6 +115,7 @@ const BusinessSignupForm = () => {
             placeholder="예) 홍길동"
             value={formData.ownerName}
             onChange={handleInputChange}
+            maxLength={50}
             required
           />
         </div>
@@ -126,6 +130,7 @@ const BusinessSignupForm = () => {
             placeholder="hotel@example.com"
             value={formData.businessEmail}
             onChange={handleInputChange}
+            maxLength={100}
             required
           />
         </div>
@@ -140,6 +145,8 @@ const BusinessSignupForm = () => {
             placeholder="예) 02-1234-5678"
             value={formData.businessPhone}
             onChange={handleInputChange}
+            maxLength={20}
+            pattern="[0-9\-]+"
             required
           />
         </div>
@@ -154,6 +161,7 @@ const BusinessSignupForm = () => {
             placeholder="예) 서울특별시 강남구 테헤란로 123"
             value={formData.businessAddress}
             onChange={handleInputChange}
+            maxLength={200}
             required
           />
         </div>

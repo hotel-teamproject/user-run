@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { getMyReservations } from "../../api/reservationClient";
 import "../../styles/pages/mypage/MyBookingsPage.scss";
 
 const MyBookingsPage = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [filter, setFilter] = useState("upcoming");
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,9 +36,20 @@ const MyBookingsPage = () => {
   }, [user]);
 
   const filteredReservations = reservations.filter((reservation) => {
-    // 백엔드 응답 구조에 맞게 status 필드 확인
     const status = reservation.status || reservation.reservationStatus;
-    return status === filter;
+    const checkOutDate = new Date(reservation.checkOut || reservation.checkOutDate);
+    const now = new Date();
+
+    if (filter === "cancelled") {
+      return status === "cancelled";
+    } else if (filter === "upcoming") {
+      // 취소되지 않고 체크아웃 날짜가 미래인 예약
+      return status !== "cancelled" && checkOutDate >= now;
+    } else if (filter === "past") {
+      // 취소되지 않고 체크아웃 날짜가 과거인 예약
+      return status !== "cancelled" && checkOutDate < now;
+    }
+    return true;
   });
 
   const handleDownloadTicket = (reservationId) => {
@@ -95,8 +108,37 @@ const MyBookingsPage = () => {
               });
             };
 
+            // 상태에 따른 한글 표시
+            const getStatusText = (status) => {
+              const statusMap = {
+                pending: "대기 중",
+                confirmed: "확정",
+                cancelled: "취소됨",
+                completed: "완료",
+                "no-show": "노쇼"
+              };
+              return statusMap[status] || status;
+            };
+
+            // 숙박 일수 계산
+            const calculateNights = () => {
+              if (!checkIn || !checkOut) return 0;
+              const checkInDate = new Date(checkIn);
+              const checkOutDate = new Date(checkOut);
+              const diffTime = checkOutDate - checkInDate;
+              return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            };
+
+            const nights = calculateNights();
+            const totalPrice = reservation.totalPrice || 0;
+
             return (
-              <div key={reservationId} className="reservation-card">
+              <div 
+                key={reservationId} 
+                className="reservation-card"
+                onClick={() => navigate(`/mypage/bookings/${reservationId}`)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="hotel-logo">
                   <img
                     src={hotel.image || hotel.images?.[0] || "/images/hotel.jpg"}
@@ -107,7 +149,15 @@ const MyBookingsPage = () => {
                   />
                 </div>
                 <div className="reservation-info">
-                  <h4 className="hotel-name">{hotel.name || "호텔명 없음"}</h4>
+                  <div className="reservation-header">
+                    <h4 className="hotel-name">{hotel.name || "호텔명 없음"}</h4>
+                    <span className={`status-badge status-${reservation.status}`}>
+                      {getStatusText(reservation.status)}
+                    </span>
+                  </div>
+                  <div className="hotel-location">
+                    {hotel.city || ""} {hotel.address || ""}
+                  </div>
                   <div className="check-dates">
                     <div className="check-item">
                       <span className="check-label">Check-In</span>
@@ -130,16 +180,33 @@ const MyBookingsPage = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="room-number">
-                    <span className="room-icon">🏢</span>
-                    <span>{room.name || room.type || "객실 정보 없음"}</span>
+                  <div className="reservation-details">
+                    <div className="room-number">
+                      <span className="room-icon">🏢</span>
+                      <span>{room.name || room.type || "객실 정보 없음"}</span>
+                    </div>
+                    <div className="guests-info">
+                      <span className="guests-icon">👥</span>
+                      <span>인원: {reservation.guests || 2}명</span>
+                    </div>
+                    <div className="nights-info">
+                      <span className="nights-icon">🌙</span>
+                      <span>숙박: {nights}박 {nights + 1}일</span>
+                    </div>
+                  </div>
+                  <div className="price-info">
+                    <span className="price-label">총 결제 금액</span>
+                    <span className="price-amount">₩{totalPrice.toLocaleString()}</span>
                   </div>
                 </div>
                 <button
                   className="download-button"
-                  onClick={() => handleDownloadTicket(reservationId)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownloadTicket(reservationId);
+                  }}
                 >
-                  Download Ticket
+                  상세보기
                   <span className="arrow-icon">→</span>
                 </button>
               </div>

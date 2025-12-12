@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { registerUser } from "../../api/userClient";
 
 const SignupForm = () => {
  const [formData, setFormData] = useState({
@@ -11,9 +13,11 @@ const SignupForm = () => {
   agreeToTerms: false,
  });
  const [error, setError] = useState("");
+ const [loading, setLoading] = useState(false);
  const [passwordVisible, setPasswordVisible] = useState(false);
  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
  const navigate = useNavigate();
+ const { login } = useContext(AuthContext);
 
  const handleInputChange = (e) => {
   const { name, value, type, checked } = e.target;
@@ -25,7 +29,7 @@ const SignupForm = () => {
   setError("");
  };
 
- const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   // 기본 검증
@@ -44,11 +48,52 @@ const SignupForm = () => {
    return;
   }
 
-  // 회원가입 로직 구현 예정
-  console.log("Signup data:", formData);
+  if (formData.password.length < 6) {
+   setError("비밀번호는 최소 6자 이상이어야 합니다.");
+   return;
+  }
 
-  // 임시로 로그인 페이지로 이동
-  navigate("/login");
+  try {
+   setLoading(true);
+   setError("");
+
+   // 회원가입 API 호출
+   const userData = await registerUser({
+    name: formData.nickname,
+    email: formData.email,
+    password: formData.password,
+    phone: formData.phoneNumber || ""
+   });
+
+   // 백엔드 응답 구조 확인 (registerUser는 이미 data를 반환)
+   if (userData && userData._id) {
+    // 사용자 정보 저장
+    const userInfo = {
+     _id: userData._id,
+     name: userData.name,
+     email: userData.email,
+     phone: userData.phone,
+     role: userData.role,
+    };
+    
+    login(userInfo);
+
+    // 회원가입 성공 후 마이페이지로 이동
+    setTimeout(() => {
+     window.location.href = "/mypage";
+    }, 200);
+   } else {
+    setError("회원가입 응답이 올바르지 않습니다.");
+   }
+  } catch (err) {
+   console.error("Signup error:", err);
+   const errorMessage = err.response?.data?.message || 
+                        err.message || 
+                        "회원가입에 실패했습니다. 다시 시도해주세요.";
+   setError(errorMessage);
+  } finally {
+   setLoading(false);
+  }
  };
 
  const handleSocialSignup = (provider) => {
@@ -91,6 +136,7 @@ const SignupForm = () => {
        placeholder="john.doe"
        value={formData.nickname}
        onChange={handleInputChange}
+       maxLength={50}
        required
       />
      </div>
@@ -106,6 +152,7 @@ const SignupForm = () => {
        placeholder="john.doe@gmail.com"
        value={formData.email}
        onChange={handleInputChange}
+       maxLength={100}
        required
       />
      </div>
@@ -118,6 +165,8 @@ const SignupForm = () => {
        placeholder="010-1234-5678"
        value={formData.phoneNumber}
        onChange={handleInputChange}
+       maxLength={20}
+       pattern="[0-9\-]+"
       />
      </div>
     </div>
@@ -132,6 +181,8 @@ const SignupForm = () => {
        placeholder="••••••••••••"
        value={formData.password}
        onChange={handleInputChange}
+       minLength={6}
+       maxLength={128}
        required
       />
       <button
@@ -154,6 +205,8 @@ const SignupForm = () => {
        placeholder="••••••••••••"
        value={formData.confirmPassword}
        onChange={handleInputChange}
+       minLength={6}
+       maxLength={128}
        required
       />
       <button
@@ -181,18 +234,10 @@ const SignupForm = () => {
 
     <button
      type="submit"
-     onClick={() => navigate("/login")}
      className="btn btn--primary btn--block"
+     disabled={loading}
     >
-    회원 가입
-    </button>
-
-    <button
-     type="submit"
-     onClick={() => navigate("/add-payment")}
-     className="btn  btn--block btn--outline"
-    >
-     결제 수단 등록하기
+     {loading ? "처리 중..." : "회원 가입"}
     </button>
 
     <div className="divider">

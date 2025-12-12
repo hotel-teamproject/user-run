@@ -8,6 +8,7 @@ const MyPageNav = () => {
     { path: "/mypage/account", label: "계정" },
     { path: "/mypage/bookings", label: "내역" },
     { path: "/mypage/payment", label: "결제수단" },
+    { path: "/mypage/coupons", label: "쿠폰" },
   ];
 
   return (

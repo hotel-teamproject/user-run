@@ -60,6 +60,7 @@ const MyAccountPage = () => {
                   className="field-input"
                   value={formData.name}
                   onChange={handleInputChange}
+                  maxLength={50}
                 />
               ) : (
                 <span className="field-value">{formData.name}</span>
@@ -87,6 +88,7 @@ const MyAccountPage = () => {
                   className="field-input"
                   value={formData.email}
                   onChange={handleInputChange}
+                  maxLength={100}
                 />
               ) : (
                 <span className="field-value">{formData.email}</span>
@@ -114,6 +116,8 @@ const MyAccountPage = () => {
                   className="field-input"
                   value={formData.password}
                   onChange={handleInputChange}
+                  minLength={6}
+                  maxLength={128}
                 />
               ) : (
                 <span className="field-value">************</span>
@@ -143,6 +147,8 @@ const MyAccountPage = () => {
                   className="field-input"
                   value={formData.phone}
                   onChange={handleInputChange}
+                  maxLength={20}
+                  pattern="[0-9\-]+"
                 />
               ) : (
                 <span className="field-value">{formData.phone}</span>
@@ -170,6 +176,7 @@ const MyAccountPage = () => {
                   className="field-input"
                   value={formData.address}
                   onChange={handleInputChange}
+                  maxLength={200}
                 />
               ) : (
                 <span className="field-value">{formData.address}</span>
@@ -194,7 +201,7 @@ const MyAccountPage = () => {
               <span className="field-label">Date of birth</span>
               {isEditing.dateOfBirth ? (
                 <input
-                  type="text"
+                  type="date"
                   name="dateOfBirth"
                   className="field-input"
                   value={formData.dateOfBirth}
