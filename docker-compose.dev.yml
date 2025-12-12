@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend-user
+      dockerfile: Dockerfile.dev
+    container_name: backend-user-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=${MONGODB_URI:-mongodb://host.docker.internal:27017/hotel-booking}
+      - FRONT_ORIGIN=${FRONT_ORIGIN:-http://localhost:5173}
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-key}
+    volumes:
+      - ./backend-user:/app
+      - /app/node_modules
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    networks:
+      - app-network
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend-user
+      dockerfile: Dockerfile.dev
+    container_name: frontend-user-dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
+    volumes:
+      - ./frontend-user:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # 외부 MongoDB 사용시 아래 mongo 서비스는 주석 처리하세요
+  # MongoDB Compass를 사용하는 경우 이 서비스는 필요하지 않습니다
+  # mongo:
+  #   image: mongo:7.0
+  #   container_name: mongo-db-dev
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data-dev:/data/db
+  #   restart: unless-stopped
+  #   networks:
+  #     - app-network
+
+# volumes:
+#   mongo-data-dev:
+
+networks:
+  app-network:
+    driver: bridge
+
