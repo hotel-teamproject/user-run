@@ -311,7 +311,7 @@ const BookingStepExtras = () => {
             <button className="btn-secondary" onClick={handleBack}>
               이전
             </button>
-            <button className="btn-primary" onClick={handleNext}>
+            <button className="booking-btn-primary" onClick={handleNext}>
               다음 단계
             </button>
           </div>

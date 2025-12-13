@@ -1,7 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/pages/search/FilterSidebar.scss";
 
-const FilterSidebar = () => {
+const FilterSidebar = ({ filters, onFilterChange }) => {
+  const [minPrice, setMinPrice] = useState(filters?.priceRange?.[0] || 30000);
+  const [maxPrice, setMaxPrice] = useState(filters?.priceRange?.[1] || 1000000);
+  const [selectedRating, setSelectedRating] = useState(filters?.rating || []);
+  const [freebies, setFreebies] = useState(filters?.freebies || []);
+  const [amenities, setAmenities] = useState(filters?.amenities || []);
+
+  const handlePriceChange = (type, value) => {
+    const numValue = parseInt(value);
+    if (type === "min") {
+      setMinPrice(numValue);
+      if (onFilterChange) {
+        onFilterChange("priceRange", [numValue, maxPrice]);
+      }
+    } else {
+      setMaxPrice(numValue);
+      if (onFilterChange) {
+        onFilterChange("priceRange", [minPrice, numValue]);
+      }
+    }
+  };
+
+  const handleRatingClick = (rating) => {
+    const newRating = selectedRating.includes(rating)
+      ? selectedRating.filter(r => r !== rating)
+      : [...selectedRating, rating];
+    setSelectedRating(newRating);
+    if (onFilterChange) {
+      onFilterChange("rating", newRating);
+    }
+  };
+
+  const handleFreebieChange = (freebie) => {
+    const newFreebies = freebies.includes(freebie)
+      ? freebies.filter(f => f !== freebie)
+      : [...freebies, freebie];
+    setFreebies(newFreebies);
+    if (onFilterChange) {
+      onFilterChange("freebies", newFreebies);
+    }
+  };
+
+  const handleAmenityChange = (amenity) => {
+    const newAmenities = amenities.includes(amenity)
+      ? amenities.filter(a => a !== amenity)
+      : [...amenities, amenity];
+    setAmenities(newAmenities);
+    if (onFilterChange) {
+      onFilterChange("amenities", newAmenities);
+    }
+  };
+
   return (
     <aside className="filter-sidebar">
 
@@ -29,24 +80,26 @@ const FilterSidebar = () => {
             <input
               type="range"
               className="min-range"
-              min="50"
-              max="1200"
-              defaultValue="200"
+              min="30000"
+              max="1000000"
+              value={minPrice}
+              onChange={(e) => handlePriceChange("min", e.target.value)}
             />
 
             {/* 최대값(max) */}
             <input
               type="range"
               className="max-range"
-              min="50"
-              max="1200"
-              defaultValue="900"
+              min="30000"
+              max="1000000"
+              value={maxPrice}
+              onChange={(e) => handlePriceChange("max", e.target.value)}
             />
           </div>
 
           <div className="price-values">
-            <span>$50</span>
-            <span>$1200</span>
+            <span>₩{minPrice.toLocaleString()}</span>
+            <span>₩{maxPrice.toLocaleString()}</span>
           </div>
 
         </div>
@@ -64,11 +117,15 @@ const FilterSidebar = () => {
         </div>
 
         <div className="filter-body rating-buttons">
-          <button>0+</button>
-          <button>1+</button>
-          <button>2+</button>
-          <button>3+</button>
-          <button>4+</button>
+          {[0, 1, 2, 3, 4].map((rating) => (
+            <button
+              key={rating}
+              className={selectedRating.includes(rating) ? "active" : ""}
+              onClick={() => handleRatingClick(rating)}
+            >
+              {rating}+
+            </button>
+          ))}
         </div>
       </div>
 
@@ -84,11 +141,46 @@ const FilterSidebar = () => {
         </div>
 
         <div className="filter-body checkbox-list">
-          <label><input type="checkbox" /> 조식포함</label>
-          <label><input type="checkbox" /> 무료주차</label>
-          <label><input type="checkbox" /> WIFI</label>
-          <label><input type="checkbox" /> 공항셔틀버스</label>
-          <label><input type="checkbox" /> 무료취소</label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={freebies.includes("조식포함")}
+              onChange={() => handleFreebieChange("조식포함")}
+            /> 
+            조식포함
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={freebies.includes("무료주차")}
+              onChange={() => handleFreebieChange("무료주차")}
+            /> 
+            무료주차
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={freebies.includes("WIFI")}
+              onChange={() => handleFreebieChange("WIFI")}
+            /> 
+            WIFI
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={freebies.includes("공항셔틀버스")}
+              onChange={() => handleFreebieChange("공항셔틀버스")}
+            /> 
+            공항셔틀버스
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={freebies.includes("무료취소")}
+              onChange={() => handleFreebieChange("무료취소")}
+            /> 
+            무료취소
+          </label>
         </div>
       </div>
 
@@ -104,10 +196,38 @@ const FilterSidebar = () => {
         </div>
 
         <div className="filter-body checkbox-list">
-          <label><input type="checkbox" /> 24시 프론트데스크</label>
-          <label><input type="checkbox" /> 에어컨</label>
-          <label><input type="checkbox" /> 피트니스</label>
-          <label><input type="checkbox" /> 수영장</label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={amenities.includes("24시 프론트데스크")}
+              onChange={() => handleAmenityChange("24시 프론트데스크")}
+            /> 
+            24시 프론트데스크
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={amenities.includes("에어컨")}
+              onChange={() => handleAmenityChange("에어컨")}
+            /> 
+            에어컨
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={amenities.includes("피트니스")}
+              onChange={() => handleAmenityChange("피트니스")}
+            /> 
+            피트니스
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={amenities.includes("수영장")}
+              onChange={() => handleAmenityChange("수영장")}
+            /> 
+            수영장
+          </label>
         </div>
       </div>
 

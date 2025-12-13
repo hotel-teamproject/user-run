@@ -175,7 +175,7 @@ const MyBookingDetailPage = () => {
 
         {/* 호텔 정보 */}
         <div className="detail-section hotel-section">
-          <h2 className="section-title">호텔 정보</h2>
+          <h2 className="booking-detail-section-title">호텔 정보</h2>
           <div className="hotel-info-card">
             {hotel.images && hotel.images[0] && (
               <img 
@@ -207,7 +207,7 @@ const MyBookingDetailPage = () => {
 
         {/* 예약 정보 */}
         <div className="detail-section reservation-section">
-          <h2 className="section-title">예약 정보</h2>
+          <h2 className="booking-detail-section-title">예약 정보</h2>
           <div className="info-grid">
             <div className="info-item">
               <span className="info-label">객실</span>
@@ -246,7 +246,7 @@ const MyBookingDetailPage = () => {
 
         {/* 결제 정보 */}
         <div className="detail-section payment-section">
-          <h2 className="section-title">결제 정보</h2>
+          <h2 className="booking-detail-section-title">결제 정보</h2>
           <div className="payment-details">
             <div className="payment-row">
               <span className="payment-label">객실 요금</span>

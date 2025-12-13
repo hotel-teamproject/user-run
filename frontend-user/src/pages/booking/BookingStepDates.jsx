@@ -138,7 +138,7 @@ const BookingStepDates = () => {
             <button className="btn-secondary" onClick={() => navigate(-1)}>
               취소
             </button>
-            <button className="btn-primary" onClick={handleNext}>
+            <button className="booking-btn-primary" onClick={handleNext}>
               객실 선택하기
             </button>
           </div>
@@ -177,7 +177,7 @@ const BookingStepDates = () => {
             </div>
 
             <div style={{ padding: '24px' }}>
-              <button className="btn-primary" onClick={handleNext} style={{ width: '100%' }}>
+              <button className="booking-btn-primary" onClick={handleNext} style={{ width: '100%' }}>
                 객실 선택하기
               </button>
             </div>

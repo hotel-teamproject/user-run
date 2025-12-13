@@ -538,7 +538,7 @@ const BookingStepPayment = () => {
               이전
             </button>
             <button
-              className="btn-primary"
+              className="booking-btn-primary"
               onClick={handlePayment}
               disabled={processing}
             >

@@ -12,7 +12,7 @@ const HeroSearchWrap = () => {
                         <label>목적지 입력</label>
                         <input
                             type="text"
-                            placeholder="예) 서울시 어머님댁 저희집"
+                            placeholder="예) 서울"
                             className="destination-input"
                         />
                     </div>

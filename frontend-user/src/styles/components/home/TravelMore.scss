@@ -7,7 +7,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-bottom: 300px;
+  padding-bottom: 80px;
 }
 
 .travel-more .container {
@@ -22,13 +22,13 @@
 /* ===============================
    Section Header
 =============================== */
-.section-header {
+.travel-more-header {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  .section-title {
+  .travel-more-title {
     font-size: 28px;
     font-weight: 700;
     color: $color-blue;

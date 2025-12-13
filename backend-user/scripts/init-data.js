@@ -9,6 +9,9 @@ import Room from '../models/Room.js';
 import Reservation from '../models/Reservation.js';
 import Review from '../models/Review.js';
 import Coupon from '../models/Coupon.js';
+import Card from '../models/Card.js';
+import Wishlist from '../models/Wishlist.js';
+import Payment from '../models/Payment.js';
 import connectDB from '../config/db.js';
 
 dotenv.config();
@@ -27,11 +30,15 @@ const initData = async () => {
     await Reservation.deleteMany({});
     await Review.deleteMany({});
     await Coupon.deleteMany({});
+    await Card.deleteMany({});
+    await Wishlist.deleteMany({});
+    await Payment.deleteMany({});
 
     // 1. 사용자 생성
     console.log('👤 사용자 생성 중...');
     const hashedPassword = await bcrypt.hash('1234', 10);
 
+    // 일반 사용자 1명만 남기고 추가로 8명 생성 (총 9명)
     const users = await User.insertMany([
       {
         name: '일반사용자',
@@ -42,42 +49,73 @@ const initData = async () => {
         socialProvider: 'local'
       },
       {
-        name: '홍길동',
-        email: 'hong@gmail.com',
+        name: '김민수',
+        email: 'kim@gmail.com',
         password: hashedPassword,
-        phone: '010-2345-6789',
+        phone: '010-1111-2222',
         role: 'user',
         socialProvider: 'local'
       },
       {
-        name: '김사업자',
-        email: 'owner@gmail.com',
+        name: '이지은',
+        email: 'lee@gmail.com',
         password: hashedPassword,
-        phone: '010-3456-7890',
-        role: 'owner',
-        socialProvider: 'local',
-        businessInfo: {
-          businessName: '김호텔그룹',
-          businessNumber: '123-45-67890',
-          bankAccount: '123-456-789',
-          status: 'approved',
-          appliedAt: new Date('2024-01-01'),
-          approvedAt: new Date('2024-01-02')
-        }
+        phone: '010-2222-3333',
+        role: 'user',
+        socialProvider: 'local'
       },
       {
-        name: '이관리자',
-        email: 'admin@gmail.com',
+        name: '박준호',
+        email: 'park@gmail.com',
         password: hashedPassword,
-        phone: '010-4567-8901',
-        role: 'admin',
+        phone: '010-3333-4444',
+        role: 'user',
+        socialProvider: 'local'
+      },
+      {
+        name: '최수진',
+        email: 'choi@gmail.com',
+        password: hashedPassword,
+        phone: '010-4444-5555',
+        role: 'user',
+        socialProvider: 'local'
+      },
+      {
+        name: '정태영',
+        email: 'jung@gmail.com',
+        password: hashedPassword,
+        phone: '010-5555-6666',
+        role: 'user',
+        socialProvider: 'local'
+      },
+      {
+        name: '한소희',
+        email: 'han@gmail.com',
+        password: hashedPassword,
+        phone: '010-6666-7777',
+        role: 'user',
+        socialProvider: 'local'
+      },
+      {
+        name: '윤도현',
+        email: 'yoon@gmail.com',
+        password: hashedPassword,
+        phone: '010-7777-8888',
+        role: 'user',
+        socialProvider: 'local'
+      },
+      {
+        name: '강미영',
+        email: 'kang@gmail.com',
+        password: hashedPassword,
+        phone: '010-8888-9999',
+        role: 'user',
         socialProvider: 'local'
       }
     ]);
 
     const normalUser = users[0];
-    const normalUser2 = users[1];
-    const ownerUser = users[2];
+    const ownerUser = users[0]; // 사업자 계정은 일반사용자로 설정
 
     console.log(`✅ ${users.length}명의 사용자 생성 완료`);
 
@@ -91,12 +129,12 @@ const initData = async () => {
         address: '서울특별시 강남구 테헤란로 123',
         city: '서울',
         images: [
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800'
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '수영장', '피트니스', '스파', '24시간 프론트 데스크', '라운지', '비즈니스 센터'],
         tags: ['럭셔리', '비즈니스', '커플', '도심'],
@@ -111,11 +149,11 @@ const initData = async () => {
         address: '부산광역시 해운대구 해운대해변로 456',
         city: '부산',
         images: [
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800'
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
+          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '비즈니스 센터', '피트니스', '24시간 프론트 데스크'],
         tags: ['비즈니스', '도심', '편리', '출장'],
@@ -133,9 +171,9 @@ const initData = async () => {
           'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
           'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
           'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '온천', '스파', '피트니스', '24시간 프론트 데스크'],
         tags: ['프리미엄', '자연', '온천', '커플'],
@@ -150,11 +188,11 @@ const initData = async () => {
         address: '인천광역시 중구 공항로 272',
         city: '인천',
         images: [
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800'
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
+          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '24시간 프론트', '셔틀버스', '비즈니스 센터'],
         tags: ['공항', '비즈니스', '편리', '출장'],
@@ -169,11 +207,11 @@ const initData = async () => {
         address: '서울특별시 중구 명동길 100',
         city: '서울',
         images: [
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800'
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '24시간 프론트 데스크', '라운지'],
         tags: ['도심', '쇼핑', '관광', '편리'],
@@ -182,36 +220,17 @@ const initData = async () => {
         owner: ownerUser._id,
         status: 'active'
       },
-      // 모텔 5개
-      {
-        name: '강남 러브 모텔',
-        description: '강남 중심가에 위치한 깔끔하고 모던한 모텔입니다. 커플과 개인 여행객에게 최적화된 편안한 공간을 제공합니다.',
-        address: '서울특별시 강남구 논현로 200',
-        city: '서울',
-        images: [
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800'
-        ],
-        amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
-        tags: ['커플', '가성비', '편리', '도심'],
-        rating: 4.2,
-        reviewCount: 156,
-        owner: ownerUser._id,
-        status: 'active'
-      },
+      // 모텔 4개
       {
         name: '부산 해운대 모텔',
         description: '부산 해운대 해변 근처에 위치한 깔끔한 모텔입니다. 해변까지 도보 5분 거리의 편리한 위치입니다.',
         address: '부산광역시 해운대구 해운대해변로 300',
         city: '부산',
         images: [
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800'
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품', '해변 접근'],
         tags: ['해변', '커플', '가성비', '편리'],
@@ -226,11 +245,11 @@ const initData = async () => {
         address: '제주특별자치도 제주시 노형동 456',
         city: '제주',
         images: [
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800'
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
+          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800'
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품', '렌터카 주차'],
         tags: ['가성비', '편리', '렌터카', '도심'],
@@ -245,10 +264,10 @@ const initData = async () => {
         address: '인천광역시 연수구 송도과학로 123',
         city: '인천',
         images: [
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800'
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
         tags: ['가성비', '모던', '편리', '커플'],
@@ -263,10 +282,10 @@ const initData = async () => {
         address: '대구광역시 중구 중앙대로 400',
         city: '대구',
         images: [
-          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800'
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
         tags: ['가성비', '편리', '관광', '도심'],
@@ -282,12 +301,12 @@ const initData = async () => {
         address: '제주특별자치도 서귀포시 중문관광로 72',
         city: '제주',
         images: [
-          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
           'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '골프장', '해변', '스파', '피트니스', '키즈클럽'],
         tags: ['리조트', '골프', '해변', '가족'],
@@ -302,12 +321,12 @@ const initData = async () => {
         address: '강원도 평창군 대화면 올림픽로 555',
         city: '평창',
         images: [
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
           'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800'
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '스키장', '곤돌라', '스파', '피트니스', '사우나'],
         tags: ['스키', '리조트', '액티비티', '겨울'],
@@ -322,12 +341,12 @@ const initData = async () => {
         address: '부산광역시 해운대구 해운대해변로 456',
         city: '부산',
         images: [
-          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
           'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '수영장', '해변 접근', '비치 체어', '피트니스', '스파'],
         tags: ['리조트', '해변', '휴양', '가족'],
@@ -342,12 +361,12 @@ const initData = async () => {
         address: '강원도 속초시 해안로 123',
         city: '속초',
         images: [
-          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
           'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '해수욕장', '피트니스', '사우나', '해산물 식당', '수영장'],
         tags: ['해안', '일출', '해산물', '가족'],
@@ -362,12 +381,12 @@ const initData = async () => {
         address: '전라남도 여수시 오동도로 222',
         city: '여수',
         images: [
-          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
           'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
           'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '해변 접근', '피트니스', '스파', '카페', '수영장'],
         tags: ['바다뷰', '프리미엄', '로맨틱', '커플'],
@@ -423,7 +442,9 @@ const initData = async () => {
     for (const hotel of hotels) {
       const prices = getBasePrice(hotel.city);
       
-      const hotelRooms = [
+      // 호텔 타입에 따라 객실 수 조정 (호텔/리조트는 3개, 모텔은 2개)
+      const isMotel = hotel.name.includes('모텔');
+      const hotelRooms = isMotel ? [
         {
           hotel: hotel._id,
           name: '스탠다드 룸',
@@ -435,7 +456,7 @@ const initData = async () => {
           amenities: ['TV', '에어컨', '미니바', '욕실', '무료 와이파이'],
           size: 25,
           bedType: 'double',
-          totalRooms: 15,
+          totalRooms: 10,
           status: 'available'
         },
         {
@@ -449,7 +470,36 @@ const initData = async () => {
           amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '소파', '무료 와이파이'],
           size: 35,
           bedType: 'queen',
-          totalRooms: 12,
+          totalRooms: 8,
+          status: 'available'
+        }
+      ] : [
+        {
+          hotel: hotel._id,
+          name: '스탠다드 룸',
+          description: '편안하고 깔끔한 기본 객실입니다. 모든 기본 시설을 갖추고 있습니다.',
+          type: 'standard',
+          price: prices.standard,
+          maxGuests: 2,
+          images: ['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'],
+          amenities: ['TV', '에어컨', '미니바', '욕실', '무료 와이파이'],
+          size: 25,
+          bedType: 'double',
+          totalRooms: 10,
+          status: 'available'
+        },
+        {
+          hotel: hotel._id,
+          name: '디럭스 룸',
+          description: '더 넓은 공간과 추가 편의 시설을 갖춘 디럭스 객실입니다.',
+          type: 'deluxe',
+          price: prices.deluxe,
+          maxGuests: 3,
+          images: ['https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'],
+          amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '소파', '무료 와이파이'],
+          size: 35,
+          bedType: 'queen',
+          totalRooms: 8,
           status: 'available'
         },
         {
@@ -463,21 +513,7 @@ const initData = async () => {
           amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '거실', '스파', '무료 와이파이'],
           size: 60,
           bedType: 'king',
-          totalRooms: 8,
-          status: 'available'
-        },
-        {
-          hotel: hotel._id,
-          name: '프리미엄 스위트',
-          description: '최상의 럭셔리와 프라이버시를 제공하는 프리미엄 스위트룸입니다.',
-          type: 'premium',
-          price: prices.premium,
-          maxGuests: 6,
-          images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'],
-          amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '거실', '스파', '주방', '무료 와이파이', '버틀러 서비스'],
-          size: 90,
-          bedType: 'king',
-          totalRooms: 4,
+          totalRooms: 5,
           status: 'available'
         }
       ];
@@ -501,94 +537,121 @@ const initData = async () => {
     }
     console.log('✅ 호텔 basePrice 업데이트 완료');
 
-    // 4. 예약 생성
+    // 4. 예약 생성 (각 사용자가 여러 호텔에 예약 - 과거/현재/미래)
     console.log('📅 예약 생성 중...');
     const today = new Date();
-    const checkIn1 = new Date(today);
-    checkIn1.setDate(today.getDate() + 7);
-    const checkOut1 = new Date(checkIn1);
-    checkOut1.setDate(checkIn1.getDate() + 2);
-
-    const checkIn2 = new Date(today);
-    checkIn2.setDate(today.getDate() + 14);
-    const checkOut2 = new Date(checkIn2);
-    checkOut2.setDate(checkIn2.getDate() + 3);
-
-    const checkIn3 = new Date(today);
-    checkIn3.setDate(today.getDate() - 5);
-    const checkOut3 = new Date(checkIn3);
-    checkOut3.setDate(checkIn3.getDate() + 2);
-
-    const reservations = await Reservation.insertMany([
-      {
-        user: normalUser._id,
-        hotel: hotels[0]._id,
-        room: rooms[0]._id,
-        checkIn: checkIn1,
-        checkOut: checkOut1,
-        guests: 2,
-        totalPrice: rooms[0].price * 2,
-        status: 'confirmed',
-        paymentStatus: 'paid',
-        specialRequests: '조용한 방 부탁드립니다'
-      },
-      {
-        user: normalUser._id,
-        hotel: hotels[1]._id,
-        room: rooms[4]._id,
-        checkIn: checkIn2,
-        checkOut: checkOut2,
-        guests: 3,
-        totalPrice: rooms[4].price * 3,
-        status: 'confirmed',
-        paymentStatus: 'paid'
-      },
-      {
-        user: normalUser2._id,
-        hotel: hotels[2]._id,
-        room: rooms[6]._id,
-        checkIn: checkIn3,
-        checkOut: checkOut3,
-        guests: 2,
-        totalPrice: rooms[6].price * 2,
-        status: 'completed',
-        paymentStatus: 'paid'
-      },
-      {
-        user: normalUser2._id,
-        hotel: hotels[0]._id,
-        room: rooms[1]._id,
-        checkIn: checkIn1,
-        checkOut: checkOut1,
-        guests: 2,
-        totalPrice: rooms[1].price * 2,
-        status: 'pending',
-        paymentStatus: 'pending'
+    const reservations = [];
+    
+    // 각 사용자별로 예약 생성
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      // 각 사용자가 3-4개의 호텔에 예약
+      const hotelIndices = [];
+      for (let j = 0; j < 3 + (i % 2); j++) {
+        const hotelIndex = (i * 3 + j) % hotels.length;
+        if (!hotelIndices.includes(hotelIndex)) {
+          hotelIndices.push(hotelIndex);
+        }
       }
-    ]);
+      
+      for (let k = 0; k < hotelIndices.length; k++) {
+        const hotelIndex = hotelIndices[k];
+        const hotel = hotels[hotelIndex];
+        const hotelRooms = rooms.filter(r => r.hotel.toString() === hotel._id.toString());
+        if (hotelRooms.length === 0) continue;
+        
+        const room = hotelRooms[Math.floor(Math.random() * hotelRooms.length)];
+        const nights = 1 + Math.floor(Math.random() * 3); // 1-3박
+        
+        let checkIn, checkOut, status, paymentStatus;
+        
+        // 첫 번째 예약은 과거(완료), 나머지는 현재/미래
+        if (k === 0) {
+          // 과거 예약 (리뷰 작성 가능)
+          checkIn = new Date(today);
+          checkIn.setDate(today.getDate() - (30 + Math.floor(Math.random() * 60))); // 30-90일 전
+          checkOut = new Date(checkIn);
+          checkOut.setDate(checkIn.getDate() + nights);
+          status = 'completed';
+          paymentStatus = 'paid';
+        } else if (k === 1) {
+          // 현재 예약 (확정)
+          checkIn = new Date(today);
+          checkIn.setDate(today.getDate() + Math.floor(Math.random() * 7)); // 0-7일 후
+          checkOut = new Date(checkIn);
+          checkOut.setDate(checkIn.getDate() + nights);
+          status = 'confirmed';
+          paymentStatus = 'paid';
+        } else {
+          // 미래 예약
+          checkIn = new Date(today);
+          checkIn.setDate(today.getDate() + (14 + Math.floor(Math.random() * 30))); // 14-44일 후
+          checkOut = new Date(checkIn);
+          checkOut.setDate(checkIn.getDate() + nights);
+          status = Math.random() < 0.8 ? 'confirmed' : 'pending';
+          paymentStatus = status === 'confirmed' ? 'paid' : 'pending';
+        }
+        
+        const reservation = {
+          user: user._id,
+          hotel: hotel._id,
+          room: room._id,
+          checkIn: checkIn,
+          checkOut: checkOut,
+          guests: 1 + Math.floor(Math.random() * 3), // 1-3명
+          totalPrice: room.price * nights,
+          status: status,
+          paymentStatus: paymentStatus
+        };
+        
+        reservations.push(reservation);
+      }
+    }
+    
+    const createdReservations = await Reservation.insertMany(reservations);
+    console.log(`✅ ${createdReservations.length}개의 예약 생성 완료`);
 
-    console.log(`✅ ${reservations.length}개의 예약 생성 완료`);
-
-    // 5. 리뷰 생성
+    // 5. 리뷰 생성 (각 사용자가 예약한 호텔에 리뷰 작성)
     console.log('⭐ 리뷰 생성 중...');
-    const reviews = await Review.insertMany([
-      {
-        user: normalUser2._id,
-        hotel: hotels[2]._id,
-        reservation: reservations[2]._id,
-        rating: 5,
-        comment: '정말 훌륭한 호텔이었습니다! 제주도의 아름다운 전망과 깔끔한 객실, 친절한 서비스까지 모든 것이 완벽했습니다. 다시 방문하고 싶어요!'
-      },
-      {
-        user: normalUser2._id,
-        hotel: hotels[0]._id,
-        reservation: reservations[3]._id,
-        rating: 4,
-        comment: '위치가 좋고 시설도 깔끔합니다. 다만 조금 시끄러웠지만 전체적으로 만족스러운 숙박이었습니다.'
+    const reviews = [];
+    const reviewComments = [
+      '정말 훌륭한 호텔이었습니다! 깔끔한 객실과 친절한 서비스까지 모든 것이 완벽했습니다. 다시 방문하고 싶어요!',
+      '위치가 좋고 시설도 깔끔합니다. 가격 대비 만족스러운 숙박이었습니다.',
+      '객실이 넓고 깨끗했어요. 조식도 맛있고 직원분들도 친절하셨습니다. 추천합니다!',
+      '가성비가 좋은 호텔입니다. 시설은 조금 오래되었지만 깔끔하게 관리되고 있어요.',
+      '전망이 정말 좋았습니다! 특히 야경이 아름다워서 기억에 남네요. 다음에도 여기 올게요.',
+      '체크인부터 체크아웃까지 모든 과정이 매끄러웠습니다. 특히 프론트 직원분이 정말 친절하셨어요.',
+      '객실 내부가 넓고 깔끔했어요. 침대도 편안하고 조용해서 잘 쉬었습니다.',
+      '주변 맛집이 많아서 좋았어요. 호텔 위치도 중심가라서 이동하기 편했습니다.',
+      '가족 여행으로 왔는데 아이들도 좋아했어요. 특히 수영장이 깨끗하고 넓었습니다.',
+      '비즈니스 출장으로 이용했는데 와이파이 속도도 빠르고 조용해서 업무하기 좋았습니다.',
+      '객실 청소가 정말 깔끔했어요. 욕실도 넓고 샤워 시설도 좋았습니다.',
+      '조식 뷔페가 다양하고 맛있었어요. 특히 한식 코너가 인상적이었습니다.',
+      '주차장이 넓어서 좋았어요. 차량 접근도 편리하고 보안도 잘 되어있습니다.',
+      '객실에서 보는 전망이 정말 멋졌어요. 사진으로 남기고 싶을 정도로 아름다웠습니다.',
+      '가격 대비 시설이 훌륭합니다. 다음에도 여기서 예약할 예정이에요.'
+    ];
+    
+    // 각 예약에 대해 리뷰 생성 (일부만)
+    for (let i = 0; i < createdReservations.length; i++) {
+      // 70% 확률로 리뷰 작성
+      if (Math.random() < 0.7) {
+        const reservation = createdReservations[i];
+        const rating = 3 + Math.floor(Math.random() * 3); // 3-5점
+        const comment = reviewComments[Math.floor(Math.random() * reviewComments.length)];
+        
+        reviews.push({
+          user: reservation.user,
+          hotel: reservation.hotel,
+          reservation: reservation._id,
+          rating: rating,
+          comment: comment
+        });
       }
-    ]);
-
-    console.log(`✅ ${reviews.length}개의 리뷰 생성 완료`);
+    }
+    
+    const createdReviews = await Review.insertMany(reviews);
+    console.log(`✅ ${createdReviews.length}개의 리뷰 생성 완료`);
 
     // 6. 쿠폰 생성
     console.log('🎫 쿠폰 생성 중...');
@@ -691,10 +754,90 @@ const initData = async () => {
     coupons.push(userCoupon);
     console.log(`✅ ${coupons.length}개의 쿠폰 생성 완료`);
 
+    // 7. 카드 생성 (각 사용자별 저장된 카드)
+    console.log('💳 카드 생성 중...');
+    const cards = [];
+    const cardBrands = ['VISA', 'MASTERCARD', 'AMEX', 'JCB'];
+    
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      const cardCount = 1 + (i % 2); // 1-2개 카드
+      
+      for (let j = 0; j < cardCount; j++) {
+        const last4 = String(1000 + (i * 10 + j)).slice(-4);
+        const cardNumber = `1234-5678-9012-${last4}`;
+        const maskedNumber = `****-****-****-${last4}`;
+        const expMonth = String(12 + (j % 12)).padStart(2, '0');
+        const expYear = String(25 + j);
+        const expDate = `${expMonth}/${expYear}`;
+        
+        cards.push({
+          user: user._id,
+          cardNumber: cardNumber,
+          maskedNumber: maskedNumber,
+          expDate: expDate,
+          cvc: String(100 + (i * 10 + j)).slice(-3),
+          nameOnCard: user.name,
+          brand: cardBrands[i % cardBrands.length],
+          isDefault: j === 0 // 첫 번째 카드가 기본 카드
+        });
+      }
+    }
+    
+    const createdCards = await Card.insertMany(cards);
+    console.log(`✅ ${createdCards.length}개의 카드 생성 완료`);
+
+    // 8. 위시리스트 생성 (각 사용자별 찜한 호텔)
+    console.log('❤️  위시리스트 생성 중...');
+    const wishlists = [];
+    
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      const wishlistCount = 2 + Math.floor(Math.random() * 4); // 2-5개 호텔
+      const hotelIndices = new Set();
+      
+      while (hotelIndices.size < wishlistCount) {
+        const hotelIndex = Math.floor(Math.random() * hotels.length);
+        hotelIndices.add(hotelIndex);
+      }
+      
+      for (const hotelIndex of hotelIndices) {
+        wishlists.push({
+          userId: user._id,
+          hotelId: hotels[hotelIndex]._id
+        });
+      }
+    }
+    
+    const createdWishlists = await Wishlist.insertMany(wishlists);
+    console.log(`✅ ${createdWishlists.length}개의 위시리스트 생성 완료`);
+
+    // 9. 결제 정보 생성 (결제 완료된 예약에 대해)
+    console.log('💵 결제 정보 생성 중...');
+    const payments = [];
+    
+    for (const reservation of createdReservations) {
+      if (reservation.paymentStatus === 'paid') {
+        const orderId = `ORDER-${reservation._id.toString().slice(-8).toUpperCase()}`;
+        payments.push({
+          user: reservation.user,
+          reservation: reservation._id,
+          amount: reservation.totalPrice,
+          method: ['card', 'toss', 'transfer'][Math.floor(Math.random() * 3)],
+          status: 'completed',
+          orderId: orderId,
+          approvedAt: reservation.checkIn < today ? reservation.checkIn : new Date(reservation.checkIn.getTime() - 7 * 24 * 60 * 60 * 1000) // 체크인 7일 전 결제
+        });
+      }
+    }
+    
+    const createdPayments = await Payment.insertMany(payments);
+    console.log(`✅ ${createdPayments.length}개의 결제 정보 생성 완료`);
+
     // 호텔 평점 업데이트 (리뷰 기반)
     console.log('📊 호텔 평점 업데이트 중...');
     for (const hotel of hotels) {
-      const hotelReviews = reviews.filter(r => r.hotel.toString() === hotel._id.toString());
+      const hotelReviews = createdReviews.filter(r => r.hotel.toString() === hotel._id.toString());
       if (hotelReviews.length > 0) {
         const avgRating = hotelReviews.reduce((sum, r) => sum + r.rating, 0) / hotelReviews.length;
         await Hotel.findByIdAndUpdate(hotel._id, {
@@ -709,14 +852,16 @@ const initData = async () => {
     console.log(`   - 사용자: ${users.length}명`);
     console.log(`   - 호텔: ${hotels.length}개`);
     console.log(`   - 객실: ${rooms.length}개`);
-    console.log(`   - 예약: ${reservations.length}개`);
-    console.log(`   - 리뷰: ${reviews.length}개`);
+    console.log(`   - 예약: ${createdReservations.length}개`);
+    console.log(`   - 리뷰: ${createdReviews.length}개`);
     console.log(`   - 쿠폰: ${coupons.length}개`);
-    console.log('\n🔑 테스트 계정:');
-    console.log('   일반 사용자: user@gmail.com / 1234');
-    console.log('   홍길동: hong@gmail.com / 1234');
-    console.log('   사업자: owner@gmail.com / 1234');
-    console.log('   관리자: admin@gmail.com / 1234');
+    console.log(`   - 카드: ${createdCards.length}개`);
+    console.log(`   - 위시리스트: ${createdWishlists.length}개`);
+    console.log(`   - 결제: ${createdPayments.length}개`);
+    console.log('\n🔑 테스트 계정 (모두 비밀번호: 1234):');
+    users.forEach((user, index) => {
+      console.log(`   ${user.name}: ${user.email}`);
+    });
 
     process.exit(0);
   } catch (error) {

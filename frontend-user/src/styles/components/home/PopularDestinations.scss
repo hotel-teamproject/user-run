@@ -3,12 +3,12 @@
 /* -------------------------------
    Frame 117  →  section.container
 -------------------------------- */
-.container {
+.popular-destinations-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    padding: 70px 104px 0;
+    padding: 10px 104px 0;
     gap: 80px;
 
     width: 100%;
@@ -18,7 +18,7 @@
 }
 
 /* 내부 영역 */
-.inner {
+.popular-destinations-inner {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@
 /* -------------------------------
    Section Header
 -------------------------------- */
-.section-header {
+.popular-destinations-header {
     width: 100%;
     display: flex;
     justify-content: space-between;

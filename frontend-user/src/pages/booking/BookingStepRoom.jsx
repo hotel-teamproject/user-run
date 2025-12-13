@@ -165,7 +165,7 @@ const BookingStepRoom = () => {
             <button className="btn-secondary" onClick={handleBack}>
               이전
             </button>
-            <button className="btn-primary" onClick={handleNext} disabled={!selectedRoom}>
+            <button className="booking-btn-primary" onClick={handleNext} disabled={!selectedRoom}>
               다음 단계
             </button>
           </div>

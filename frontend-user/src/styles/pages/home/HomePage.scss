@@ -1,0 +1,7 @@
+@use "../../common/variables" as *;
+
+.home-page {
+  &.top-container {
+    padding-top: 0;
+  }
+}

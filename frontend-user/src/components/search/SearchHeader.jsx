@@ -8,13 +8,13 @@ const SearchHeader = ({ filters, onFilterChange }) => {
    <div className="search-header-inner">
     <div className="logo">
      <Link to="/">
-      <span className="logo-icon">🏨</span> Find Stays
+      <span className="logo-icon">🏨</span> 숙소 찾기
      </Link>
     </div>
 
     <div className="search-filters">
      <div className="filter-group">
-      <label>Enter Destination</label>
+      <label>목적지 입력</label>
       <input
        type="text"
        placeholder="신라스테이 울산점, 서울"
@@ -24,7 +24,7 @@ const SearchHeader = ({ filters, onFilterChange }) => {
      </div>
 
      <div className="filter-group">
-      <label>Check In</label>
+      <label>체크인</label>
       <input
        type="date"
        value={filters.checkIn}
@@ -33,7 +33,7 @@ const SearchHeader = ({ filters, onFilterChange }) => {
      </div>
 
      <div className="filter-group">
-      <label>Check Out</label>
+      <label>체크아웃</label>
       <input
        type="date"
        value={filters.checkOut}
@@ -42,7 +42,7 @@ const SearchHeader = ({ filters, onFilterChange }) => {
      </div>
 
      <div className="filter-group">
-      <label>Rooms & Guests</label>
+      <label>객실 및 인원</label>
       <select
        value={`${filters.guests.rooms},${filters.guests.guests}`}
        onChange={(e) => {
@@ -50,9 +50,9 @@ const SearchHeader = ({ filters, onFilterChange }) => {
         onFilterChange("guests", { rooms, guests });
        }}
       >
-       <option value="1,2">1 room, 2 guests</option>
-       <option value="1,3">1 room, 3 guests</option>
-       <option value="2,4">2 rooms, 4 guests</option>
+       <option value="1,2">객실 1개, 인원 2명</option>
+       <option value="1,3">객실 1개, 인원 3명</option>
+       <option value="2,4">객실 2개, 인원 4명</option>
       </select>
      </div>
 

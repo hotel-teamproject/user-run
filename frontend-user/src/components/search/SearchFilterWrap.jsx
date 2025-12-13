@@ -1,36 +1,98 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/components/search/SearchFilterWrap.scss";
-const SearchFilterWrap = () => {
+
+const SearchFilterWrap = ({ filters, onFilterChange }) => {
+ const [destination, setDestination] = useState(filters?.destination || "");
+ const [checkIn, setCheckIn] = useState(filters?.checkIn || "");
+ const [checkOut, setCheckOut] = useState(filters?.checkOut || "");
+ const [rooms, setRooms] = useState(filters?.rooms || 1);
+ const [guests, setGuests] = useState(filters?.guests || 2);
+
+ const handleDestinationChange = (e) => {
+  const value = e.target.value;
+  setDestination(value);
+  if (onFilterChange) {
+   onFilterChange("destination", value);
+  }
+ };
+
+ const handleCheckInChange = (e) => {
+  const value = e.target.value;
+  setCheckIn(value);
+  if (onFilterChange) {
+   onFilterChange("checkIn", value);
+  }
+ };
+
+ const handleCheckOutChange = (e) => {
+  const value = e.target.value;
+  setCheckOut(value);
+  if (onFilterChange) {
+   onFilterChange("checkOut", value);
+  }
+ };
+
+ const handleGuestsChange = (e) => {
+  const value = e.target.value;
+  const [roomCount, guestCount] = value.split(",").map(Number);
+  setRooms(roomCount);
+  setGuests(guestCount);
+  if (onFilterChange) {
+   onFilterChange("rooms", roomCount);
+   onFilterChange("guests", guestCount);
+  }
+ };
+
  return (
     <div className="search-form inner">
-     <h3>Where are you staying?</h3>
+     <h3>어디로 떠나시나요?</h3>
      <div className="form-container">
       <div className="form-group">
-       <label>Enter Destination</label>
+       <label>목적지 입력</label>
        <input
         type="text"
-        placeholder="예) 서울시 어머님댁 저희집"
+        placeholder="예) 서울"
         className="destination-input"
         maxLength={100}
+        value={destination}
+        onChange={handleDestinationChange}
        />
       </div>
 
       <div className="form-group">
-       <label>Check In</label>
-       <input type="date" defaultValue="2024-01-22" className="date-input" />
+       <label>체크인</label>
+       <input 
+        type="date" 
+        className="date-input"
+        value={checkIn}
+        onChange={handleCheckInChange}
+       />
       </div>
 
       <div className="form-group">
-       <label>Check Out</label>
-       <input type="date" defaultValue="2024-01-24" className="date-input" />
+       <label>체크아웃</label>
+       <input 
+        type="date" 
+        className="date-input"
+        value={checkOut}
+        onChange={handleCheckOutChange}
+        min={checkIn}
+       />
       </div>
 
       <div className="form-group">
-       <label>Rooms & Guests</label>
-       <select className="guests-select">
-        <option>1 room, 2 guests</option>
-        <option>1 room, 1 guest</option>
-        <option>2 rooms, 4 guests</option>
+       <label>객실 및 인원</label>
+       <select 
+        className="guests-select"
+        value={`${rooms},${guests}`}
+        onChange={handleGuestsChange}
+       >
+        <option value="1,1">객실 1개, 인원 1명</option>
+        <option value="1,2">객실 1개, 인원 2명</option>
+        <option value="1,3">객실 1개, 인원 3명</option>
+        <option value="1,4">객실 1개, 인원 4명</option>
+        <option value="2,4">객실 2개, 인원 4명</option>
+        <option value="2,6">객실 2개, 인원 6명</option>
        </select>
       </div>
      </div>

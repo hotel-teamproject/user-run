@@ -73,7 +73,7 @@ const MyBookingsPage = () => {
       <div className="bookings-section-header">
         <div className="section-title-wrapper">
           <span className="book-icon">🛏️</span>
-          <h3 className="section-title">예약내역</h3>
+          <h3 className="bookings-section-title">예약내역</h3>
         </div>
         <div className="section-controls">
           <select

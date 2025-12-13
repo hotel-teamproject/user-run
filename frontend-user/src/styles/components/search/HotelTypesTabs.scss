@@ -8,16 +8,15 @@
   max-width: 1400px;
   margin: 20px auto 30px auto;
 
-  padding: 26px 32px 12px 32px;   /* 🔥 아래 padding 증가하여 underline 공간 확보 */
+  padding: 20px 32px 12px 32px;
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 
   display: flex;
   align-items: center;
-
   justify-content: center;
-  gap: 300px;                     /* 🔥 탭 간격 크게 — 시원시원하게 */
+  gap: 48px;
 
   position: relative;
 }
@@ -38,28 +37,32 @@
 =========================================== */
 .tab-item {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
 
-  padding: 6px 4px 12px 4px;    /* 🔥 하단 padding 증가 → underline이 박스 밖으로 안 나감 */
+  padding: 8px 12px 14px 12px;
   border: none;
   background: transparent;
   cursor: pointer;
 
   text-align: left;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
   position: relative;
+  white-space: nowrap;
 }
 
 .tab-label {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #333;
+  line-height: 1.2;
 }
 
 .tab-count {
-  font-size: 13px;
+  font-size: 14px;
   color: #888;
+  line-height: 1.2;
 }
 
 /* ===========================================
@@ -90,23 +93,65 @@
   color: $color-blue;
 }
 
+.tab-item:hover .tab-count {
+  color: $color-blue;
+}
+
 /* ===========================================
    반응형
 =========================================== */
 @media (max-width: 1024px) {
   .hotel-types-tabs {
-    gap: 40px;
-    padding: 22px 24px 10px 24px;
+    gap: 32px;
+    padding: 18px 24px 10px 24px;
+  }
+
+  .tab-label {
+    font-size: 16px;
+  }
+
+  .tab-count {
+    font-size: 13px;
   }
 }
 
 @media (max-width: 768px) {
   .hotel-types-tabs {
-    gap: 24px;
-    padding: 18px 18px 10px 18px;
+    gap: 20px;
+    padding: 16px 16px 10px 16px;
+    justify-content: space-between;
+  }
+
+  .tab-item {
+    padding: 6px 8px 12px 8px;
+    gap: 4px;
   }
 
   .tab-label {
-    font-size: 16px;
+    font-size: 15px;
+  }
+
+  .tab-count {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hotel-types-tabs {
+    gap: 12px;
+    padding: 14px 12px 8px 12px;
+  }
+
+  .tab-item {
+    padding: 6px 6px 10px 6px;
+    gap: 3px;
+  }
+
+  .tab-label {
+    font-size: 14px;
+  }
+
+  .tab-count {
+    font-size: 11px;
   }
 }

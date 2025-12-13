@@ -156,7 +156,7 @@ const BookingComplete = () => {
 
         <div className="complete-actions">
           <button
-            className="btn-primary"
+            className="booking-btn-primary"
             onClick={() => navigate("/mypage/bookings")}
           >
             내 예약 보기
