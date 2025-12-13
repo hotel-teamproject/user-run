@@ -54,17 +54,30 @@ export const getUserCoupons = async (req, res) => {
       ]
     }).sort({ validUntil: -1 });
 
-    // 사용 가능/만료 구분
+    // 사용 가능/만료/사용됨 구분
+    const used = coupons.filter(coupon => {
+      // 사용 횟수 제한이 있고, 사용 횟수가 제한에 도달한 경우
+      const isUsed = coupon.usageLimit && coupon.usedCount >= coupon.usageLimit;
+      // 또는 개인 쿠폰이고 사용 횟수가 1 이상인 경우
+      const isPersonalUsed = coupon.userId && coupon.userId.toString() === userId.toString() && coupon.usedCount > 0;
+      return isUsed || isPersonalUsed;
+    });
+
     const available = coupons.filter(coupon => {
       const isInDate = coupon.validFrom <= now && coupon.validUntil >= now;
       const hasUsage = !coupon.usageLimit || coupon.usedCount < coupon.usageLimit;
-      return isInDate && hasUsage;
+      const isUsed = coupon.usageLimit && coupon.usedCount >= coupon.usageLimit;
+      const isPersonalUsed = coupon.userId && coupon.userId.toString() === userId.toString() && coupon.usedCount > 0;
+      // 사용 가능: 유효기간 내이고, 사용 가능하며, 사용되지 않은 경우
+      return isInDate && hasUsage && !isUsed && !isPersonalUsed;
     });
 
     const expired = coupons.filter(coupon => {
-      const isExpired = coupon.validUntil < now || 
-                       (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit);
-      return isExpired;
+      const isExpired = coupon.validUntil < now;
+      const isUsed = coupon.usageLimit && coupon.usedCount >= coupon.usageLimit;
+      const isPersonalUsed = coupon.userId && coupon.userId.toString() === userId.toString() && coupon.usedCount > 0;
+      // 만료되었지만 사용되지 않은 경우만 만료됨으로 분류
+      return isExpired && !isUsed && !isPersonalUsed;
     });
 
     res.json({
@@ -72,6 +85,7 @@ export const getUserCoupons = async (req, res) => {
       message: '쿠폰 목록 조회 성공',
       data: {
         available,
+        used,
         expired,
         all: coupons
       }

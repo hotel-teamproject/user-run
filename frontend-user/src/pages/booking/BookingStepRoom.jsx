@@ -86,7 +86,7 @@ const BookingStepRoom = () => {
 
   return (
     <div className="booking-page inner">
-      <h2 className="booking-title">예약 - 객실 선택</h2>
+      <h2 className="booking-title">객실 선택</h2>
 
       <div className="booking-grid">
         <div className="booking-left">
@@ -140,7 +140,7 @@ const BookingStepRoom = () => {
                       )}
                     </div>
                     <div className="room-price">
-                      <div className="price-per-night">₩{room.price.toLocaleString()}/night</div>
+                      <div className="price-per-night">₩{room.price.toLocaleString()}/박</div>
                       <div className="price-total">
                         총 ₩{totalPrice.toLocaleString()} ({nights}박)
                       </div>

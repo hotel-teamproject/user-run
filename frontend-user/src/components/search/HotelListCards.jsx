@@ -84,7 +84,7 @@ const HotelListCards = ({ hotels = [] }) => {
               />
               {(hotel.imageCount || (hotel.images && hotel.images.length)) && (
                 <div className="image-count">
-                  {hotel.imageCount || hotel.images?.length || 0} images
+                  사진 {hotel.imageCount || hotel.images?.length || 0}장
                 </div>
               )}
             </div>
@@ -96,37 +96,38 @@ const HotelListCards = ({ hotels = [] }) => {
               <div className="hotel-header">
                 <div className="hotel-info">
                   <h3 className="hotel-name">{hotel.name}</h3>
+                  
                   <div className="hotel-location">{hotel.location || hotel.address || hotel.city || ''}</div>
 
-                  <div className="hotel-meta">
+                  <div className="hotel-meta-row">
                     {hotel.stars && (
                       <span className="hotel-stars">
-                        {"⭐".repeat(hotel.stars)} {hotel.stars} Star Hotel
+                        {"⭐".repeat(hotel.stars)} {hotel.stars}성급 호텔
                       </span>
                     )}
                     {hotel.amenities && (
                       <span className="hotel-amenities">
-                        🏨 {Array.isArray(hotel.amenities) ? hotel.amenities.length : hotel.amenities}+ Amenities
+                        🏨 편의시설 {Array.isArray(hotel.amenities) ? hotel.amenities.length : hotel.amenities}개
                       </span>
                     )}
                   </div>
 
                   <div className="hotel-rating">
                     <span className="rating-score">{hotel.rating || hotel.ratingAverage || 0}</span>
-                    <span className="rating-label">{hotel.ratingLabel || "평점"}</span>
+                    <span className="rating-label">{hotel.ratingLabel || "매우 좋음"}</span>
                     <span className="rating-reviews">
-                      {hotel.reviewCount || hotel.reviews || 0} reviews
+                      리뷰 {hotel.reviewCount || hotel.reviews || 0}개
                     </span>
                   </div>
                 </div>
-
+                
                 {price > 0 && (
                   <div className="hotel-price">
-                    <div className="price-label">starting from</div>
+                    <div className="price-label">시작가</div>
                     <div className="price-amount">
-                      ₩{Number(price).toLocaleString()}/night
+                      ₩{Number(price).toLocaleString()}/박
                     </div>
-                    <div className="price-note">excl. tax</div>
+                    <div className="price-note">세금 별도</div>
                   </div>
                 )}
               </div>
@@ -150,7 +151,7 @@ const HotelListCards = ({ hotels = [] }) => {
                     }
                   }}
                 >
-                  View Place
+                  상세보기
                 </button>
               </div>
 

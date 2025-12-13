@@ -1,7 +1,7 @@
 // common/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
 
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;

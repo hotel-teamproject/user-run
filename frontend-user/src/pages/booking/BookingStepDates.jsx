@@ -92,7 +92,7 @@ const BookingStepDates = () => {
 
   return (
     <div className="booking-page inner">
-      <h2 className="booking-title">예약 - 날짜 선택</h2>
+      <h2 className="booking-title">예약하기</h2>
 
       <div className="booking-grid">
         
@@ -102,7 +102,7 @@ const BookingStepDates = () => {
         <div className="booking-left">
           <div className="booking-panel">
             <label>
-              체크인
+              체크인 날짜
               <input
                 type="date"
                 value={checkIn}
@@ -111,7 +111,7 @@ const BookingStepDates = () => {
             </label>
 
             <label>
-              체크아웃
+              체크아웃 날짜
               <input
                 type="date"
                 value={checkOut}
@@ -125,7 +125,7 @@ const BookingStepDates = () => {
                 value={guests}
                 onChange={(e) => setGuests(Number(e.target.value))}
               >
-                {[1, 2, 3, 4, 5].map((n) => (
+                {[1, 2, 3, 4, 5, 6].map((n) => (
                   <option key={n} value={n}>
                     {n}명
                   </option>
@@ -139,7 +139,7 @@ const BookingStepDates = () => {
               취소
             </button>
             <button className="btn-primary" onClick={handleNext}>
-              다음 단계
+              객실 선택하기
             </button>
           </div>
         </div>
@@ -167,18 +167,20 @@ const BookingStepDates = () => {
                   {hotelDisplay.city} • {hotelDisplay.location}
                 </p>
                 <div className="hotel-rating">
-                  {hotelDisplay.ratingAverage} • {hotelDisplay.ratingCount} reviews
+                  {hotelDisplay.ratingAverage} • 리뷰 {hotelDisplay.ratingCount}개
                 </div>
               </div>
             </div>
 
             <div className="hotel-price">
-              ₩{hotelDisplay.basePrice.toLocaleString()} <span>/night</span>
+              ₩{hotelDisplay.basePrice.toLocaleString()} <span>/박</span>
             </div>
 
-            <button className="btn-primary" onClick={handleNext}>
-              예약 계속
-            </button>
+            <div style={{ padding: '24px' }}>
+              <button className="btn-primary" onClick={handleNext} style={{ width: '100%' }}>
+                객실 선택하기
+              </button>
+            </div>
 
           </div>
         </aside>

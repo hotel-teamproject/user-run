@@ -90,7 +90,7 @@ const PaymentForm = () => {
   <div className="common-form">
    <div className="payment-header">
     <button type="button" className="back-button" onClick={handleBack}>
-     ← Back
+     ← 뒤로
     </button>
     <h1 className="payment-title">결제수단 추가</h1>
     <p className="payment-subtitle">결제수단을 추가하세요</p>
@@ -100,7 +100,7 @@ const PaymentForm = () => {
     {error && <div className="error-message">{error}</div>}
 
     <div className="form-group">
-     <label className="form-label">Card Number</label>
+     <label className="form-label">카드 번호</label>
      <input
       type="text"
       name="cardNumber"
@@ -114,7 +114,7 @@ const PaymentForm = () => {
 
     <div className="form-row">
      <div className="form-group">
-      <label className="form-label">Exp. Date</label>
+      <label className="form-label">만료일</label>
       <input
        type="text"
        name="expiryDate"
@@ -140,12 +140,12 @@ const PaymentForm = () => {
     </div>
 
     <div className="form-group">
-     <label className="form-label">Name on Card</label>
+     <label className="form-label">카드 소유자명</label>
      <input
       type="text"
       name="nameOnCard"
       className="form-input"
-      placeholder="John Doe"
+      placeholder="홍길동"
       value={formData.nameOnCard}
       onChange={handleInputChange}
       required
@@ -153,7 +153,7 @@ const PaymentForm = () => {
     </div>
 
     <div className="form-group">
-     <label className="form-label">Country or Region</label>
+     <label className="form-label">국가 또는 지역</label>
      <select
       name="country"
       className="form-input form-select"
@@ -186,11 +186,9 @@ const PaymentForm = () => {
      결제수단 추가
     </button>
 
-    <div className="security-info">
+     <div className="security-info">
      <p className="security-text">
-      By continuing your submission, you allow The Ritz-Carlton for Guests and
-      our partners to contact you about promotions or special offers that may
-      interest you.
+      계속 진행하시면, 호텔과 파트너사로부터 프로모션 및 특별 혜택에 대한 연락을 받을 수 있습니다.
      </p>
     </div>
    </form>

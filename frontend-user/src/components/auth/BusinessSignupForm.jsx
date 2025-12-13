@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { registerUser, applyBusiness } from "../../api/userClient";
 
 const BusinessSignupForm = () => {
   const [formData, setFormData] = useState({
@@ -9,11 +11,17 @@ const BusinessSignupForm = () => {
     businessEmail: "",
     businessPhone: "",
     businessAddress: "",
+    password: "",
+    confirmPassword: "",
     agreeToTerms: false,
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -26,7 +34,7 @@ const BusinessSignupForm = () => {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 필수 필드 체크
@@ -37,6 +45,8 @@ const BusinessSignupForm = () => {
       "businessEmail",
       "businessPhone",
       "businessAddress",
+      "password",
+      "confirmPassword",
     ];
 
     for (let key of requiredFields) {
@@ -46,14 +56,85 @@ const BusinessSignupForm = () => {
       }
     }
 
+    if (formData.password !== formData.confirmPassword) {
+      setError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    if (formData.password.length < 4) {
+      setError("비밀번호는 최소 4자 이상이어야 합니다.");
+      return;
+    }
+
     if (!formData.agreeToTerms) {
       setError("약관에 동의해주세요.");
       return;
     }
 
-    console.log("📦 Business Signup Data:", formData);
+    try {
+      setLoading(true);
+      setError("");
 
-    navigate("/login");
+      // 1. 일반 회원가입 API 호출
+      const userData = await registerUser({
+        name: formData.ownerName,
+        email: formData.businessEmail,
+        password: formData.password,
+        phone: formData.businessPhone || "",
+      });
+
+      if (userData && userData._id) {
+        // 사용자 정보 저장
+        const userInfo = {
+          _id: userData._id,
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          role: userData.role,
+        };
+
+        login(userInfo);
+
+        // 2. 사업자 신청 API 호출 (로그인 후에만 가능)
+        try {
+          await applyBusiness({
+            businessName: formData.businessName,
+            businessNumber: formData.businessNumber,
+            bankAccount: "", // 은행 계좌는 나중에 추가할 수 있도록
+          });
+
+          // 사업자 회원가입 성공 후 마이페이지로 이동
+          setTimeout(() => {
+            window.location.href = "/mypage";
+          }, 200);
+        } catch (businessErr) {
+          console.error("Business apply error:", businessErr);
+          // 회원가입은 성공했지만 사업자 신청 실패
+          setError("회원가입은 완료되었지만 사업자 신청에 실패했습니다. 마이페이지에서 다시 신청해주세요.");
+          setTimeout(() => {
+            window.location.href = "/mypage";
+          }, 2000);
+        }
+      } else {
+        setError("회원가입 응답이 올바르지 않습니다.");
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      const errorMessage = err.response?.data?.message || 
+                           err.message || 
+                           "회원가입에 실패했습니다. 다시 시도해주세요.";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const togglePasswordVisibility = (field) => {
+    if (field === "password") {
+      setPasswordVisible(!passwordVisible);
+    } else if (field === "confirmPassword") {
+      setConfirmPasswordVisible(!confirmPasswordVisible);
+    }
   };
 
   return (
@@ -166,6 +247,56 @@ const BusinessSignupForm = () => {
           />
         </div>
 
+        {/* 비밀번호 */}
+        <div className="form-group">
+          <label className="form-label">비밀번호</label>
+          <div className="password-input-wrapper">
+            <input
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              className="form-input"
+              placeholder="••••••••••••"
+              value={formData.password}
+              onChange={handleInputChange}
+              minLength={4}
+              maxLength={128}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => togglePasswordVisibility("password")}
+            >
+              {passwordVisible ? "🙈" : "👁️"}
+            </button>
+          </div>
+        </div>
+
+        {/* 비밀번호 확인 */}
+        <div className="form-group">
+          <label className="form-label">비밀번호 확인</label>
+          <div className="password-input-wrapper">
+            <input
+              type={confirmPasswordVisible ? "text" : "password"}
+              name="confirmPassword"
+              className="form-input"
+              placeholder="••••••••••••"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              minLength={4}
+              maxLength={128}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => togglePasswordVisibility("confirmPassword")}
+            >
+              {confirmPasswordVisible ? "🙈" : "👁️"}
+            </button>
+          </div>
+        </div>
+
         {/* 약관 */}
         <div className="form-options">
           <label className="checkbox-wrapper">
@@ -181,8 +312,12 @@ const BusinessSignupForm = () => {
         </div>
 
         {/* 제출 */}
-        <button type="submit" className="btn btn--primary btn--block">
-          사업자 회원가입
+        <button 
+          type="submit" 
+          className="btn btn--primary btn--block"
+          disabled={loading}
+        >
+          {loading ? "처리 중..." : "사업자 회원가입"}
         </button>
       </form>
     </div>

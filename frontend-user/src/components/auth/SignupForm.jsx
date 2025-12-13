@@ -61,6 +61,11 @@ const SignupForm = () => {
       return;
     }
 
+    if (formData.password.length < 4) {
+      setError("비밀번호는 최소 4자 이상이어야 합니다.");
+      return;
+    }
+
     if (!formData.agreeToTerms) {
       setError("회원가입을 위해 약관에 동의해주세요.");
       return;
@@ -99,9 +104,9 @@ const SignupForm = () => {
           className="back-button"
           onClick={() => navigate("/login")}
         >
-          ← Back to login
+          ← 로그인으로 돌아가기
         </button>
-        <h1 className="form-title">Sign up</h1>
+        <h1 className="form-title">회원가입</h1>
         <p className="form-subtitle">회원가입</p>
       </div>
 
@@ -125,7 +130,7 @@ const SignupForm = () => {
         {/* 이메일 + 전화번호 */}
         <div className="form-row">
           <div className="form-group">
-            <label className="form-label">Email *</label>
+            <label className="form-label">이메일 *</label>
             <input
               type="email"
               name="email"
@@ -138,7 +143,7 @@ const SignupForm = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Phone Number</label>
+            <label className="form-label">전화번호</label>
             <input
               type="tel"
               name="phoneNumber"
@@ -152,7 +157,7 @@ const SignupForm = () => {
 
         {/* 비밀번호 */}
         <div className="form-group">
-          <label className="form-label">Password *</label>
+          <label className="form-label">비밀번호 *</label>
           <div className="password-input-wrapper">
             <input
               type={passwordVisible ? "text" : "password"}
@@ -161,6 +166,8 @@ const SignupForm = () => {
               placeholder="••••••••••••"
               value={formData.password}
               onChange={handleInputChange}
+              minLength={4}
+              maxLength={128}
               required
             />
             <button
@@ -175,7 +182,7 @@ const SignupForm = () => {
 
         {/* 비밀번호 확인 */}
         <div className="form-group">
-          <label className="form-label">Confirm Password *</label>
+          <label className="form-label">비밀번호 확인 *</label>
           <div className="password-input-wrapper">
             <input
               type={confirmPasswordVisible ? "text" : "password"}
@@ -184,6 +191,8 @@ const SignupForm = () => {
               placeholder="••••••••••••"
               value={formData.confirmPassword}
               onChange={handleInputChange}
+              minLength={4}
+              maxLength={128}
               required
             />
             <button

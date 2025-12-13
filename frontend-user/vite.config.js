@@ -7,5 +7,15 @@ export default defineConfig({
   css: {
     devsource: true
     
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://backend-user-dev:3000',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
+    }
   }
 })

@@ -33,16 +33,26 @@ export const registerUser = async (userData) => {
  */
 export const loginUser = async (credentials) => {
   const response = await axiosInstance.post("/auth/login", credentials);
-  // 백엔드 응답 구조: { data: { _id, name, email, token, refreshToken }, message, resultCode }
-  if (response.data.data) {
-    if (response.data.data.token) {
-      localStorage.setItem("accessToken", response.data.data.token);
-    }
-    if (response.data.data.refreshToken) {
-      localStorage.setItem("refreshToken", response.data.data.refreshToken);
-    }
+  // 백엔드 응답 구조: { resultCode, message, data: { _id, name, email, token, refreshToken } }
+  
+  // 에러 처리
+  if (response.data.resultCode === 'FAIL' || !response.data.data) {
+    const error = new Error(response.data.message || '로그인에 실패했습니다.');
+    error.response = { data: response.data };
+    throw error;
   }
-  return response.data.data; // 실제 사용자 데이터 반환
+  
+  const userData = response.data.data;
+  
+  // 토큰 저장
+  if (userData.token) {
+    localStorage.setItem("accessToken", userData.token);
+  }
+  if (userData.refreshToken) {
+    localStorage.setItem("refreshToken", userData.refreshToken);
+  }
+  
+  return userData; // 실제 사용자 데이터 반환
 };
 
 /**

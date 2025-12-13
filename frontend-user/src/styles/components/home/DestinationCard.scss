@@ -1,3 +1,5 @@
+@use "../../common/variables" as *;
+
 /* 카드 전체 */
 .destination-card {
   position: relative;       
@@ -65,11 +67,11 @@
   padding: 14px 0;
   margin-top: 14px;
 
-  background: #8dd3bb;
+  background: $color-green;
   border-radius: 10px;
   border: none;
 
-  color: #003049;
+  color: #fff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -78,5 +80,5 @@
 }
 
 .btn-book:hover {
-  background: #7ccfb3;
+  background: $color-green-dark;
 }

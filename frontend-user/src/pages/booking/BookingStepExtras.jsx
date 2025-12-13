@@ -184,7 +184,7 @@ const BookingStepExtras = () => {
 
   return (
     <div className="booking-page inner">
-      <h2 className="booking-title">예약 - 옵션 선택</h2>
+      <h2 className="booking-title">추가 옵션 선택</h2>
 
       <div className="booking-grid">
         <div className="booking-left">

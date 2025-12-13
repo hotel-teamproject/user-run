@@ -14,7 +14,7 @@ const reviewSchema = new mongoose.Schema({
   reservation: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Reservation',
-    required: true
+    required: false
   },
   rating: {
     type: Number,
@@ -49,8 +49,8 @@ const reviewSchema = new mongoose.Schema({
 reviewSchema.index({ hotel: 1, createdAt: -1 });
 reviewSchema.index({ user: 1 });
 
-// 같은 예약에 대해 중복 리뷰 방지
-reviewSchema.index({ reservation: 1 }, { unique: true });
+// 같은 예약에 대해 중복 리뷰 방지 (reservation이 있는 경우만)
+reviewSchema.index({ reservation: 1 }, { unique: true, sparse: true });
 
 // 업데이트 시 updatedAt 갱신
 reviewSchema.pre('findOneAndUpdate', function(next) {

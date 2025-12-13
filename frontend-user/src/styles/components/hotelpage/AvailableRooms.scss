@@ -29,8 +29,8 @@
     align-items: center;
     flex: 1;
    .img-wrap {
-    width: 20rem;
-    height: 14rem;
+    width: 28rem;
+    height: 20rem;
     overflow: hidden;
     border-radius: $border-radius-md;
     flex-shrink: 0;
@@ -46,12 +46,32 @@
       }
     }
    }
+   .room-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+   }
+   
    .room-name {
     font-size: 20px;
     font-weight: 600;
     color: $color-text;
-    margin-bottom: $gutter-sm;
+    margin-bottom: 0;
    }
+   
+   .room-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+   }
+   
+   .room-detail-item {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.5;
+   }
+   
    .room-type {
     font-size: 18px;
     flex: 2;
@@ -60,15 +80,20 @@
   }
   .right {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     gap: $gutter-md;
     .room-price {
-     font-size: 28px;
+     font-size: 32px;
      font-weight: 700;
      color: $color-primary;
     }
     .btn {
-    //  @include button-style;
+     padding: 16px 48px;
+     font-size: 18px;
+     font-weight: 600;
+     min-width: 180px;
+     //  @include button-style;
     }
   }
  }

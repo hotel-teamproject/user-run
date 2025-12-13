@@ -1,189 +1,126 @@
 @use "../../common/variables" as *;
 
 .footer {
-    background: $gradient-primary;
-    width: 100%;
-    padding: 140px 0 0 0;   /* 뉴스레터 카드 크기 축소에 맞춰 상단 여백 축소 */
-    border-radius: 30px 30px 0 0;
-    position: relative;      /* newsletter absolute 기준점 */
-    overflow: visible;
+  width: 100%;
+  background: linear-gradient(135deg, #00234d 0%, #004d7a 100%);
+  position: relative;
+  margin-top: 80px;
 }
 
 /* =========================================================
-   ========== Newsletter (떠 있는 카드 디자인) ==========
+   ========== Newsletter Section ==========
    ========================================================= */
 
-.newsletter-wrapper {
-    position: absolute;
-    top: -70px;     /* 카드가 페이지를 덜 가리지 않도록 위로 끌어올림 */
-    left: 0;
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-
-    z-index: 5;
+.newsletter-section {
+  padding: 60px 0 40px;
+  background: transparent;
 }
 
 /* =========================================================
-   ========== MyPage에서는 겹치지 않게 배너 내리기 ==========
+   ========== Footer Main ==========
    ========================================================= */
 
-/* 마이페이지 레이아웃 안에서는 footer 상단 여백을 줄이고,
-   newsletter를 일반 흐름(static)으로 내려서 겹침 제거 */
-.mypage-layout .footer {
-    padding-top: 80px;
+.footer-main {
+  padding: 40px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.mypage-layout .footer .newsletter-wrapper {
-    position: static;
-    top: auto;
-    margin-top: 24px;
+.footer-inner {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
-.newsletter {
-    width: 88%;
-    max-width: 1000px;
+.footer-main .footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 60px;
+}
 
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    padding: 28px;
+/* 브랜드 섹션 */
+.footer-brand {
+  flex: 0 0 300px;
 
+  .footer-logo {
+    margin-bottom: 20px;
+  }
+
+  .footer-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 24px;
+  }
+
+  .social-links {
     display: flex;
-    justify-content: space-between;
+    gap: 12px;
     align-items: center;
 
-    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.12);
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+    }
+  }
 }
 
-/* 텍스트 */
+/* 링크 그룹 */
+.footer-links {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+}
 
-.newsletter-left {
-    width: 55%;
+.footer-link-group {
+  min-width: 150px;
+
+  .link-group-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+  }
+
+  .link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-}
+    gap: 10px;
 
-.newsletter-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: #00234d;
-    margin: 0;
-    line-height: 1.2;
-}
-
-.newsletter-desc {
-    .travel-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #00234d;
-        margin-bottom: 6px;
-    }
-
-    .travel-sub {
+    li {
+      a {
         font-size: 14px;
-        color: #333;
-    }
-}
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.2s ease;
 
-/* 입력 영역 */
-.newsletter-input-wrapper {
-    display: flex;
-    margin-top: 8px;
-}
-
-.newsletter-input {
-    flex: 1;
-    border: 1px solid #ddd;
-    border-right: none;
-    padding: 10px 12px;
-    border-radius: 8px 0 0 8px;
-    font-size: 13px;
-}
-
-.newsletter-btn {
-    background: #00234d;
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 0 8px 8px 0;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-
-    &:hover {
-        background: $color-blue;
-    }
-}
-
-.newsletter-right {
-    margin-left: 10px;
-}
-
-.newsletter-img {
-    width: 300px;
-    height: auto;
-    display: block;
-}
-
-/* =========================================================
-   ========== Footer Links ==========
-   ========================================================= */
-
-.footer-links {
-    margin-top: 0; /* 더 이상 음수 margin 필요 없음 */
-
-    .inner {
-        width: 90%;
-        max-width: 1240px;
-        margin: 0 auto;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-}
-
-.footer-menu {
-    display: flex;
-    gap: 80px;
-}
-
-.link-columns {
-    display: flex;
-    gap: 40px;
-
-    .link-column {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        h4 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
+        &:hover {
+          color: #ffffff;
+          padding-left: 4px;
         }
-
-        ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-
-            li {
-                margin-bottom: 6px;
-
-                a {
-                    color: #1e2b26;
-                    font-size: 14px;
-
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 }
 
 /* =========================================================
@@ -191,53 +128,94 @@
    ========================================================= */
 
 .footer-bottom {
-    margin-top: 40px;
-    background: #fafafa;
-    padding: 18px 0;
-
-    .inner {
-        width: 90%;
-        max-width: 1240px;
-        margin: 0 auto;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        font-size: 13px;
-        line-height: 1.4;
-        color: #00FF88;
-    }
+  background: rgba(0, 0, 0, 0.2);
+  padding: 24px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.social-links {
-    .logo {
-        font-size: 22px;
-        font-weight: 800;
-        color: #ffffff;
-        margin-bottom: 6px;
-    }
-
-    .description {
-        font-size: 14px;
-        font-weight: 500;
-        color: #e8f7ef;
-        line-height: 1.4;
-        max-width: 300px;
-    }
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.follow-us {
-    .follow-icons {
-        display: flex;
-        align-items: center;
-        gap: 14px; /* 로고 간격 조절 */
+.company-info {
+  flex: 1;
+  min-width: 300px;
 
-        img.icon-img {
-            width: 26px;
-            height: 26px;
-            display: inline-block;
-            object-fit: contain;
-        }
+  p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 4px 0;
+
+    &:first-child {
+      margin-top: 0;
     }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.copyright {
+  p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
+}
+
+/* =========================================================
+   ========== Responsive ==========
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .footer-main .footer-inner {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-brand {
+    flex: 1;
+    width: 100%;
+  }
+
+  .footer-links {
+    width: 100%;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer-link-group {
+    width: 100%;
+  }
+
+  .footer-bottom-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .company-info {
+    width: 100%;
+  }
+}
+
+/* 마이페이지 레이아웃에서의 조정 */
+.mypage-layout .footer {
+  margin-top: 40px;
+}
+
+.mypage-layout .newsletter-section {
+  padding: 40px 0 30px;
 }

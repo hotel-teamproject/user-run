@@ -20,6 +20,15 @@ const HotelDetailPage = () => {
   const [error, setError] = useState(null);
   const [reviews, setReviews] = useState([]);
 
+  const fetchReviews = async () => {
+    try {
+      const reviewsData = await getReviews(hotelId).catch(() => []);
+      setReviews(reviewsData || []);
+    } catch (err) {
+      console.error("Failed to load reviews:", err);
+    }
+  };
+
   useEffect(() => {
     const fetchHotelData = async () => {
       if (!hotelId) {
@@ -79,18 +88,19 @@ const HotelDetailPage = () => {
       <HotelGallery images={hotel.images} hotelName={hotel.name} />
       <HotelOverview
         description={hotel.description}
-        rating={hotel.ratingAverage}
-        reviewCount={hotel.ratingCount}
-        tags={hotel.tags}
+        rating={hotel.rating || hotel.ratingAverage || 0}
+        reviewCount={hotel.reviewCount || hotel.ratingCount || 0}
+        tags={hotel.tags || []}
       />
       <Amenities amenities={hotel.amenities} />
-      <AvailableRooms rooms={rooms} />
+      <AvailableRooms rooms={rooms} hotelId={hotelId} />
       <HotelMap address={hotel.address} location={hotel.location} />
       <HotelReviews
         hotelId={hotelId}
         rating={hotel.ratingAverage}
         reviewCount={hotel.ratingCount}
         reviews={reviews}
+        getReviews={fetchReviews}
       />
     </div>
   );

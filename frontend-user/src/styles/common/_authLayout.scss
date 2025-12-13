@@ -223,6 +223,112 @@
       }
     }
 
+    /* REGULAR SIGNUP */
+    .regular-signup-section {
+      margin-bottom: 1.6rem;
+      
+      .btn--regular {
+        background: rgba(0, 102, 255, 0.1) !important;
+        border: 2px solid $color-blue !important;
+        color: $color-blue !important;
+        box-shadow: 0 2px 8px rgba(0, 102, 255, 0.15);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s ease;
+        }
+
+        &:hover {
+          background: rgba(0, 102, 255, 0.15) !important;
+          border-color: $color-blue-dark !important;
+          color: $color-blue-dark !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
+          
+          &::before {
+            left: 100%;
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        .user-icon {
+          font-size: 1.8rem;
+          margin-right: 0.8rem;
+          display: inline-block;
+        }
+
+        span:not(.user-icon) {
+          font-weight: 600;
+          font-size: 1.55rem;
+        }
+      }
+    }
+
+    /* BUSINESS SIGNUP */
+    .business-signup-section {
+      margin: 1.6rem 0;
+      
+      .btn--business {
+        background: rgba(0, 102, 255, 0.1) !important;
+        border: 2px solid $color-blue !important;
+        color: $color-blue !important;
+        box-shadow: 0 2px 8px rgba(0, 102, 255, 0.15);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s ease;
+        }
+
+        &:hover {
+          background: rgba(0, 102, 255, 0.15) !important;
+          border-color: $color-blue-dark !important;
+          color: $color-blue-dark !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
+          
+          &::before {
+            left: 100%;
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        .business-icon {
+          font-size: 1.8rem;
+          margin-right: 0.8rem;
+          display: inline-block;
+        }
+
+        span:not(.business-icon) {
+          font-weight: 600;
+          font-size: 1.55rem;
+        }
+      }
+    }
+
     /* SOCIAL */
     .social-login {
       text-align: center;

@@ -84,12 +84,20 @@ const initData = async () => {
     // 2. 호텔 생성
     console.log('🏨 호텔 생성 중...');
     const hotelsData = [
+      // 호텔 5개
       {
         name: '서울 그랜드 호텔',
         description: '서울 강남 중심가에 위치한 럭셔리 호텔입니다. 최고급 시설과 서비스로 고객님께 잊을 수 없는 경험을 제공합니다.',
         address: '서울특별시 강남구 테헤란로 123',
         city: '서울',
-        images: ['/images/hotel1.jpg', '/images/hotel-2.jpg', '/images/hotel-3.png', '/images/hotel.jpg'],
+        images: [
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800'
+        ],
         amenities: ['와이파이', '주차장', '레스토랑', '수영장', '피트니스', '스파', '24시간 프론트 데스크', '라운지', '비즈니스 센터'],
         tags: ['럭셔리', '비즈니스', '커플', '도심'],
         rating: 4.8,
@@ -98,67 +106,41 @@ const initData = async () => {
         status: 'active'
       },
       {
-        name: '부산 해변 리조트',
-        description: '부산 해운대 해변 바로 앞에 위치한 리조트 호텔입니다. 바다 전망을 감상하며 휴식을 취하실 수 있습니다.',
+        name: '부산 비즈니스 호텔',
+        description: '부산 해운대 중심가에 위치한 비즈니스 호텔입니다. 출장과 관광에 최적화된 편리한 시설을 갖추고 있습니다.',
         address: '부산광역시 해운대구 해운대해변로 456',
         city: '부산',
-        images: ['/images/hotel.jpg', '/images/hotel1.jpg', '/images/hotel-2.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '수영장', '해변 접근', '비치 체어', '피트니스', '스파'],
-        tags: ['리조트', '해변', '휴양', '가족'],
-        rating: 4.7,
+        images: [
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '비즈니스 센터', '피트니스', '24시간 프론트 데스크'],
+        tags: ['비즈니스', '도심', '편리', '출장'],
+        rating: 4.6,
         reviewCount: 245,
         owner: ownerUser._id,
         status: 'active'
       },
       {
-        name: '제주 한라산 뷰 호텔',
+        name: '제주 프리미엄 호텔',
         description: '제주 한라산을 조망할 수 있는 프리미엄 호텔입니다. 제주도의 자연을 만끽할 수 있는 특별한 숙박 경험을 제공합니다.',
         address: '제주특별자치도 제주시 연동 789',
         city: '제주',
-        images: ['/images/hotel-2.jpg', '/images/hotel-3.png', '/images/hotel1.jpg', '/images/hotel.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '온천', '골프장', '렌터카', '스파', '피트니스'],
-        tags: ['프리미엄', '자연', '골프', '온천'],
+        images: [
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '온천', '스파', '피트니스', '24시간 프론트 데스크'],
+        tags: ['프리미엄', '자연', '온천', '커플'],
         rating: 4.9,
         reviewCount: 412,
-        owner: ownerUser._id,
-        status: 'active'
-      },
-      {
-        name: '경주 히스토리 호텔',
-        description: '경주 고속버스터미널 인근에 위치한 편리한 호텔입니다. 경주 관광 명소에 쉽게 접근할 수 있습니다.',
-        address: '경상북도 경주시 원화로 321',
-        city: '경주',
-        images: ['/images/hotel1.jpg', '/images/hotel.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '투어 데스크', '라운지', '세탁실'],
-        tags: ['관광', '가성비', '편리', '역사'],
-        rating: 4.5,
-        reviewCount: 189,
-        owner: ownerUser._id,
-        status: 'active'
-      },
-      {
-        name: '강원도 스키 리조트',
-        description: '강원도 평창에 위치한 스키장 인근 리조트입니다. 겨울 스포츠와 여름 휴양을 동시에 즐길 수 있습니다.',
-        address: '강원도 평창군 대화면 올림픽로 555',
-        city: '평창',
-        images: ['/images/hotel.jpg', '/images/hotel-2.jpg', '/images/hotel1.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '스키장', '곤돌라', '스파', '피트니스', '사우나'],
-        tags: ['스키', '리조트', '액티비티', '겨울'],
-        rating: 4.6,
-        reviewCount: 312,
-        owner: ownerUser._id,
-        status: 'active'
-      },
-      {
-        name: '전주 한옥마을 게스트하우스',
-        description: '전주 한옥마을 중심가에 위치한 전통 한옥 스타일의 게스트하우스입니다. 한국의 전통 문화를 체험할 수 있습니다.',
-        address: '전라북도 전주시 완산구 기린대로 654',
-        city: '전주',
-        images: ['/images/hotel-3.png', '/images/hotel1.jpg'],
-        amenities: ['와이파이', '전통 체험', '조식 제공', '한복 대여', '공용 주방'],
-        tags: ['한옥', '전통', '문화체험', '가성비'],
-        rating: 4.4,
-        reviewCount: 156,
         owner: ownerUser._id,
         status: 'active'
       },
@@ -167,7 +149,13 @@ const initData = async () => {
         description: '인천국제공항에서 가장 가까운 비즈니스 호텔입니다. 조용하고 편리한 시설로 출장객에게 최적의 숙박을 제공합니다.',
         address: '인천광역시 중구 공항로 272',
         city: '인천',
-        images: ['/images/hotel.jpg', '/images/hotel1.jpg'],
+        images: [
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800'
+        ],
         amenities: ['와이파이', '주차장', '레스토랑', '24시간 프론트', '셔틀버스', '비즈니스 센터'],
         tags: ['공항', '비즈니스', '편리', '출장'],
         rating: 4.3,
@@ -176,50 +164,131 @@ const initData = async () => {
         status: 'active'
       },
       {
-        name: '속초 해수욕장 호텔',
-        description: '속초 대포항 앞바다를 내려다보는 해안가 호텔입니다. 신선한 해산물과 아름다운 일출을 감상할 수 있습니다.',
-        address: '강원도 속초시 해안로 123',
-        city: '속초',
-        images: ['/images/hotel-2.jpg', '/images/hotel.jpg', '/images/hotel1.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '해수욕장', '피트니스', '사우나', '해산물 식당'],
-        tags: ['해안', '일출', '해산물', '가족'],
-        rating: 4.5,
-        reviewCount: 278,
-        owner: ownerUser._id,
-        status: 'active'
-      },
-      {
-        name: '여수 오동도 바다뷰 호텔',
-        description: '여수 오동도를 전망하는 프리미엄 호텔입니다. 바다와 섬이 어우러진 아름다운 풍경을 즐기실 수 있습니다.',
-        address: '전라남도 여수시 오동도로 222',
-        city: '여수',
-        images: ['/images/hotel1.jpg', '/images/hotel-2.jpg', '/images/hotel-3.png'],
-        amenities: ['와이파이', '주차장', '레스토랑', '해변 접근', '피트니스', '스파', '카페'],
-        tags: ['바다뷰', '프리미엄', '로맨틱', '커플'],
-        rating: 4.7,
-        reviewCount: 345,
-        owner: ownerUser._id,
-        status: 'active'
-      },
-      {
-        name: '남산 타워 뷰 호텔',
-        description: '서울 남산타워가 보이는 도심 호텔입니다. 서울의 아름다운 야경을 감상하며 특별한 하룻밤을 보내실 수 있습니다.',
-        address: '서울특별시 중구 남산타워길 100',
+        name: '서울 명동 센트럴 호텔',
+        description: '서울 명동 중심가에 위치한 편리한 호텔입니다. 쇼핑과 관광에 최적의 위치를 자랑합니다.',
+        address: '서울특별시 중구 명동길 100',
         city: '서울',
-        images: ['/images/hotel-2.jpg', '/images/hotel1.jpg', '/images/hotel.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '루프탑 바', '피트니스', '비즈니스 센터'],
-        tags: ['도심', '야경', '로맨틱', '비즈니스'],
-        rating: 4.6,
-        reviewCount: 421,
+        images: [
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '24시간 프론트 데스크', '라운지'],
+        tags: ['도심', '쇼핑', '관광', '편리'],
+        rating: 4.5,
+        reviewCount: 289,
         owner: ownerUser._id,
         status: 'active'
       },
+      // 모텔 5개
+      {
+        name: '강남 러브 모텔',
+        description: '강남 중심가에 위치한 깔끔하고 모던한 모텔입니다. 커플과 개인 여행객에게 최적화된 편안한 공간을 제공합니다.',
+        address: '서울특별시 강남구 논현로 200',
+        city: '서울',
+        images: [
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
+        tags: ['커플', '가성비', '편리', '도심'],
+        rating: 4.2,
+        reviewCount: 156,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      {
+        name: '부산 해운대 모텔',
+        description: '부산 해운대 해변 근처에 위치한 깔끔한 모텔입니다. 해변까지 도보 5분 거리의 편리한 위치입니다.',
+        address: '부산광역시 해운대구 해운대해변로 300',
+        city: '부산',
+        images: [
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품', '해변 접근'],
+        tags: ['해변', '커플', '가성비', '편리'],
+        rating: 4.1,
+        reviewCount: 134,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      {
+        name: '제주 시티 모텔',
+        description: '제주시 중심가에 위치한 깔끔하고 편리한 모텔입니다. 렌터카 여행에 최적화된 위치입니다.',
+        address: '제주특별자치도 제주시 노형동 456',
+        city: '제주',
+        images: [
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품', '렌터카 주차'],
+        tags: ['가성비', '편리', '렌터카', '도심'],
+        rating: 4.0,
+        reviewCount: 198,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      {
+        name: '인천 송도 모텔',
+        description: '인천 송도국제도시에 위치한 모던한 모텔입니다. 깔끔한 인테리어와 편리한 시설을 갖추고 있습니다.',
+        address: '인천광역시 연수구 송도과학로 123',
+        city: '인천',
+        images: [
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
+        tags: ['가성비', '모던', '편리', '커플'],
+        rating: 4.1,
+        reviewCount: 167,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      {
+        name: '대구 중앙 모텔',
+        description: '대구 중앙역 근처에 위치한 편리한 모텔입니다. 대구 관광과 쇼핑에 최적의 위치입니다.',
+        address: '대구광역시 중구 중앙대로 400',
+        city: '대구',
+        images: [
+          'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
+        tags: ['가성비', '편리', '관광', '도심'],
+        rating: 4.0,
+        reviewCount: 145,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      // 리조트 5개
       {
         name: '제주 해비치 리조트',
         description: '제주 서귀포 해안가에 위치한 프리미엄 리조트입니다. 골프장과 해변을 동시에 즐길 수 있는 최고의 휴양지입니다.',
         address: '제주특별자치도 서귀포시 중문관광로 72',
         city: '제주',
-        images: ['/images/hotel.jpg', '/images/hotel-2.jpg', '/images/hotel-3.png', '/images/hotel1.jpg'],
+        images: [
+          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+        ],
         amenities: ['와이파이', '주차장', '레스토랑', '골프장', '해변', '스파', '피트니스', '키즈클럽'],
         tags: ['리조트', '골프', '해변', '가족'],
         rating: 4.8,
@@ -228,34 +297,108 @@ const initData = async () => {
         status: 'active'
       },
       {
-        name: '부산 광안리 오션뷰 호텔',
-        description: '부산 광안리 해수욕장과 광안대교를 조망하는 최고의 위치의 호텔입니다. 광안리의 활기찬 분위기를 즐기실 수 있습니다.',
-        address: '부산광역시 수영구 광안해변로 199',
-        city: '부산',
-        images: ['/images/hotel1.jpg', '/images/hotel-2.jpg', '/images/hotel.jpg'],
-        amenities: ['와이파이', '주차장', '레스토랑', '해수욕장', '피트니스', '스파', '루프탑'],
-        tags: ['해변', '야경', '커플', '가족'],
+        name: '강원도 스키 리조트',
+        description: '강원도 평창에 위치한 스키장 인근 리조트입니다. 겨울 스포츠와 여름 휴양을 동시에 즐길 수 있습니다.',
+        address: '강원도 평창군 대화면 올림픽로 555',
+        city: '평창',
+        images: [
+          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
+          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '스키장', '곤돌라', '스파', '피트니스', '사우나'],
+        tags: ['스키', '리조트', '액티비티', '겨울'],
         rating: 4.6,
-        reviewCount: 389,
+        reviewCount: 312,
         owner: ownerUser._id,
         status: 'active'
       },
       {
-        name: '강릉 안목해변 호텔',
-        description: '강릉 커피거리와 안목해변에 인접한 감성 호텔입니다. 커피향 가득한 여행을 즐기실 수 있습니다.',
-        address: '강원도 강릉시 창해로14번길 20',
-        city: '강릉',
-        images: ['/images/hotel-3.png', '/images/hotel1.jpg', '/images/hotel-2.jpg'],
-        amenities: ['와이파이', '주차장', '카페', '해변 접근', '투어 데스크'],
-        tags: ['감성', '커피', '해변', '가성비'],
-        rating: 4.4,
-        reviewCount: 198,
+        name: '부산 해변 리조트',
+        description: '부산 해운대 해변 바로 앞에 위치한 리조트 호텔입니다. 바다 전망을 감상하며 휴식을 취하실 수 있습니다.',
+        address: '부산광역시 해운대구 해운대해변로 456',
+        city: '부산',
+        images: [
+          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '수영장', '해변 접근', '비치 체어', '피트니스', '스파'],
+        tags: ['리조트', '해변', '휴양', '가족'],
+        rating: 4.7,
+        reviewCount: 245,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      {
+        name: '속초 해수욕장 리조트',
+        description: '속초 대포항 앞바다를 내려다보는 해안가 리조트입니다. 신선한 해산물과 아름다운 일출을 감상할 수 있습니다.',
+        address: '강원도 속초시 해안로 123',
+        city: '속초',
+        images: [
+          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '해수욕장', '피트니스', '사우나', '해산물 식당', '수영장'],
+        tags: ['해안', '일출', '해산물', '가족'],
+        rating: 4.5,
+        reviewCount: 278,
+        owner: ownerUser._id,
+        status: 'active'
+      },
+      {
+        name: '여수 오동도 바다뷰 리조트',
+        description: '여수 오동도를 전망하는 프리미엄 리조트입니다. 바다와 섬이 어우러진 아름다운 풍경을 즐기실 수 있습니다.',
+        address: '전라남도 여수시 오동도로 222',
+        city: '여수',
+        images: [
+          'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
+          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+          'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
+          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+        ],
+        amenities: ['와이파이', '주차장', '레스토랑', '해변 접근', '피트니스', '스파', '카페', '수영장'],
+        tags: ['바다뷰', '프리미엄', '로맨틱', '커플'],
+        rating: 4.7,
+        reviewCount: 345,
         owner: ownerUser._id,
         status: 'active'
       }
     ];
 
-    const hotels = await Hotel.insertMany(hotelsData);
+    // 프론트엔드 호환을 위한 필드 추가
+    const hotelsDataWithFrontendFields = hotelsData.map(hotel => {
+      // rating 기반으로 stars 계산 (4.5 이상 = 5성, 3.5 이상 = 4성, 2.5 이상 = 3성, 1.5 이상 = 2성, 그 외 = 1성)
+      const calculateStars = (rating) => {
+        if (rating >= 4.5) return 5;
+        if (rating >= 3.5) return 4;
+        if (rating >= 2.5) return 3;
+        if (rating >= 1.5) return 2;
+        return 1;
+      };
+
+      return {
+        ...hotel,
+        location: hotel.address, // location 필드 추가
+        image: hotel.images && hotel.images.length > 0 ? hotel.images[0] : null, // image 필드 추가
+        imageCount: hotel.images ? hotel.images.length : 0, // imageCount 필드 추가
+        stars: calculateStars(hotel.rating || 4.0) // stars 필드 추가 (rating 기반)
+      };
+    });
+
+    const hotels = await Hotel.insertMany(hotelsDataWithFrontendFields);
     console.log(`✅ ${hotels.length}개의 호텔 생성 완료`);
 
     // 3. 객실 생성
@@ -271,10 +414,8 @@ const initData = async () => {
         '인천': { standard: 100000, deluxe: 180000, suite: 300000, premium: 450000 },
         '속초': { standard: 110000, deluxe: 190000, suite: 320000, premium: 480000 },
         '여수': { standard: 130000, deluxe: 220000, suite: 380000, premium: 550000 },
-        '강릉': { standard: 90000, deluxe: 150000, suite: 250000, premium: 400000 },
-        '경주': { standard: 80000, deluxe: 140000, suite: 240000, premium: 380000 },
-        '평창': { standard: 130000, deluxe: 210000, suite: 360000, premium: 520000 },
-        '전주': { standard: 70000, deluxe: 120000, suite: 200000, premium: 320000 }
+        '대구': { standard: 80000, deluxe: 140000, suite: 240000, premium: 380000 },
+        '평창': { standard: 130000, deluxe: 210000, suite: 360000, premium: 520000 }
       };
       return priceMap[city] || { standard: 100000, deluxe: 180000, suite: 300000, premium: 450000 };
     };
@@ -290,7 +431,7 @@ const initData = async () => {
           type: 'standard',
           price: prices.standard,
           maxGuests: 2,
-          images: ['/images/hotel1.jpg'],
+          images: ['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'],
           amenities: ['TV', '에어컨', '미니바', '욕실', '무료 와이파이'],
           size: 25,
           bedType: 'double',
@@ -304,7 +445,7 @@ const initData = async () => {
           type: 'deluxe',
           price: prices.deluxe,
           maxGuests: 3,
-          images: ['/images/hotel-2.jpg'],
+          images: ['https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'],
           amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '소파', '무료 와이파이'],
           size: 35,
           bedType: 'queen',
@@ -318,7 +459,7 @@ const initData = async () => {
           type: 'suite',
           price: prices.suite,
           maxGuests: 4,
-          images: ['/images/hotel-3.png'],
+          images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800'],
           amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '거실', '스파', '무료 와이파이'],
           size: 60,
           bedType: 'king',
@@ -332,7 +473,7 @@ const initData = async () => {
           type: 'premium',
           price: prices.premium,
           maxGuests: 6,
-          images: ['/images/hotel.jpg'],
+          images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'],
           amenities: ['TV', '에어컨', '미니바', '욕실', '발코니', '거실', '스파', '주방', '무료 와이파이', '버틀러 서비스'],
           size: 90,
           bedType: 'king',
@@ -346,6 +487,19 @@ const initData = async () => {
     }
 
     console.log(`✅ ${rooms.length}개의 객실 생성 완료`);
+
+    // 호텔별 basePrice 업데이트 (가장 저렴한 객실 가격)
+    console.log('💰 호텔 basePrice 업데이트 중...');
+    for (const hotel of hotels) {
+      const hotelRooms = rooms.filter(r => r.hotel.toString() === hotel._id.toString());
+      if (hotelRooms.length > 0) {
+        const minPrice = Math.min(...hotelRooms.map(r => r.price));
+        await Hotel.findByIdAndUpdate(hotel._id, {
+          basePrice: minPrice
+        });
+      }
+    }
+    console.log('✅ 호텔 basePrice 업데이트 완료');
 
     // 4. 예약 생성
     console.log('📅 예약 생성 중...');
@@ -438,7 +592,6 @@ const initData = async () => {
 
     // 6. 쿠폰 생성
     console.log('🎫 쿠폰 생성 중...');
-    const today = new Date();
     const nextMonth = new Date(today);
     nextMonth.setMonth(today.getMonth() + 1);
     const next3Months = new Date(today);

@@ -13,7 +13,7 @@ const Newsletter = () => {
           </h2>
 
           <div className="newsletter-desc">
-            <p className="travel-title">The Travel</p>
+            <p className="travel-title">더 트래블</p>
             <p className="travel-sub">구독하고 쿠폰, 최신 이벤트를 받아보세요</p>
           </div>
 
@@ -21,11 +21,11 @@ const Newsletter = () => {
           <div className="newsletter-input-wrapper">
             <input
               type="email"
-              placeholder="Your email address"
+              placeholder="이메일 주소를 입력하세요"
               className="newsletter-input"
               maxLength={100}
             />
-            <button className="newsletter-btn">Subscribe</button>
+            <button className="newsletter-btn">구독하기</button>
           </div>
         </div>
 

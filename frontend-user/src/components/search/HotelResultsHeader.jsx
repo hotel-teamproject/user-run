@@ -7,16 +7,16 @@ const HotelResultsHeader = ({ total, showing }) => {
  return (
   <div className="hotel-results-header">
    <div className="results-info">
-    Showing <strong>{showing}</strong> of{" "}
-    <strong className="total">{total} places</strong>
+    <strong>{showing}</strong>개 표시 중 / 총{" "}
+    <strong className="total">{total}개</strong>
    </div>
    <div className="sort-dropdown">
-    <label>Sort by</label>
+    <label>정렬</label>
     <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-     <option value="recommended">Recommended</option>
-     <option value="price-low">Price: Low to High</option>
-     <option value="price-high">Price: High to Low</option>
-     <option value="rating">Rating</option>
+     <option value="recommended">추천순</option>
+     <option value="price-low">가격: 낮은 순</option>
+     <option value="price-high">가격: 높은 순</option>
+     <option value="rating">평점순</option>
     </select>
    </div>
   </div>

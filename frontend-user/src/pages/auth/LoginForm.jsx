@@ -40,17 +40,15 @@ const LoginForm = () => {
    setError("");
 
    // 실제 API로 로그인
-   const response = await loginUser({
+   const userData = await loginUser({
     email: formData.email,
     password: formData.password,
    });
 
    // 백엔드 응답 구조 확인
-   console.log("Login response:", response);
+   console.log("Login response:", userData);
    
-   // loginUser는 response.data.data 또는 response.data를 반환
-   const userData = response?._id ? response : (response?.data || null);
-   
+   // loginUser는 response.data.data를 반환하므로 이미 사용자 데이터 객체
    if (userData && userData._id) {
     // userClient에서 이미 토큰을 저장하므로, 사용자 정보만 저장
     const userInfo = {
@@ -81,7 +79,7 @@ const LoginForm = () => {
     // 페이지 새로고침 후 AuthContext의 useEffect가 실행되어 사용자 정보를 다시 가져옴
     window.location.href = "/";
    } else {
-    console.error("Invalid response:", response);
+    console.error("Invalid response:", userData);
     setError("로그인 응답이 올바르지 않습니다.");
    }
   } catch (err) {
@@ -104,14 +102,21 @@ const LoginForm = () => {
  return (
   <div className="common-form">
    <div className="form-header">
-    <h1 className="form-title">Login</h1>
+    <button
+     type="button"
+     className="back-button"
+     onClick={() => navigate("/")}
+    >
+     ← 뒤로 가기
+    </button>
+    <h1 className="form-title">로그인</h1>
     <p className="form-subtitle">로그인하세요</p>
    </div>
 
    <form className="form-content" onSubmit={handleSubmit}>
     {error && <div className="error-message">{error}</div>}
     <div className="form-group">
-     <label className="form-label">Email</label>
+     <label className="form-label">이메일</label>
      <input
       type="email"
       name="email"
@@ -124,7 +129,7 @@ const LoginForm = () => {
      />
     </div>
     <div className="form-group">
-     <label className="form-label">Password</label>
+     <label className="form-label">비밀번호</label>
      <div className="password-input-wrapper">
       <input
        type="password"
@@ -133,7 +138,7 @@ const LoginForm = () => {
        placeholder="1234"
        value={formData.password}
        onChange={handleInputChange}
-       minLength={6}
+       minLength={4}
        maxLength={128}
        required
       />
@@ -153,7 +158,7 @@ const LoginForm = () => {
       <span className="checkbox-label">비밀번호 기억하기</span>
      </label>
      <a href="#" className="forgot-password">
-      Forgot Password?
+      비밀번호를 잊으셨나요?
      </a>
     </div>
     <button 
@@ -161,20 +166,33 @@ const LoginForm = () => {
      className="btn btn--primary btn--block"
      disabled={loading}
     >
-     {loading ? "로그인 중..." : "Login"}
+     {loading ? "로그인 중..." : "로그인"}
     </button>{" "}
     <div className="divider">
      <span className="divider-text">회원가입하세요</span>
     </div>
+    <div className="regular-signup-section">
     <button
      type="button"
      onClick={() => navigate("/signup")}
-     className="btn btn--accent btn--block"
+      className="btn btn--regular btn--block"
+     >
+      <span className="user-icon">👤</span>
+      <span>일반 회원가입</span>
+     </button>
+    </div>
+    <div className="business-signup-section">
+     <button
+      type="button"
+      onClick={() => navigate("/business-signup")}
+      className="btn btn--business btn--block"
     >
-     Sign Up
+      <span className="business-icon">🏢</span>
+      <span>사업자 회원가입</span>
     </button>
+    </div>
     <div className="social-login">
-     <p className="social-login-text">Or login with</p>
+     <p className="social-login-text">또는 다음으로 로그인</p>
      <div className="social-buttons">
       <button
        type="button"

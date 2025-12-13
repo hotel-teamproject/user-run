@@ -20,7 +20,8 @@ export const protect = async (req, res, next) => {
 
   try {
     // 토큰 검증
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const secret = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
+    const decoded = jwt.verify(token, secret);
 
     // 사용자 정보 조회 (비밀번호 제외)
     req.user = await User.findById(decoded.id).select('-password');
@@ -59,14 +60,22 @@ export const authorize = (...roles) => {
 
 // JWT 토큰 생성 함수
 export const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  const secret = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
+  if (!secret) {
+    throw new Error('JWT_SECRET is not configured');
+  }
+  return jwt.sign({ id }, secret, {
     expiresIn: process.env.JWT_EXPIRE || '7d'
   });
 };
 
 // Refresh 토큰 생성 함수
 export const generateRefreshToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+  const secret = process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-key-change-in-production';
+  if (!secret) {
+    throw new Error('JWT_REFRESH_SECRET is not configured');
+  }
+  return jwt.sign({ id }, secret, {
     expiresIn: process.env.JWT_REFRESH_EXPIRE || '30d'
   });
 };

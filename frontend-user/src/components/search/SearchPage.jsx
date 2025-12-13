@@ -30,11 +30,11 @@ const SearchPage = () => {
   }, []);
 
   if (loading) {
-    return <div className="search-page loading">Loading hotels...</div>;
+    return <div className="search-page loading">호텔 목록을 불러오는 중...</div>;
   }
 
   if (error) {
-    return <div className="search-page error">Error: {error}</div>;
+    return <div className="search-page error">오류: {error}</div>;
   }
 
   return (

@@ -1,0 +1,142 @@
+@use "../../../styles/common/variables" as *;
+
+.newsletter-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.newsletter {
+  width: 100%;
+  max-width: 1000px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 32px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.newsletter-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #00234d;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.newsletter-desc {
+  .travel-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #00234d;
+    margin: 0 0 4px 0;
+  }
+
+  .travel-sub {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.newsletter-input-wrapper {
+  display: flex;
+  margin-top: 8px;
+  gap: 0;
+}
+
+.newsletter-input {
+  flex: 1;
+  border: 2px solid #e0e0e0;
+  border-right: none;
+  padding: 14px 16px;
+  border-radius: 10px 0 0 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #00234d;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.newsletter-btn {
+  background: #00234d;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 0 10px 10px 0;
+  border: 2px solid #00234d;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: #004d7a;
+    border-color: #004d7a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 35, 77, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.newsletter-right {
+  flex-shrink: 0;
+}
+
+.newsletter-img {
+  width: 280px;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .newsletter {
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .newsletter-left {
+    width: 100%;
+  }
+
+  .newsletter-title {
+    font-size: 24px;
+  }
+
+  .newsletter-right {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .newsletter-img {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+

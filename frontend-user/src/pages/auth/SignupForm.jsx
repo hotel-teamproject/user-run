@@ -48,8 +48,8 @@ const SignupForm = () => {
    return;
   }
 
-  if (formData.password.length < 6) {
-   setError("비밀번호는 최소 6자 이상이어야 합니다.");
+  if (formData.password.length < 4) {
+   setError("비밀번호는 최소 4자 이상이어야 합니다.");
    return;
   }
 
@@ -181,7 +181,7 @@ const SignupForm = () => {
        placeholder="••••••••••••"
        value={formData.password}
        onChange={handleInputChange}
-       minLength={6}
+       minLength={4}
        maxLength={128}
        required
       />
@@ -205,7 +205,7 @@ const SignupForm = () => {
        placeholder="••••••••••••"
        value={formData.confirmPassword}
        onChange={handleInputChange}
-       minLength={6}
+       minLength={4}
        maxLength={128}
        required
       />

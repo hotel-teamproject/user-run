@@ -6,14 +6,14 @@ const FilterSidebar = () => {
     <aside className="filter-sidebar">
 
       {/* Title */}
-      <h2 className="filter-title">Filters</h2>
+      <h2 className="filter-title">필터</h2>
 
       {/* ======================
           PRICE FILTER
       ====================== */}
       <div className="filter-section">
         <div className="filter-header">
-          <span>Price</span>
+          <span>가격</span>
           <button className="toggle-btn">⌃</button>
         </div>
 
@@ -59,7 +59,7 @@ const FilterSidebar = () => {
       ====================== */}
       <div className="filter-section">
         <div className="filter-header">
-          <span>Rating</span>
+          <span>평점</span>
           <button className="toggle-btn">⌃</button>
         </div>
 
@@ -79,7 +79,7 @@ const FilterSidebar = () => {
       ====================== */}
       <div className="filter-section">
         <div className="filter-header">
-          <span>Freebies</span>
+          <span>무료 서비스</span>
           <button className="toggle-btn">⌃</button>
         </div>
 
@@ -99,7 +99,7 @@ const FilterSidebar = () => {
       ====================== */}
       <div className="filter-section">
         <div className="filter-header">
-          <span>Amenities</span>
+          <span>편의시설</span>
           <button className="toggle-btn">⌃</button>
         </div>
 

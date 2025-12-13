@@ -23,6 +23,11 @@ export const updateReview = async (reviewId, reviewData) => {
 } 
 export const deleteReview = async (reviewId) => {
   const response = await axiosInstance.delete(`/reviews/${reviewId}`);
-  canEditOrDelete(response.data.data);
-  return response.data.data;
+  
+  // 응답 구조 확인
+  if (response.data.resultCode === 'FAIL') {
+    throw new Error(response.data.message || '리뷰 삭제에 실패했습니다.');
+  }
+  
+  return response.data.data || response.data;
 }

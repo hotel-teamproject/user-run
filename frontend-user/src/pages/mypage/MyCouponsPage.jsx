@@ -3,9 +3,9 @@ import { getUserCoupons } from '../../api/couponClient';
 import '../../styles/pages/mypage/MyCouponsPage.scss';
 
 const MyCouponsPage = () => {
-  const [coupons, setCoupons] = useState({ available: [], expired: [] });
+  const [coupons, setCoupons] = useState({ available: [], used: [], expired: [] });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('available'); // 'available' or 'expired'
+  const [activeTab, setActiveTab] = useState('available'); // 'available', 'used', or 'expired'
 
   useEffect(() => {
     fetchCoupons();
@@ -17,6 +17,7 @@ const MyCouponsPage = () => {
       const data = await getUserCoupons();
       setCoupons({
         available: data.available || [],
+        used: data.used || [],
         expired: data.expired || []
       });
     } catch (error) {
@@ -43,9 +44,12 @@ const MyCouponsPage = () => {
     }
   };
 
-  const renderCouponCard = (coupon, isExpired = false) => {
+  const renderCouponCard = (coupon, status = 'available') => {
+    const isExpired = status === 'expired';
+    const isUsed = status === 'used';
+    
     return (
-      <div key={coupon._id} className={`coupon-card ${isExpired ? 'expired' : ''}`}>
+      <div key={coupon._id} className={`coupon-card ${isExpired ? 'expired' : ''} ${isUsed ? 'used' : ''}`}>
         <div className="coupon-left">
           <div className="coupon-discount">
             <span className="discount-amount">{formatDiscount(coupon)}</span>
@@ -75,11 +79,19 @@ const MyCouponsPage = () => {
                 {formatDate(coupon.validUntil)}
               </span>
             </div>
-            {coupon.usageLimit && (
+            {coupon.usageLimit && !isUsed && (
               <div className="info-item">
                 <span className="info-label">사용 가능:</span>
                 <span className="info-value">
-                  {coupon.usageLimit - coupon.usedCount}회 남음
+                  {coupon.usageLimit - (coupon.usedCount || 0)}회 남음
+                </span>
+              </div>
+            )}
+            {isUsed && (
+              <div className="info-item">
+                <span className="info-label">사용 횟수:</span>
+                <span className="info-value">
+                  {coupon.usedCount || 0}회 사용됨
                 </span>
               </div>
             )}
@@ -87,6 +99,9 @@ const MyCouponsPage = () => {
         </div>
         {isExpired && (
           <div className="coupon-expired-badge">만료</div>
+        )}
+        {isUsed && (
+          <div className="coupon-used-badge">사용됨</div>
         )}
       </div>
     );
@@ -115,6 +130,12 @@ const MyCouponsPage = () => {
           사용 가능 ({coupons.available.length})
         </button>
         <button
+          className={`tab-button ${activeTab === 'used' ? 'active' : ''}`}
+          onClick={() => setActiveTab('used')}
+        >
+          사용됨 ({coupons.used.length})
+        </button>
+        <button
           className={`tab-button ${activeTab === 'expired' ? 'active' : ''}`}
           onClick={() => setActiveTab('expired')}
         >
@@ -125,16 +146,25 @@ const MyCouponsPage = () => {
       <div className="coupon-list">
         {activeTab === 'available' ? (
           coupons.available.length > 0 ? (
-            coupons.available.map(coupon => renderCouponCard(coupon, false))
+            coupons.available.map(coupon => renderCouponCard(coupon, 'available'))
           ) : (
             <div className="empty-state">
               <div className="empty-icon">🎫</div>
               <p className="empty-text">사용 가능한 쿠폰이 없습니다</p>
             </div>
           )
+        ) : activeTab === 'used' ? (
+          coupons.used.length > 0 ? (
+            coupons.used.map(coupon => renderCouponCard(coupon, 'used'))
+          ) : (
+            <div className="empty-state">
+              <div className="empty-icon">✅</div>
+              <p className="empty-text">사용된 쿠폰이 없습니다</p>
+            </div>
+          )
         ) : (
           coupons.expired.length > 0 ? (
-            coupons.expired.map(coupon => renderCouponCard(coupon, true))
+            coupons.expired.map(coupon => renderCouponCard(coupon, 'expired'))
           ) : (
             <div className="empty-state">
               <div className="empty-icon">📋</div>

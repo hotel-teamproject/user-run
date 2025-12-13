@@ -1,10 +1,22 @@
 import Reservation from '../models/Reservation.js';
 import Room from '../models/Room.js';
+import Coupon from '../models/Coupon.js';
 
 // 예약 생성
 export const createReservation = async (req, res) => {
   try {
-    const { hotelId, roomId, checkIn, checkOut, guests, specialRequests } = req.body;
+    const { 
+      hotelId, 
+      roomId, 
+      checkIn, 
+      checkOut, 
+      guests, 
+      specialRequests,
+      totalPrice,  // 프론트엔드에서 계산된 최종 금액 (쿠폰 할인 포함)
+      discount,    // 쿠폰 할인 금액
+      extrasPrice, // 추가 옵션 가격
+      couponCode   // 사용된 쿠폰 코드
+    } = req.body;
 
     if (!hotelId || !roomId || !checkIn || !checkOut || !guests) {
       return res.status(400).json({
@@ -56,9 +68,19 @@ export const createReservation = async (req, res) => {
       });
     }
 
-    // 총 가격 계산 (일수 × 객실 가격)
+    // 총 가격 계산 (프론트엔드에서 전달된 totalPrice 사용, 없으면 기본 계산)
     const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-    const totalPrice = nights * room.price;
+    const finalTotalPrice = totalPrice || (nights * room.price);
+
+    // 쿠폰 사용 처리
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode.toUpperCase() });
+      if (coupon) {
+        // 쿠폰 사용 횟수 증가
+        coupon.usedCount = (coupon.usedCount || 0) + 1;
+        await coupon.save();
+      }
+    }
 
     // 예약 생성
     const reservation = await Reservation.create({
@@ -68,7 +90,10 @@ export const createReservation = async (req, res) => {
       checkIn: checkInDate,
       checkOut: checkOutDate,
       guests,
-      totalPrice,
+      totalPrice: finalTotalPrice,
+      discount: discount || 0,
+      extrasPrice: extrasPrice || 0,
+      couponCode: couponCode || null,
       specialRequests,
       status: 'pending'
     });

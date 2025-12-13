@@ -55,7 +55,7 @@ const Amenities = ({ amenities = [] }) => {
 
  return (
   <div className="amenities">
-   <h3 className="amenities-title">Amenities</h3>
+   <h3 className="amenities-title">편의시설</h3>
    <div className="amenities-grid">
     {displayedAmenities.map((amenity, index) => (
      <div key={index} className="amenity-item">
@@ -66,7 +66,7 @@ const Amenities = ({ amenities = [] }) => {
    </div>
    {hasMore && (
     <button className="show-more-btn" onClick={() => setShowAll(!showAll)}>
-     {showAll ? "접기" : `+${amenities.length - 10} more`}
+     {showAll ? "접기" : `+${amenities.length - 10}개 더보기`}
     </button>
    )}
   </div>

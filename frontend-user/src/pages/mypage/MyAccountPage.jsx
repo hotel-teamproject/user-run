@@ -45,14 +45,14 @@ const MyAccountPage = () => {
   return (
     <div className="mypage-container">
       <div className="account-content">
-        <h2 className="account-title">Account</h2>
+        <h2 className="account-title">계정</h2>
 
         <div className="account-form">
 
           {/* ================== NAME ================== */}
           <div className="form-field">
             <div className="field-left">
-              <span className="field-label">Name</span>
+              <span className="field-label">이름</span>
               {isEditing.name ? (
                 <input
                   type="text"
@@ -73,14 +73,14 @@ const MyAccountPage = () => {
                 isEditing.name ? handleSave("name") : handleChange("name")
               }
             >
-              {isEditing.name ? "Save" : "Change"}
+              {isEditing.name ? "저장" : "변경"}
             </button>
           </div>
 
           {/* ================== EMAIL ================== */}
           <div className="form-field">
             <div className="field-left">
-              <span className="field-label">Email</span>
+              <span className="field-label">이메일</span>
               {isEditing.email ? (
                 <input
                   type="email"
@@ -101,14 +101,14 @@ const MyAccountPage = () => {
                 isEditing.email ? handleSave("email") : handleChange("email")
               }
             >
-              {isEditing.email ? "Save" : "Change"}
+              {isEditing.email ? "저장" : "변경"}
             </button>
           </div>
 
           {/* ================== PASSWORD ================== */}
           <div className="form-field">
             <div className="field-left">
-              <span className="field-label">Password</span>
+              <span className="field-label">비밀번호</span>
               {isEditing.password ? (
                 <input
                   type="password"
@@ -116,7 +116,7 @@ const MyAccountPage = () => {
                   className="field-input"
                   value={formData.password}
                   onChange={handleInputChange}
-                  minLength={6}
+                  minLength={4}
                   maxLength={128}
                 />
               ) : (
@@ -132,14 +132,14 @@ const MyAccountPage = () => {
                   : handleChange("password")
               }
             >
-              {isEditing.password ? "Save" : "Change"}
+              {isEditing.password ? "저장" : "변경"}
             </button>
           </div>
 
           {/* ================== PHONE ================== */}
           <div className="form-field">
             <div className="field-left">
-              <span className="field-label">Phone number</span>
+              <span className="field-label">전화번호</span>
               {isEditing.phone ? (
                 <input
                   type="tel"
@@ -161,14 +161,14 @@ const MyAccountPage = () => {
                 isEditing.phone ? handleSave("phone") : handleChange("phone")
               }
             >
-              {isEditing.phone ? "Save" : "Change"}
+              {isEditing.phone ? "저장" : "변경"}
             </button>
           </div>
 
           {/* ================== ADDRESS ================== */}
           <div className="form-field">
             <div className="field-left">
-              <span className="field-label">Address</span>
+              <span className="field-label">주소</span>
               {isEditing.address ? (
                 <input
                   type="text"
@@ -191,14 +191,14 @@ const MyAccountPage = () => {
                   : handleChange("address")
               }
             >
-              {isEditing.address ? "Save" : "Change"}
+              {isEditing.address ? "저장" : "변경"}
             </button>
           </div>
 
           {/* ================== DOB ================== */}
           <div className="form-field">
             <div className="field-left">
-              <span className="field-label">Date of birth</span>
+              <span className="field-label">생년월일</span>
               {isEditing.dateOfBirth ? (
                 <input
                   type="date"
@@ -220,7 +220,7 @@ const MyAccountPage = () => {
                   : handleChange("dateOfBirth")
               }
             >
-              {isEditing.dateOfBirth ? "Save" : "Change"}
+              {isEditing.dateOfBirth ? "저장" : "변경"}
             </button>
           </div>
 

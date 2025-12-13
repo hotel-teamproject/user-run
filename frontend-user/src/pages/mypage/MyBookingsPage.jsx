@@ -52,9 +52,11 @@ const MyBookingsPage = () => {
     return true;
   });
 
-  const handleDownloadTicket = (reservationId) => {
-    console.log("Download ticket for reservation:", reservationId);
-    // TODO: 티켓 다운로드 기능 구현
+  const handleDownloadTicket = (reservationId, e) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    navigate(`/mypage/bookings/${reservationId}`);
   };
 
   if (loading) {
@@ -79,9 +81,9 @@ const MyBookingsPage = () => {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >
-            <option value="upcoming">Upcoming</option>
-            <option value="past">Past</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="upcoming">예정된 예약</option>
+            <option value="past">지난 예약</option>
+            <option value="cancelled">취소된 예약</option>
           </select>
         </div>
       </div>
@@ -136,8 +138,6 @@ const MyBookingsPage = () => {
               <div 
                 key={reservationId} 
                 className="reservation-card"
-                onClick={() => navigate(`/mypage/bookings/${reservationId}`)}
-                style={{ cursor: 'pointer' }}
               >
                 <div className="hotel-logo">
                   <img
@@ -160,7 +160,7 @@ const MyBookingsPage = () => {
                   </div>
                   <div className="check-dates">
                     <div className="check-item">
-                      <span className="check-label">Check-In</span>
+                      <span className="check-label">체크인</span>
                       <span className="check-date">
                         {formatDate(checkIn)}
                       </span>
@@ -170,7 +170,7 @@ const MyBookingsPage = () => {
                       </div>
                     </div>
                     <div className="check-item">
-                      <span className="check-label">Check Out</span>
+                      <span className="check-label">체크아웃</span>
                       <span className="check-date">
                         {formatDate(checkOut)}
                       </span>
@@ -194,21 +194,20 @@ const MyBookingsPage = () => {
                       <span>숙박: {nights}박 {nights + 1}일</span>
                     </div>
                   </div>
-                  <div className="price-info">
-                    <span className="price-label">총 결제 금액</span>
-                    <span className="price-amount">₩{totalPrice.toLocaleString()}</span>
+                  <div className="price-action-row">
+                    <div className="price-info">
+                      <span className="price-label">총 결제 금액</span>
+                      <span className="price-amount">₩{totalPrice.toLocaleString()}</span>
+                    </div>
+                    <button
+                      className="download-button"
+                      onClick={(e) => handleDownloadTicket(reservationId, e)}
+                    >
+                      상세보기
+                      <span className="arrow-icon">→</span>
+                    </button>
                   </div>
                 </div>
-                <button
-                  className="download-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDownloadTicket(reservationId);
-                  }}
-                >
-                  상세보기
-                  <span className="arrow-icon">→</span>
-                </button>
               </div>
             );
           })

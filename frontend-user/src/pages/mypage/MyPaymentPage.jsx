@@ -56,9 +56,9 @@ const MyPaymentPage = () => {
     
     let processedValue = value;
     
-    // 카드 번호: 숫자만 입력, 4자리마다 공백 추가
+    // 카드 번호: 숫자만 입력, 4자리마다 하이픈 추가
     if (name === "cardNumber") {
-      processedValue = value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ');
+      processedValue = value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1-');
       if (processedValue.length > 19) {
         processedValue = processedValue.substring(0, 19);
       }
@@ -93,8 +93,8 @@ const MyPaymentPage = () => {
       setSubmitting(true);
       setError("");
 
-      // 카드 번호에서 공백 제거
-      const cleanedCardNumber = formValues.cardNumber.replace(/\s/g, '');
+      // 카드 번호에서 하이픈과 공백 제거
+      const cleanedCardNumber = formValues.cardNumber.replace(/[\s\-]/g, '');
 
       // 카드 추가 API 호출
       const newCard = await addCard({
@@ -165,7 +165,7 @@ const MyPaymentPage = () => {
 
               <div className="card-footer">
                 <div className="card-valid">
-                  <span className="card-valid-label">Valid Thru</span>
+                  <span className="card-valid-label">유효기간</span>
                   <span>{card.expDate || card.validThru}</span>
                 </div>
                 <div className="card-brand">{card.brand}</div>
@@ -192,7 +192,7 @@ const MyPaymentPage = () => {
 
           <button type="button" className="add-card-tile" onClick={handleAddCard}>
             <div className="add-card-icon">+</div>
-            <div className="add-card-text">Add a new card</div>
+            <div className="add-card-text">새 카드 추가</div>
           </button>
         </div>
       )}
@@ -219,15 +219,15 @@ const MyPaymentPage = () => {
             <form className="add-card-form" onSubmit={handleSubmit}>
               <div className="add-card-form-row">
                 <label className="add-card-label">
-                  Card Number
+                  카드 번호
                   <input
                     type="text"
                     name="cardNumber"
                     value={formValues.cardNumber}
                     onChange={handleChange}
-                    placeholder="4321 4321 4321 4321"
+                    placeholder="4321-4321-4321-4321"
                     maxLength={19}
-                    pattern="[0-9\s]+"
+                    pattern="[0-9\-]+"
                     required
                   />
                 </label>
@@ -235,7 +235,7 @@ const MyPaymentPage = () => {
 
               <div className="add-card-form-row add-card-form-row--two">
                 <label className="add-card-label">
-                  Exp. Date
+                  유효기간
                   <input
                     type="text"
                     name="expDate"
@@ -264,13 +264,13 @@ const MyPaymentPage = () => {
 
               <div className="add-card-form-row">
                 <label className="add-card-label">
-                  Name on Card
+                  카드 소유자명
                   <input
                     type="text"
                     name="nameOnCard"
                     value={formValues.nameOnCard}
                     onChange={handleChange}
-                    placeholder="John Doe"
+                    placeholder="홍길동"
                     maxLength={50}
                     required
                   />
@@ -294,7 +294,7 @@ const MyPaymentPage = () => {
                 className="add-card-submit-btn"
                 disabled={submitting}
               >
-                {submitting ? "추가 중..." : "Add Card"}
+                {submitting ? "추가 중..." : "카드 추가"}
               </button>
             </form>
           </div>

@@ -5,6 +5,7 @@ import MyPageLayout from "./components/layouts/MyPageLayout";
 import WishlistLayout from "./components/layouts/WishlistLayout";
 import SearchLayout from "./components/layouts/SearchLayout";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import ScrollToTop from "./components/common/ScrollToTop";
 import AddPaymentPage from "./pages/payment/AddPaymentPage";
 
 // pages
@@ -50,6 +51,7 @@ import NotFoundPage from "./pages/common/NotFoundPage";
 const AppRouter = () => {
  return (
   <BrowserRouter>
+   <ScrollToTop />
    <Routes>
     {/* main landing */}
     <Route path="/" element={<MainLayout />}>

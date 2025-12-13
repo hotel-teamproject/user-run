@@ -120,6 +120,20 @@ const BookingComplete = () => {
                 <span className="label">인원</span>
                 <span className="value">{reservation.guests}명</span>
               </div>
+              {reservation.extrasPrice > 0 && (
+                <div className="detail-item">
+                  <span className="label">추가 옵션</span>
+                  <span className="value">+₩{reservation.extrasPrice.toLocaleString()}</span>
+                </div>
+              )}
+              {reservation.discount > 0 && (
+                <div className="detail-item">
+                  <span className="label">쿠폰 할인</span>
+                  <span className="value" style={{ color: '#10b981' }}>
+                    -₩{reservation.discount.toLocaleString()}
+                  </span>
+                </div>
+              )}
               <div className="detail-item">
                 <span className="label">결제 금액</span>
                 <span className="value amount">

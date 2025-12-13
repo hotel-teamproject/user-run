@@ -2,7 +2,6 @@
 @use "../../common/mixins";
 
 .hotel-detail-header {
-  margin-top: $header-height;
 
   .header-top {
     display: flex;
@@ -54,15 +53,21 @@
   .hotel-info {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;
     margin-bottom: 30px;
     padding: 20px;
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+    position: relative;
+    min-height: 200px;
 
     .hotel-title-section {
       flex: 1;
+      min-width: 0;
+      padding-right: 240px;
+      display: flex;
+      flex-direction: column;
 
       .hotel-name {
         font-size: 36px;
@@ -122,12 +127,14 @@
         gap: 12px;
 
         .review-score {
-          background: #00a699;
+          background: $color-blue;
           color: white;
           padding: 6px 12px;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 16px;
+          border-radius: 8px;
+          font-weight: 700;
+          font-size: 1.4rem;
+          min-width: 44px;
+          text-align: center;
         }
 
         .review-text {
@@ -147,36 +154,86 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 15px;
+      justify-content: flex-start;
+      gap: 0;
+      flex-shrink: 0;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 220px;
 
-      .price-wrapper {
+      .hotel-price {
         text-align: right;
-
-        .price {
-          font-size: 40px;
-          font-weight: 700;
-          color: #ff385c;
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+        border: none;
+        border-top: none;
+        border-bottom: none;
+        padding: 0;
+        margin-bottom: 20px;
+        
+        &::before,
+        &::after {
+          display: none;
+          content: none;
         }
 
-        .price-unit {
-          font-size: 18px;
-          color: #666;
+        .price-label {
+          font-size: 1.5rem;
+          color: #888;
+          margin-bottom: 6px;
+          font-weight: 400;
+        }
+
+        .price-amount {
+          font-size: 3.2rem;
+          font-weight: 700;
+          color: #ff6f6f;
+          line-height: 1.2;
+          margin-bottom: 4px;
+          border: none;
+          border-top: none;
+          border-bottom: none;
+          
+          &::before,
+          &::after {
+            display: none;
+            content: none;
+          }
+        }
+
+        .price-note {
+          font-size: 1.4rem;
+          color: #888;
+          font-weight: 400;
         }
       }
 
       .btn-book-now {
-        background: #00a699;
+        background: $color-blue;
         color: white;
         border: none;
-        padding: 12px 40px;
-        border-radius: 8px;
+        padding: 14px 24px;
+        border-radius: 12px;
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
-        transition: background 0.3s;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba($color-blue, 0.3);
+        margin-top: 0;
 
         &:hover {
-          background: #008c80;
+          background: $color-blue-dark;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba($color-blue, 0.4);
+        }
+
+        &:active {
+          transform: translateY(0);
         }
       }
     }
@@ -192,11 +249,23 @@
     .main-image {
       grid-row: 1 / 3;
       height: 600px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      overflow: hidden;
+
+      &:hover {
+        transform: scale(1.02);
+      }
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      &:hover img {
+        transform: scale(1.05);
       }
     }
 
@@ -208,11 +277,23 @@
       .sub-image {
         position: relative;
         height: 294px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        overflow: hidden;
+
+        &:hover {
+          transform: scale(1.02);
+        }
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover img {
+          transform: scale(1.05);
         }
 
         .view-all-overlay {
@@ -241,10 +322,24 @@
     .hotel-info {
       flex-direction: column;
       gap: 20px;
+      min-height: auto;
+
+      .hotel-title-section {
+        padding-right: 0;
+      }
 
       .price-section {
+        position: relative;
+        top: 0;
+        right: 0;
+        transform: none;
         align-items: flex-start;
         width: 100%;
+        margin-top: 20px;
+
+        .hotel-price {
+          text-align: left;
+        }
 
         .btn-book-now {
           width: 100%;

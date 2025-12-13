@@ -136,7 +136,8 @@ export const refreshToken = async (req, res) => {
     }
 
     // 리프레시 토큰 검증
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const secret = process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-key-change-in-production';
+    const decoded = jwt.verify(refreshToken, secret);
     const user = await User.findById(decoded.id);
 
     if (!user || user.refreshToken !== refreshToken) {

@@ -34,7 +34,13 @@ export const applyCoupon = async (code, amount) => {
     code,
     amount
   });
-  return response.data.data;
+  
+  // resultCode 확인
+  if (response.data.resultCode === "SUCCESS") {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || "쿠폰 적용에 실패했습니다.");
+  }
 };
 
 export default {
