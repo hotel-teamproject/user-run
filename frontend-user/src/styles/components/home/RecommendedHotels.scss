@@ -85,8 +85,9 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
     max-width: 1000px;
     width: 100%;
-    height: 100%;
-    min-height: 320px;
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
     margin: 0 auto;
 
     &:hover {
@@ -100,11 +101,15 @@
       width: 380px;
       min-width: 380px;
       max-width: 380px;
-      height: 320px;
+      height: 280px;
+      min-height: 280px;
+      max-height: 280px;
       overflow: hidden;
       border-radius: 0;
       border-top-left-radius: 24px;
       border-bottom-left-radius: 24px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
       flex-shrink: 0;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       align-self: stretch;
@@ -116,6 +121,8 @@
         object-position: center;
         display: block;
         transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
     }
 
@@ -128,11 +135,13 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      min-height: 320px;
-      height: 100%;
+      height: 280px;
+      min-height: 280px;
+      max-height: 280px;
       gap: 16px;
       align-self: stretch;
       position: relative;
+      overflow: hidden;
     }
 
     .hotel-header {
@@ -142,7 +151,7 @@
       gap: 24px;
       width: 100%;
       position: relative;
-      padding: 15px 15px 0 15px;
+      padding: 20px 10px;
       flex-direction: row;
     }
 
@@ -153,11 +162,12 @@
       flex: 1;
       min-width: 0;
       position: relative;
+      padding: 10px 50px;
     }
 
     .hotel-name {
-      font-size: 2.4rem;
-      font-weight: 700;
+      font-size: 2.2rem;
+      font-weight: 800;
       line-height: 1.2;
       word-wrap: break-word;
       overflow-wrap: break-word;
@@ -167,7 +177,7 @@
     }
 
     .hotel-location {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: #64748b;
       word-wrap: break-word;
       overflow-wrap: break-word;
@@ -175,10 +185,11 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      font-weight: 500;
       
       &::before {
         content: '📍';
-        font-size: 1.3rem;
+        font-size: 1.2rem;
       }
     }
 
@@ -188,7 +199,7 @@
       gap: 12px;
       flex-wrap: wrap;
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
 
     .hotel-stars {
@@ -234,31 +245,33 @@
       flex-direction: column;
       align-items: flex-start;
       min-width: 160px;
-      align-self: center;
+      align-self: flex-start;
+      padding: 10px 50px;
+      margin-top: 40px;
     }
 
     .hotel-price .price-label {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: #64748b;
       margin-bottom: 6px;
-      font-weight: 500;
+      font-weight: 600;
       text-transform: lowercase;
       letter-spacing: 0;
     }
 
     .hotel-price .price-amount {
-      font-size: 3.2rem;
-      font-weight: 700;
-      color: #ef4444;
+      font-size: 3rem;
+      font-weight: 800;
+      color: $color-blue;
       line-height: 1.2;
       margin-bottom: 6px;
       letter-spacing: -0.02em;
     }
 
     .hotel-price .price-note {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: #94a3b8;
-      font-weight: 400;
+      font-weight: 500;
     }
 
     .hotel-footer {
@@ -267,6 +280,12 @@
       align-items: center;
       gap: 12px;
       margin-top: auto;
+      align-self: flex-end;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      left: auto;
+      width: auto;
     }
 
     .wishlist-button {
@@ -302,17 +321,18 @@
 
     .view-button {
       flex: 1;
-      padding: 14px 24px;
+      padding: 16px 28px;
       background: $color-blue;
       color: #fff;
       border-radius: 12px;
       border: none;
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1.6rem;
+      font-weight: 700;
       text-align: center;
       min-width: 180px;
       cursor: pointer;
       transition: all 0.2s ease;
+      letter-spacing: 0.3px;
 
       &:hover {
         background: $color-blue-dark;

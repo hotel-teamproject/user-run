@@ -226,11 +226,6 @@ const MyAccountPage = () => {
 
         </div>
       </div>
-
-      <div className="subscription-section">
-        <h3 className="subscription-title">구독서비스</h3>
-        <p className="subscription-subtitle">신청해보세요</p>
-      </div>
     </div>
   );
 };

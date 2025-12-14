@@ -3,7 +3,8 @@ import { protect } from '../middleware/auth.js';
 import {
   getAvailableCoupons,
   getUserCoupons,
-  applyCoupon
+  applyCoupon,
+  addCouponByCode
 } from '../controllers/couponController.js';
 
 const router = express.Router();
@@ -16,6 +17,9 @@ router.get('/', getAvailableCoupons);
 
 // 사용자 보유 쿠폰 목록 조회
 router.get('/my', getUserCoupons);
+
+// 쿠폰 코드로 쿠폰 추가
+router.post('/add', addCouponByCode);
 
 // 쿠폰 적용
 router.post('/apply', applyCoupon);

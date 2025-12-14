@@ -82,7 +82,7 @@ export const createReservation = async (req, res) => {
       }
     }
 
-    // 예약 생성
+    // 예약 생성 (결제 완료로 간주하여 바로 confirmed 상태로 생성)
     const reservation = await Reservation.create({
       user: req.user._id,
       hotel: hotelId,
@@ -95,7 +95,8 @@ export const createReservation = async (req, res) => {
       extrasPrice: extrasPrice || 0,
       couponCode: couponCode || null,
       specialRequests,
-      status: 'pending'
+      status: 'confirmed',
+      paymentStatus: 'paid'
     });
 
     // 생성된 예약 정보 조회 (populate)

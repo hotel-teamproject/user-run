@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { getUserCoupons } from '../../api/couponClient';
+import { getUserCoupons, addCouponByCode } from '../../api/couponClient';
 import '../../styles/pages/mypage/MyCouponsPage.scss';
 
 const MyCouponsPage = () => {
   const [coupons, setCoupons] = useState({ available: [], used: [], expired: [] });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('available'); // 'available', 'used', or 'expired'
+  const [couponCode, setCouponCode] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     fetchCoupons();
@@ -24,6 +27,27 @@ const MyCouponsPage = () => {
       console.error('쿠폰 조회 실패:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddCoupon = async (e) => {
+    e.preventDefault();
+    if (!couponCode.trim()) {
+      alert('쿠폰 코드를 입력해주세요.');
+      return;
+    }
+
+    try {
+      setIsAdding(true);
+      await addCouponByCode(couponCode.trim());
+      alert('쿠폰이 추가되었습니다!');
+      setCouponCode('');
+      setShowAddForm(false);
+      await fetchCoupons(); // 쿠폰 목록 새로고침
+    } catch (error) {
+      alert(error.message || '쿠폰 추가에 실패했습니다.');
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -122,26 +146,63 @@ const MyCouponsPage = () => {
         <p className="page-subtitle">보유하신 쿠폰을 확인하실 수 있습니다</p>
       </div>
 
-      <div className="coupon-tabs">
+      <div className="coupon-actions">
+        <div className="coupon-tabs">
+          <button
+            className={`tab-button ${activeTab === 'available' ? 'active' : ''}`}
+            onClick={() => setActiveTab('available')}
+          >
+            사용 가능 ({coupons.available.length})
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'used' ? 'active' : ''}`}
+            onClick={() => setActiveTab('used')}
+          >
+            사용됨 ({coupons.used.length})
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'expired' ? 'active' : ''}`}
+            onClick={() => setActiveTab('expired')}
+          >
+            만료됨 ({coupons.expired.length})
+          </button>
+        </div>
+        
         <button
-          className={`tab-button ${activeTab === 'available' ? 'active' : ''}`}
-          onClick={() => setActiveTab('available')}
+          className="btn-add-coupon"
+          onClick={() => setShowAddForm(!showAddForm)}
         >
-          사용 가능 ({coupons.available.length})
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'used' ? 'active' : ''}`}
-          onClick={() => setActiveTab('used')}
-        >
-          사용됨 ({coupons.used.length})
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'expired' ? 'active' : ''}`}
-          onClick={() => setActiveTab('expired')}
-        >
-          만료됨 ({coupons.expired.length})
+          {showAddForm ? '취소' : '+ 쿠폰 코드 입력'}
         </button>
       </div>
+
+      {showAddForm && (
+        <div className="coupon-add-form">
+          <form onSubmit={handleAddCoupon}>
+            <div className="form-group">
+              <label htmlFor="coupon-code">쿠폰 코드</label>
+              <div className="input-group">
+                <input
+                  id="coupon-code"
+                  type="text"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                  placeholder="쿠폰 코드를 입력하세요"
+                  className="coupon-code-input"
+                  disabled={isAdding}
+                />
+                <button
+                  type="submit"
+                  className="btn-submit-coupon"
+                  disabled={isAdding || !couponCode.trim()}
+                >
+                  {isAdding ? '추가 중...' : '추가'}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
 
       <div className="coupon-list">
         {activeTab === 'available' ? (

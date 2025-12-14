@@ -15,6 +15,8 @@ const SearchPage = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("all");
   const [sortBy, setSortBy] = useState("recommended");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   
   // 필터 상태 (SearchLayout에서 전달받음)
   const filters = useMemo(() => {
@@ -56,6 +58,7 @@ const SearchPage = () => {
   // 탭 변경 핸들러
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
+    setCurrentPage(1); // 탭 변경 시 첫 페이지로 리셋
   };
 
   // 정렬 변경 핸들러
@@ -111,15 +114,19 @@ const SearchPage = () => {
         const amenities = hotel.amenities || [];
         return filters.freebies.some(freebie => {
           const freebieMap = {
-            "조식포함": "조식",
-            "무료주차": "주차장",
-            "WIFI": "와이파이",
-            "공항셔틀버스": "셔틀버스",
-            "무료취소": "무료취소"
+            "조식포함": ["조식", "레스토랑"],
+            "무료주차": ["주차장", "주차"],
+            "와이파이": ["와이파이", "wifi", "wifi"],
+            "WIFI": ["와이파이", "wifi", "wifi"],
+            "공항셔틀버스": ["셔틀버스", "셔틀"],
+            "셔틀버스": ["셔틀버스", "셔틀"],
+            "무료취소": ["무료취소", "취소"]
           };
-          const searchTerm = freebieMap[freebie] || freebie;
-          return amenities.some(amenity => 
-            amenity.toLowerCase().includes(searchTerm.toLowerCase())
+          const searchTerms = freebieMap[freebie] || [freebie];
+          return searchTerms.some(term => 
+            amenities.some(amenity => 
+              amenity.toLowerCase().includes(term.toLowerCase())
+            )
           );
         });
       });
@@ -131,14 +138,33 @@ const SearchPage = () => {
         const hotelAmenities = hotel.amenities || [];
         return filters.amenities.every(amenity => {
           const amenityMap = {
-            "24시 프론트데스크": "24시간",
-            "에어컨": "에어컨",
-            "피트니스": "피트니스",
-            "수영장": "수영장"
+            "와이파이": ["와이파이", "wifi"],
+            "주차장": ["주차장", "주차"],
+            "레스토랑": ["레스토랑", "식당"],
+            "수영장": ["수영장", "pool"],
+            "피트니스": ["피트니스", "헬스", "fitness"],
+            "스파": ["스파", "spa"],
+            "24시간 프론트 데스크": ["24시간 프론트 데스크", "24시간 프론트", "24시"],
+            "24시간 프론트": ["24시간 프론트 데스크", "24시간 프론트", "24시"],
+            "라운지": ["라운지", "lounge"],
+            "비즈니스 센터": ["비즈니스 센터", "비즈니스"],
+            "온천": ["온천"],
+            "골프장": ["골프장", "골프"],
+            "해변": ["해변", "해변 접근"],
+            "해변 접근": ["해변", "해변 접근"],
+            "키즈클럽": ["키즈클럽", "키즈"],
+            "스키장": ["스키장", "스키"],
+            "사우나": ["사우나", "sauna"],
+            "카페": ["카페", "coffee"],
+            "에어컨": ["에어컨"],
+            "TV": ["TV", "티비"],
+            "냉난방": ["냉난방"]
           };
-          const searchTerm = amenityMap[amenity] || amenity;
-          return hotelAmenities.some(hotelAmenity => 
-            hotelAmenity.toLowerCase().includes(searchTerm.toLowerCase())
+          const searchTerms = amenityMap[amenity] || [amenity];
+          return searchTerms.some(term => 
+            hotelAmenities.some(hotelAmenity => 
+              hotelAmenity.toLowerCase().includes(term.toLowerCase())
+            )
           );
         });
       });
@@ -165,6 +191,17 @@ const SearchPage = () => {
     return sorted;
   }, [allHotels, activeTab, filters, sortBy]);
 
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(filteredAndSortedHotels.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentHotels = filteredAndSortedHotels.slice(startIndex, endIndex);
+
+  // 필터나 정렬 변경 시 첫 페이지로 리셋
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, filters, sortBy]);
+
   if (loading) {
     return <div className="search-page loading">호텔 목록을 불러오는 중...</div>;
   }
@@ -184,10 +221,41 @@ const SearchPage = () => {
       <div className="hotel-results">
         <HotelResultsHeader
           total={filteredAndSortedHotels.length}
-          showing={filteredAndSortedHotels.length}
+          showing={currentHotels.length}
           onSortChange={handleSortChange}
         />
-        <HotelListCards hotels={filteredAndSortedHotels} />
+        <HotelListCards hotels={currentHotels} />
+        
+        {/* 페이지네이션 */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              이전
+            </button>
+            <div className="pagination-pages">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`pagination-page ${currentPage === page ? 'active' : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+            >
+              다음
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

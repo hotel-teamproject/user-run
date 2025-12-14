@@ -120,9 +120,9 @@ const ReviewWriteModal = ({ isOpen, onClose, hotelId, onReviewSubmitted, editRev
         </div>
 
         <form onSubmit={handleSubmit} className="review-form">
-          <div className="form-section">
+          <div className="form-section rating-section">
             <label className="form-label">평점</label>
-            <div className="star-rating-container">
+            <div className="star-rating-wrapper">
               <div className="star-rating">
                 {[1, 2, 3, 4, 5].map((value) => (
                   <button
@@ -147,7 +147,7 @@ const ReviewWriteModal = ({ isOpen, onClose, hotelId, onReviewSubmitted, editRev
             </div>
           </div>
 
-          <div className="form-section">
+          <div className="form-section content-section">
             <label htmlFor="comment" className="form-label">
               리뷰 내용
             </label>

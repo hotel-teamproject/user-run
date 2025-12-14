@@ -14,7 +14,7 @@ const WishlistEmpty = () => {
       </p>
       <button
         className="wishlist-empty__button"
-        onClick={() => navigate("/hotels")}
+        onClick={() => navigate("/search")}
       >
         숙소 둘러보기
       </button>

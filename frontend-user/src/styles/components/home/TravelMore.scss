@@ -7,10 +7,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-bottom: 80px;
+  padding: 80px 0
+
 }
 
-.travel-more .container {
+.travel-more .travel-more-container {
   width: 1232px;
   display: flex;
   flex-direction: column;
@@ -30,22 +31,28 @@
 
   .travel-more-title {
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 800;
     color: $color-blue;
+    line-height: 1.2;
+    margin: 0;
   }
 
   /* PopularDestinations 버튼과 동일하게 통일 */
   .see-all-btn {
-    padding: 10px 18px;
+    padding: 12px 24px;
     background: $color-blue;
     color: #fff;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s ease;
+    border: none;
 
     &:hover {
       background: $color-blue-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($color-blue, 0.3);
     }
   }
 }
@@ -53,11 +60,13 @@
 /* ===============================
    Sub Text
 =============================== */
-.section-subtitle {
+.travel-more-subtitle {
   width: 100%;
-  font-size: 15px;
+  font-size: 16px;
   color: #666;
-  line-height: 1.5;
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0;
 }
 
 /* ===============================

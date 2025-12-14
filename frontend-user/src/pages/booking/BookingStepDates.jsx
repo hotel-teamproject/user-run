@@ -145,11 +145,10 @@ const BookingStepDates = () => {
         </div>
 
         {/* =========================
-            RIGHT HOTEL SUMMARY (1개만)
+            RIGHT HOTEL SUMMARY
         ========================= */}
         <aside className="booking-right">
           <div className="hotel-summary">
-
             <div className="hotel-header">
               <div className="hotel-image">
                 <img 
@@ -160,28 +159,31 @@ const BookingStepDates = () => {
                   }}
                 />
               </div>
-
               <div className="hotel-info">
                 <h3>{hotelDisplay.name}</h3>
                 <p className="hotel-location">
                   {hotelDisplay.city} • {hotelDisplay.location}
                 </p>
                 <div className="hotel-rating">
-                  {hotelDisplay.ratingAverage} • 리뷰 {hotelDisplay.ratingCount}개
+                  ⭐ {hotelDisplay.ratingAverage.toFixed(1)} • 리뷰 {hotelDisplay.ratingCount}개
                 </div>
               </div>
             </div>
 
-            <div className="hotel-price">
-              ₩{hotelDisplay.basePrice.toLocaleString()} <span>/박</span>
+            <div className="booking-details">
+              <div className="detail-row">
+                <span>체크인</span>
+                <span>{checkIn ? new Date(checkIn).toLocaleDateString("ko-KR", { year: 'numeric', month: 'long', day: 'numeric' }) : "날짜 선택"}</span>
+              </div>
+              <div className="detail-row">
+                <span>체크아웃</span>
+                <span>{checkOut ? new Date(checkOut).toLocaleDateString("ko-KR", { year: 'numeric', month: 'long', day: 'numeric' }) : "날짜 선택"}</span>
+              </div>
+              <div className="detail-row">
+                <span>인원</span>
+                <span>{guests}명</span>
+              </div>
             </div>
-
-            <div style={{ padding: '24px' }}>
-              <button className="booking-btn-primary" onClick={handleNext} style={{ width: '100%' }}>
-                객실 선택하기
-              </button>
-            </div>
-
           </div>
         </aside>
 

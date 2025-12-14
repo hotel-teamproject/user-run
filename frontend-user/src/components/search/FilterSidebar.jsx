@@ -7,6 +7,7 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
   const [selectedRating, setSelectedRating] = useState(filters?.rating || []);
   const [freebies, setFreebies] = useState(filters?.freebies || []);
   const [amenities, setAmenities] = useState(filters?.amenities || []);
+  const [showMoreAmenities, setShowMoreAmenities] = useState(false);
 
   const handlePriceChange = (type, value) => {
     const numValue = parseInt(value);
@@ -160,10 +161,10 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
           <label>
             <input 
               type="checkbox" 
-              checked={freebies.includes("WIFI")}
-              onChange={() => handleFreebieChange("WIFI")}
+              checked={freebies.includes("와이파이")}
+              onChange={() => handleFreebieChange("와이파이")}
             /> 
-            WIFI
+            와이파이
           </label>
           <label>
             <input 
@@ -181,6 +182,14 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
             /> 
             무료취소
           </label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={freebies.includes("셔틀버스")}
+              onChange={() => handleFreebieChange("셔틀버스")}
+            /> 
+            셔틀버스
+          </label>
         </div>
       </div>
 
@@ -196,38 +205,60 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
         </div>
 
         <div className="filter-body checkbox-list">
-          <label>
-            <input 
-              type="checkbox" 
-              checked={amenities.includes("24시 프론트데스크")}
-              onChange={() => handleAmenityChange("24시 프론트데스크")}
-            /> 
-            24시 프론트데스크
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={amenities.includes("에어컨")}
-              onChange={() => handleAmenityChange("에어컨")}
-            /> 
-            에어컨
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={amenities.includes("피트니스")}
-              onChange={() => handleAmenityChange("피트니스")}
-            /> 
-            피트니스
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={amenities.includes("수영장")}
-              onChange={() => handleAmenityChange("수영장")}
-            /> 
-            수영장
-          </label>
+          {[
+            { key: "와이파이", value: "와이파이" },
+            { key: "주차장", value: "주차장" },
+            { key: "레스토랑", value: "레스토랑" },
+            { key: "수영장", value: "수영장" },
+            { key: "피트니스", value: "피트니스" },
+            { key: "스파", value: "스파" },
+            { 
+              key: "24시간 프론트 데스크", 
+              value: amenities.includes("24시간 프론트 데스크") ? "24시간 프론트 데스크" : "24시간 프론트",
+              check: amenities.includes("24시간 프론트 데스크") || amenities.includes("24시간 프론트")
+            },
+            { key: "라운지", value: "라운지" },
+            { key: "비즈니스 센터", value: "비즈니스 센터" },
+            { key: "온천", value: "온천" },
+            { key: "골프장", value: "골프장" },
+            { 
+              key: "해변", 
+              value: amenities.includes("해변") ? "해변" : "해변 접근",
+              check: amenities.includes("해변") || amenities.includes("해변 접근")
+            },
+            { key: "키즈클럽", value: "키즈클럽" },
+            { key: "스키장", value: "스키장" },
+            { key: "사우나", value: "사우나" },
+            { key: "카페", value: "카페" },
+            { key: "에어컨", value: "에어컨" },
+            { key: "TV", value: "TV" },
+            { key: "냉난방", value: "냉난방" }
+          ].slice(0, showMoreAmenities ? undefined : 5).map((item) => (
+            <label key={item.key}>
+              <input 
+                type="checkbox" 
+                checked={item.check !== undefined ? item.check : amenities.includes(item.value)}
+                onChange={() => handleAmenityChange(item.value)}
+              /> 
+              {item.key}
+            </label>
+          ))}
+          {!showMoreAmenities && (
+            <button 
+              className="show-more-btn"
+              onClick={() => setShowMoreAmenities(true)}
+            >
+              더보기
+            </button>
+          )}
+          {showMoreAmenities && (
+            <button 
+              className="show-more-btn"
+              onClick={() => setShowMoreAmenities(false)}
+            >
+              접기
+            </button>
+          )}
         </div>
       </div>
 

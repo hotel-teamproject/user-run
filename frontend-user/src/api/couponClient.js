@@ -25,6 +25,23 @@ export const getUserCoupons = async () => {
 };
 
 /**
+ * 쿠폰 코드로 쿠폰 추가
+ * @param {string} code - 쿠폰 코드
+ */
+export const addCouponByCode = async (code) => {
+  const response = await axiosInstance.post("/coupons/add", {
+    code
+  });
+  
+  // resultCode 확인
+  if (response.data.resultCode === "SUCCESS") {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || "쿠폰 추가에 실패했습니다.");
+  }
+};
+
+/**
  * 쿠폰 적용
  * @param {string} code - 쿠폰 코드
  * @param {number} amount - 주문 금액
@@ -46,6 +63,7 @@ export const applyCoupon = async (code, amount) => {
 export default {
   getAvailableCoupons,
   getUserCoupons,
+  addCouponByCode,
   applyCoupon
 };
 

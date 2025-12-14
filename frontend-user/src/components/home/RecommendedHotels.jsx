@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/autoplay";
 import { AuthContext } from "../../context/AuthContext";
 import { getHotels } from "../../api/hotelClient";
 import { toggleWishlist, checkWishlist } from "../../api/wishlistClient";
@@ -97,11 +98,16 @@ const RecommendedHotels = () => {
   return (
     <div className="recommended-hotels">
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
+        autoplay={{
+          delay: 4000,
+          disableOnInteraction: false,
+        }}
+        loop={true}
         className="hotels-swiper"
       >
         {hotels.map((hotel) => {

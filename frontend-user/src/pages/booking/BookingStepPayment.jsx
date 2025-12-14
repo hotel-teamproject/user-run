@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { getHotelDetail } from "../../api/hotelClient";
 import { createReservation } from "../../api/reservationClient";
-import { getUserCoupons, applyCoupon } from "../../api/couponClient";
 import { getUserCards } from "../../api/cardClient";
+import { getUserCoupons, applyCoupon } from "../../api/couponClient";
 import "../../styles/pages/booking/BookingStep.scss";
 
 const BookingStepPayment = () => {
@@ -12,9 +12,6 @@ const BookingStepPayment = () => {
   const location = useLocation();
   const [hotel, setHotel] = useState(null);
   const [room, setRoom] = useState(null);
-  const [coupons, setCoupons] = useState([]);
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
-  const [discount, setDiscount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
 
@@ -39,6 +36,9 @@ const BookingStepPayment = () => {
   const [cardName, setCardName] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCVC, setCardCVC] = useState("");
+  const [coupons, setCoupons] = useState([]);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [discount, setDiscount] = useState(0);
   const [showCoupons, setShowCoupons] = useState(false);
 
   const calculateNights = () => {
@@ -94,11 +94,16 @@ const BookingStepPayment = () => {
         }
 
         // 사용 가능한 쿠폰 조회
-        const basePrice = roomPriceFromUrl > 0 ? roomPriceFromUrl : (selectedRoom?.price || 0);
-        const nights = calculateNights();
-        const totalAmount = (basePrice * nights) + extrasPrice;
-        const availableCoupons = await getUserCoupons();
-        setCoupons(availableCoupons.available || []);
+        try {
+          const basePrice = roomPriceFromUrl > 0 ? roomPriceFromUrl : (selectedRoom?.price || 0);
+          const nights = calculateNights();
+          const totalAmount = (basePrice * nights) + extrasPrice;
+          const availableCoupons = await getUserCoupons();
+          setCoupons(availableCoupons.available || []);
+        } catch (err) {
+          console.error("쿠폰 목록 조회 실패:", err);
+          setCoupons([]);
+        }
 
         // 저장된 카드 목록 조회
         try {
@@ -261,107 +266,85 @@ const BookingStepPayment = () => {
       <div className="booking-grid">
         <div className="booking-left">
           <div className="coupon-section">
-            <div className="coupon-section-header">
-              <div>
-                <h3>쿠폰 적용</h3>
-                {selectedCoupon && discount > 0 && (
-                  <p className="applied-coupon-preview">
-                    {selectedCoupon.name} 적용됨 (-₩{discount.toLocaleString()})
-                  </p>
-                )}
+            <h3>쿠폰 적용</h3>
+            <div className="coupon-dropdown">
+              <div
+                className="coupon-dropdown-toggle"
+                onClick={() => setShowCoupons(!showCoupons)}
+              >
+                <span className="coupon-dropdown-text">
+                  {selectedCoupon
+                    ? `${selectedCoupon.name} (${selectedCoupon.type === "percent" ? `${selectedCoupon.discount}% 할인` : `₩${selectedCoupon.discount.toLocaleString()} 할인`})`
+                    : coupons.length > 0
+                    ? "쿠폰을 선택하세요"
+                    : "사용 가능한 쿠폰이 없습니다"}
+                </span>
+                <span className="coupon-dropdown-arrow">
+                  {showCoupons ? "▲" : "▼"}
+                </span>
               </div>
-              {!showCoupons && coupons.length > 0 && (
-                <button
-                  className="btn-show-coupons"
-                  onClick={() => setShowCoupons(true)}
-                >
-                  쿠폰 사용
-                </button>
-              )}
-              {showCoupons && (
-                <button
-                  className="btn-hide-coupons"
-                  onClick={() => setShowCoupons(false)}
-                >
-                  닫기
-                </button>
-              )}
-            </div>
-
-            {showCoupons && (
-              <>
-                {coupons.length === 0 ? (
-                  <p className="no-coupons">사용 가능한 쿠폰이 없습니다.</p>
-                ) : (
-                  <div className="coupons-list">
-                    {coupons.map((coupon) => {
-                      const isSelected =
-                        selectedCoupon && selectedCoupon._id === coupon._id;
-                      const discountText =
-                        coupon.type === "percent"
-                          ? `${coupon.discount}% 할인`
-                          : `₩${coupon.discount.toLocaleString()} 할인`;
-
-                      return (
-                        <div
-                          key={coupon._id}
-                          className={`coupon-item ${isSelected ? "selected" : ""}`}
-                          onClick={() => {
-                            handleCouponSelect(coupon);
-                            setShowCoupons(false);
-                          }}
-                        >
-                          <div className="coupon-checkbox">
-                            <input
-                              type="radio"
-                              name="coupon"
-                              checked={isSelected}
-                              onChange={() => {
-                                handleCouponSelect(coupon);
-                                setShowCoupons(false);
-                              }}
-                              onClick={(e) => e.stopPropagation()}
-                            />
-                          </div>
-                          <div className="coupon-info">
-                            <h4>{coupon.name}</h4>
-                            <p className="coupon-code">코드: <strong>{coupon.code}</strong></p>
-                            {coupon.minAmount > 0 && (
-                              <p className="coupon-min">
-                                최소 주문: ₩{coupon.minAmount.toLocaleString()}
-                              </p>
-                            )}
-                          </div>
-                          <div className="coupon-discount">
-                            <span className="discount-amount">{discountText}</span>
-                            {isSelected && <span className="selected-badge">적용됨</span>}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </>
-            )}
-
-            {selectedCoupon && discount > 0 && (
-              <div className="applied-coupon">
-                <div className="applied-coupon-info">
-                  <span className="applied-label">✓ 적용된 쿠폰</span>
-                  <span className="applied-name">{selectedCoupon.name}</span>
-                </div>
-                <div className="applied-coupon-actions">
-                  <span className="applied-discount">-₩{discount.toLocaleString()}</span>
-                  <button
-                    className="btn-remove-coupon"
+              {showCoupons && coupons.length > 0 && (
+                <div className="coupon-dropdown-menu">
+                  <div
+                    className="coupon-dropdown-option"
                     onClick={() => {
                       setSelectedCoupon(null);
                       setDiscount(0);
+                      setShowCoupons(false);
                     }}
                   >
-                    제거
-                  </button>
+                    쿠폰 미사용
+                  </div>
+                  {coupons.map((coupon) => {
+                    const isSelected =
+                      selectedCoupon && selectedCoupon._id === coupon._id;
+                    const discountText =
+                      coupon.type === "percent"
+                        ? `${coupon.discount}% 할인`
+                        : `₩${coupon.discount.toLocaleString()} 할인`;
+
+                    return (
+                      <div
+                        key={coupon._id}
+                        className={`coupon-dropdown-option ${isSelected ? "selected" : ""}`}
+                        onClick={() => {
+                          handleCouponSelect(coupon);
+                          setShowCoupons(false);
+                        }}
+                      >
+                        <div className="coupon-option-content">
+                          <div className="coupon-option-info">
+                            <span className="coupon-option-name">{coupon.name}</span>
+                            <span className="coupon-option-code">코드: {coupon.code}</span>
+                            {coupon.minAmount > 0 && (
+                              <span className="coupon-option-min">
+                                최소 주문: ₩{coupon.minAmount.toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+                          <span className="coupon-option-discount">{discountText}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
+              )}
+            </div>
+            {selectedCoupon && discount > 0 && (
+              <div className="applied-coupon-info">
+                <span className="applied-coupon-text">
+                  {selectedCoupon.name} 적용됨 (-₩{discount.toLocaleString()})
+                </span>
+                <button
+                  className="btn-remove-coupon-small"
+                  onClick={() => {
+                    setSelectedCoupon(null);
+                    setDiscount(0);
+                  }}
+                  title="쿠폰 삭제"
+                >
+                  ✕
+                </button>
               </div>
             )}
           </div>

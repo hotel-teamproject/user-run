@@ -99,6 +99,76 @@ export const getUserCoupons = async (req, res) => {
   }
 };
 
+// 쿠폰 코드로 쿠폰 추가
+export const addCouponByCode = async (req, res) => {
+  try {
+    const { code } = req.body;
+    const userId = req.user?._id;
+    const now = new Date();
+
+    if (!code) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '쿠폰 코드를 입력해주세요',
+        data: null
+      });
+    }
+
+    // 쿠폰 조회
+    const coupon = await Coupon.findOne({
+      code: code.toUpperCase().trim(),
+      $or: [
+        { isPublic: true },
+        { userId: userId }
+      ]
+    });
+
+    if (!coupon) {
+      return res.status(404).json({
+        resultCode: 'FAIL',
+        message: '유효하지 않은 쿠폰 코드입니다',
+        data: null
+      });
+    }
+
+    // 이미 만료된 쿠폰인지 확인
+    if (coupon.validUntil < now) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '만료된 쿠폰입니다',
+        data: null
+      });
+    }
+
+    // 사용 횟수 제한 체크
+    if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '쿠폰 사용 횟수가 초과되었습니다',
+        data: null
+      });
+    }
+
+    // 개인 쿠폰인 경우 userId 업데이트 (아직 할당되지 않은 경우)
+    if (!coupon.userId && !coupon.isPublic) {
+      coupon.userId = userId;
+      await coupon.save();
+    }
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '쿠폰이 추가되었습니다',
+      data: coupon
+    });
+  } catch (error) {
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message,
+      data: null
+    });
+  }
+};
+
 // 쿠폰 적용
 export const applyCoupon = async (req, res) => {
   try {

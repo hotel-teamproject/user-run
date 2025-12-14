@@ -20,22 +20,41 @@ const MyProfilePhoto = () => {
   }
  };
 
+ const handleImageDelete = () => {
+  setPreviewImage(null);
+  const updatedUser = { ...user, profileImage: null };
+  setUser(updatedUser);
+  localStorage.setItem("user", JSON.stringify(updatedUser));
+ };
+
  return (
-  <div className="my-profile-photo">
-   {previewImage ? (
-    <img src={previewImage} alt="Profile" className="profile-image" />
-   ) : (
-    <div className="profile-placeholder">{user?.name?.charAt(0) || "T"}</div>
-   )}
-   <label className="edit-photo-button">
-    ✏️
-    <input
-     type="file"
-     accept="image/*"
-     onChange={handleImageUpload}
-     style={{ display: "none" }}
-    />
-   </label>
+  <div className="my-profile-photo-wrapper">
+   <div className="my-profile-photo">
+    {previewImage ? (
+     <img src={previewImage} alt="Profile" className="profile-image" />
+    ) : (
+     <div className="profile-placeholder">{user?.name?.charAt(0) || "T"}</div>
+    )}
+   </div>
+   <div className="profile-photo-actions">
+    <label className="profile-action-btn profile-add-btn">
+     추가
+     <input
+      type="file"
+      accept="image/*"
+      onChange={handleImageUpload}
+      style={{ display: "none" }}
+     />
+    </label>
+    {previewImage && (
+     <button
+      className="profile-action-btn profile-delete-btn"
+      onClick={handleImageDelete}
+     >
+      삭제
+     </button>
+    )}
+   </div>
   </div>
  );
 };

@@ -70,11 +70,11 @@ const HotelListCards = ({ hotels = [] }) => {
         return (
           <div
             key={hotelId || i}
-            className="hotel-card"
+            className="hotel-list-card"
             onClick={() => hotelId && navigate(`/hotels/${hotelId}`)}
           >
             {/* ========== LEFT IMAGE (꽉 채우기) ========== */}
-            <div className="hotel-image">
+            <div className="hotel-list-image">
               <img 
                 src={hotel.image || (hotel.images && hotel.images[0]) || '/images/hotel-placeholder.png'} 
                 alt={hotel.name || 'Hotel'} 
@@ -90,29 +90,29 @@ const HotelListCards = ({ hotels = [] }) => {
             </div>
 
             {/* ========== RIGHT CONTENT ========== */}
-            <div className="hotel-content">
+            <div className="hotel-list-content">
 
               {/* -------- TOP TEXT + PRICE -------- */}
-              <div className="hotel-header">
-                <div className="hotel-info">
-                  <h3 className="hotel-name">{hotel.name}</h3>
+              <div className="hotel-list-header">
+                <div className="hotel-list-info">
+                  <h3 className="hotel-list-name">{hotel.name}</h3>
                   
-                  <div className="hotel-location">{hotel.location || hotel.address || hotel.city || ''}</div>
+                  <div className="hotel-list-location">{hotel.location || hotel.address || hotel.city || ''}</div>
 
-                  <div className="hotel-meta-row">
+                  <div className="hotel-list-meta-row">
                     {hotel.stars && (
-                      <span className="hotel-stars">
+                      <span className="hotel-list-stars">
                         {"⭐".repeat(hotel.stars)} {hotel.stars}성급 호텔
                       </span>
                     )}
                     {hotel.amenities && (
-                      <span className="hotel-amenities">
+                      <span className="hotel-list-amenities">
                         🏨 편의시설 {Array.isArray(hotel.amenities) ? hotel.amenities.length : hotel.amenities}개
                       </span>
                     )}
                   </div>
 
-                  <div className="hotel-rating">
+                  <div className="hotel-list-rating">
                     <span className="rating-score">{hotel.rating || hotel.ratingAverage || 0}</span>
                     <span className="rating-label">{hotel.ratingLabel || "매우 좋음"}</span>
                     <span className="rating-reviews">
@@ -122,7 +122,7 @@ const HotelListCards = ({ hotels = [] }) => {
                 </div>
                 
                 {price > 0 && (
-                  <div className="hotel-price">
+                  <div className="hotel-list-price">
                     <div className="price-label">시작가</div>
                     <div className="price-amount">
                       ₩{Number(price).toLocaleString()}/박
@@ -133,7 +133,7 @@ const HotelListCards = ({ hotels = [] }) => {
               </div>
 
               {/* -------- BOTTOM BUTTONS -------- */}
-              <div className="hotel-footer">
+              <div className="hotel-list-footer">
                 <button
                   className={`wishlist-button ${isWishlisted ? 'active' : ''}`}
                   onClick={(e) => handleWishlistToggle(e, hotelId)}

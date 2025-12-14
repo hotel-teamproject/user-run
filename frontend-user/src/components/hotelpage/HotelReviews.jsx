@@ -192,18 +192,49 @@ const HotelReviews = ({
       const isOwn = isOwnReview(review);
       const reviewId = review.id || review._id;
       
+      const reviewerName = review.userId?.name || review.user?.name || "익명";
+      const profileImage = review.userId?.profileImage || review.user?.profileImage;
+      const firstLetter = reviewerName.charAt(0);
+      
+      // 이름 기반으로 일관된 색상 생성
+      const getAvatarColor = (name) => {
+        const colors = [
+          '#4a7dff', '#ff6b6b', '#51cf66', '#ffd43b', 
+          '#339af0', '#ff922b', '#845ef7', '#20c997',
+          '#f06595', '#5c7cfa', '#ff8787', '#51cf66'
+        ];
+        const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+        return colors[index];
+      };
+      
       return (
        <li key={reviewId} className="review-item">
         <div className="review-content">
          <div className="review-header-info">
           <div className="profile-image">
-           <img 
-            src={review.userId?.profileImage || review.user?.profileImage || "/images/default-avatar.png"} 
-            alt={review.userId?.name || review.user?.name || "익명"} 
-           />
+           {profileImage ? (
+            <img 
+             src={profileImage} 
+             alt={reviewerName}
+             onError={(e) => {
+               // 이미지 로드 실패 시 아바타로 대체
+               e.target.style.display = 'none';
+               e.target.nextSibling.style.display = 'flex';
+             }}
+            />
+           ) : null}
+           <div 
+            className="profile-avatar" 
+            style={{ 
+              display: profileImage ? 'none' : 'flex',
+              backgroundColor: getAvatarColor(reviewerName)
+            }}
+           >
+            {firstLetter}
+           </div>
           </div>
           <div className="review-meta">
-           <span className="review-author">{review.userId?.name || review.user?.name || "익명"}</span>
+           <span className="review-author">{reviewerName}</span>
            <div className="review-rating-date">
             <span className="review-rating">{renderStarRating(review.rating)}</span>
             <span className="review-date">
