@@ -14,13 +14,14 @@ import Wishlist from '../models/Wishlist.js';
 import Payment from '../models/Payment.js';
 import connectDB from '../config/db.js';
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
+
+await mongoose.connect(process.env.MONGODB_URI);
 
 // 초기 데이터 생성
 const initData = async () => {
   try {
     console.log('🚀 데이터베이스 연결 중...');
-    await connectDB();
 
     // 기존 데이터 삭제
     console.log('🗑️  기존 데이터 삭제 중...');
