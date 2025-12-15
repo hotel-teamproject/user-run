@@ -19,8 +19,22 @@
     @media (max-width: $breakpoint-md) {
       flex-direction: column;
 
+      // 작은 화면에서도 이미지 섹션을 숨기지 않고 폼 위/아래에 노출
+      .auth-layout-form-section,
       .auth-layout-image-section {
-        display: none;
+        flex: 0 0 auto;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .auth-layout-form-section {
+        padding: $spacing-xl $spacing-lg;
+      }
+
+      .auth-layout-image-section {
+        height: 260px;
+        min-height: 260px;
+        order: -1; // 이미지를 상단에 배치
       }
     }
   }

@@ -28,16 +28,29 @@ const WishlistPage = () => {
         // 백엔드 응답 구조에 맞게 변환
         const formattedWishlist = wishlist.map((item) => {
           const hotel = item.hotel || item;
+          const rating = hotel.rating || 0;
+
+          let ratingLabel = "";
+          if (rating >= 4.5) {
+            ratingLabel = "최고";
+          } else if (rating >= 4.0) {
+            ratingLabel = "매우 좋음";
+          } else if (rating > 0) {
+            ratingLabel = "좋음";
+          } else {
+            ratingLabel = "";
+          }
+
           return {
             id: hotel._id || hotel.id,
             name: hotel.name,
             location: hotel.city || hotel.address?.city || "",
             image: hotel.images?.[0] || hotel.image || "/images/hotel.jpg",
             imageCount: hotel.images?.length || 0,
-            stars: Math.round(hotel.rating || 0),
+            stars: Math.round(rating || 0),
             amenities: hotel.amenities?.length || 0,
-            rating: hotel.rating || 0,
-            ratingLabel: hotel.rating >= 4.5 ? "Excellent" : hotel.rating >= 4 ? "Very Good" : "Good",
+            rating,
+            ratingLabel,
             reviews: hotel.reviewCount || 0,
             basePrice: hotel.rooms?.[0]?.price || 100000,
           };

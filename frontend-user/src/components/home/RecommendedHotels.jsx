@@ -143,7 +143,10 @@ const RecommendedHotels = () => {
                       <div className="hotel-meta-row">
                         {hotel.stars && (
                           <span className="hotel-stars">
-                            {"⭐".repeat(hotel.stars)} {hotel.stars}성급 호텔
+                            {Array.from({ length: hotel.stars }).map((_, idx) => (
+                              <span key={idx}>★</span>
+                            ))}{" "}
+                            {hotel.stars}성급
                           </span>
                         )}
                         {hotel.amenities && (
@@ -166,7 +169,7 @@ const RecommendedHotels = () => {
                       <div className="hotel-price">
                         <div className="price-label">시작가</div>
                         <div className="price-amount">
-                          ₩{Number(price).toLocaleString()}/박
+                          {Number(price).toLocaleString()}원/박
                         </div>
                         <div className="price-note">세금 별도</div>
                       </div>

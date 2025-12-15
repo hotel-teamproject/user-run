@@ -99,8 +99,8 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
           </div>
 
           <div className="price-values">
-            <span>₩{minPrice.toLocaleString()}</span>
-            <span>₩{maxPrice.toLocaleString()}</span>
+            <span>{minPrice.toLocaleString()}원</span>
+            <span>{maxPrice.toLocaleString()}원</span>
           </div>
 
         </div>

@@ -1,8 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/components/home/DestinationCard.scss";
 
 const DestinationCard = ({ destination }) => {
-  const { name, country, image, price, description } = destination;
+  const { name, country, image, description } = destination;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // 지역 이름을 목적지 쿼리로 전달하여 해당 지역 숙소 검색
+    const query = new URLSearchParams({ destination: name }).toString();
+    navigate(`/search?${query}`);
+  };
 
   return (
     <div className="destination-card">
@@ -12,14 +20,14 @@ const DestinationCard = ({ destination }) => {
 
       <div className="card-content">
         <h3 className="destination-name">{name}</h3>
-        <p className="destination-country">{country}</p>
+        {country && country !== "한국" && (
+          <p className="destination-country">{country}</p>
+        )}
         <p className="destination-description">{description}</p>
 
-        <div className="card-footer">
-          <span className="price">₩{price.toLocaleString()}</span>
-        </div>
-
-        <button className="btn-book">Book a Hotel</button>
+        <button className="btn-book" onClick={handleClick}>
+          자세히 보기
+        </button>
       </div>
     </div>
   );

@@ -4,7 +4,8 @@
 .support-page {
   width: 100%;
   background: linear-gradient(135deg, #f5f7fa 0%, #eceff7 100%);
-  min-height: calc(100vh + 1200px);
+  /* 화면 높이보다 살짝만 길게 유지해 하단 여백이 과도하게 생기지 않도록 조정 */
+  min-height: 100vh;
 }
 
 .support-header {

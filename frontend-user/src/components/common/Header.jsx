@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { getUserCoupons } from "../../api/couponClient";
 import StaybookLogo from "./StaybookLogo";
 import "../../styles/components/common/Header.scss";
 
@@ -8,6 +9,50 @@ const Header = () => {
   const { user, isAuthed, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [couponCount, setCouponCount] = useState(0);
+  const hideDropdownTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    const fetchCouponCount = async () => {
+      if (!isAuthed) {
+        setCouponCount(0);
+        return;
+      }
+
+      try {
+        const data = await getUserCoupons();
+        const available = data?.available || [];
+        setCouponCount(available.length);
+      } catch (error) {
+        console.error("헤더 쿠폰 정보 조회 실패:", error);
+      }
+    };
+
+    fetchCouponCount();
+
+    // 언마운트 시 드롭다운 타이머 정리
+    return () => {
+      if (hideDropdownTimeoutRef.current) {
+        clearTimeout(hideDropdownTimeoutRef.current);
+      }
+    };
+  }, [isAuthed]);
+
+  const handleMouseEnterMenu = () => {
+    if (hideDropdownTimeoutRef.current) {
+      clearTimeout(hideDropdownTimeoutRef.current);
+      hideDropdownTimeoutRef.current = null;
+    }
+    setShowDropdown(true);
+  };
+
+  const handleMouseLeaveMenu = () => {
+    // 약간의 지연 후 드롭다운 닫기 (호버가 살짝 벗어나도 바로 닫히지 않도록)
+    hideDropdownTimeoutRef.current = setTimeout(() => {
+      setShowDropdown(false);
+      hideDropdownTimeoutRef.current = null;
+    }, 200);
+  };
 
   const handleLogout = () => {
     setShowDropdown(false);
@@ -58,8 +103,8 @@ const Header = () => {
           {isAuthed ? (
             <div
               className="user-menu"
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
+              onMouseEnter={handleMouseEnterMenu}
+              onMouseLeave={handleMouseLeaveMenu}
             >
               <button className="user-button">
                 {user?.profileImage ? (
@@ -120,6 +165,22 @@ const Header = () => {
                     >
                       <span className="dropdown-icon">📋</span>
                       <span>예약 내역</span>
+                    </Link>
+
+                    <Link
+                      to="/mypage/coupons"
+                      className="dropdown-item"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      <span className="dropdown-icon">🎫</span>
+                      <span>
+                        쿠폰
+                        {couponCount > 0 && (
+                          <span className="coupon-badge">
+                            {couponCount}
+                          </span>
+                        )}
+                      </span>
                     </Link>
 
                     <Link

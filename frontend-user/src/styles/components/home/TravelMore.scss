@@ -7,16 +7,16 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 80px 0
-
+  padding: 80px 0;
 }
 
 .travel-more .travel-more-container {
-  width: 1232px;
+  width: 100%;
+  max-width: 1232px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0;
+  padding: 0 24px;
   gap: 24px;
 }
 
@@ -86,4 +86,53 @@
 
 .travel-gallery {
   width: 57%;
+}
+
+/* ===============================
+   Responsive
+=============================== */
+@media (max-width: 1024px) {
+  .travel-more {
+    padding: 60px 0;
+  }
+
+  .travel-more .travel-more-container {
+    padding: 0 20px;
+  }
+
+  .travel-more-header {
+    .travel-more-title {
+      font-size: 24px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .travel-more {
+    padding: 48px 0;
+  }
+
+  .travel-more .travel-more-container {
+    padding: 0 16px;
+  }
+
+  .travel-more-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .travel-more-subtitle {
+    font-size: 14px;
+  }
+
+  .travel-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .malaka-tour,
+  .travel-gallery {
+    width: 100%;
+  }
 }

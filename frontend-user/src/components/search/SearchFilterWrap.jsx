@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/components/search/SearchFilterWrap.scss";
 
 const SearchFilterWrap = ({ filters, onFilterChange }) => {
@@ -7,6 +7,15 @@ const SearchFilterWrap = ({ filters, onFilterChange }) => {
  const [checkOut, setCheckOut] = useState(filters?.checkOut || "");
  const [rooms, setRooms] = useState(filters?.rooms || 1);
  const [guests, setGuests] = useState(filters?.guests || 2);
+
+ // 상위 filters 값 변경 시 내부 상태 동기화
+ useEffect(() => {
+  setDestination(filters?.destination || "");
+  setCheckIn(filters?.checkIn || "");
+  setCheckOut(filters?.checkOut || "");
+  setRooms(filters?.rooms || 1);
+  setGuests(filters?.guests || 2);
+ }, [filters]);
 
  const handleDestinationChange = (e) => {
   const value = e.target.value;

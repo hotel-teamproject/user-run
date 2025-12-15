@@ -130,12 +130,10 @@ const initData = async () => {
         address: '서울특별시 강남구 테헤란로 123',
         city: '서울',
         images: [
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/61/6e/29/grand-hilton-seoul.jpg?w=1800&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/9a/31/7c/photo0jpg.jpg?w=2000&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/2e/d4/6b/photo2jpg.jpg?w=2000&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/89/7c/3d/photo9jpg.jpg?w=2000&h=-1&s=1'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '수영장', '피트니스', '스파', '24시간 프론트 데스크', '라운지', '비즈니스 센터'],
         tags: ['럭셔리', '비즈니스', '커플', '도심'],
@@ -150,11 +148,11 @@ const initData = async () => {
         address: '부산광역시 해운대구 해운대해변로 456',
         city: '부산',
         images: [
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/aa/8f/2b/caption.jpg?w=1400&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/aa/97/1b/caption.jpg?w=1400&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/aa/90/07/caption.jpg?w=1400&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/daodao/photo-s/09/13/7b/0e/caption.jpg?w=600&h=-1&s=1'
+          
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '비즈니스 센터', '피트니스', '24시간 프론트 데스크'],
         tags: ['비즈니스', '도심', '편리', '출장'],
@@ -169,12 +167,12 @@ const initData = async () => {
         address: '제주특별자치도 제주시 연동 789',
         city: '제주',
         images: [
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800',
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/55/fd/79/maison-glad-jeju1.jpg?w=1100&h=600&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/90/34/4e/infinity-pool.jpg?w=1100&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/06/c8/80/camping-zone.jpg?w=2000&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/37/04/56/bistro-jawal-outdoor.jpg?w=1100&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/40/df/10/infinity-pool-the-patio.jpg?w=1100&h=-1&s=1'
+          
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '온천', '스파', '피트니스', '24시간 프론트 데스크'],
         tags: ['프리미엄', '자연', '온천', '커플'],
@@ -189,11 +187,11 @@ const initData = async () => {
         address: '인천광역시 중구 공항로 272',
         city: '인천',
         images: [
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/6a/90/4c/caption.jpg?w=1400&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/73/69/42/sky-lobby.jpg?w=2000&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/8d/f7/d8/caption.jpg?w=1100&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/8d/f7/ac/caption.jpg?w=1100&h=-1&s=1'
+          
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '24시간 프론트', '셔틀버스', '비즈니스 센터'],
         tags: ['공항', '비즈니스', '편리', '출장'],
@@ -208,13 +206,13 @@ const initData = async () => {
         address: '서울특별시 중구 명동길 100',
         city: '서울',
         images: [
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-          'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
-          'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800',
-          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/30/a1/26/5a/exterior.jpg?w=1400&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/24/7d/14/e8/caption.jpg?w=1000&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/24/7d/1a/2f/cocktail-hour-at-westin.jpg?w=1400&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/e1/f1/54/caption.jpg?w=2000&h=-1&s=1'
+          
         ],
-        amenities: ['와이파이', '주차장', '레스토랑', '24시간 프론트 데스크', '라운지'],
+        amenities: ['와이파이', '주차장', '레스토랑', '수영장', '24시간 프론트 데스크', '라운지'],
         tags: ['도심', '쇼핑', '관광', '편리'],
         rating: 0,
         reviewCount: 0,
@@ -228,11 +226,10 @@ const initData = async () => {
         address: '부산광역시 해운대구 해운대해변로 300',
         city: '부산',
         images: [
-          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800',
-          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
-          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/43/27/cb/caption.jpg?w=700&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/43/27/d0/caption.jpg?w=1000&h=-1&s=1',
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/43/27/c9/caption.jpg?w=1000&h=-1&s=1'
+          
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품', '해변 접근'],
         tags: ['해변', '커플', '가성비', '편리'],
@@ -247,11 +244,9 @@ const initData = async () => {
         address: '제주특별자치도 제주시 노형동 456',
         city: '제주',
         images: [
-          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800',
-          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
-          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/a0/fb/82/caption.jpg?w=1200&h=700&s=1',
+        
+          
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품', '렌터카 주차'],
         tags: ['가성비', '편리', '렌터카', '도심'],
@@ -266,10 +261,8 @@ const initData = async () => {
         address: '인천광역시 연수구 송도과학로 123',
         city: '인천',
         images: [
-          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800',
-          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
-          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'
+          'https://q-xx.bstatic.com/xdata/images/hotel/max600/737676874.jpg?k=0d14b59f507aeda13cd8c36d83bb2bc9645e3052ed5ea6e3d0e392f7af77b645&o=',
+         
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
         tags: ['가성비', '모던', '편리', '커플'],
@@ -284,10 +277,8 @@ const initData = async () => {
         address: '대구광역시 중구 중앙대로 400',
         city: '대구',
         images: [
-          'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800',
-          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
-          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'
+          'https://cdn.ppss.kr/news/photo/202301/260207_78643_0641.jpg',
+          
         ],
         amenities: ['와이파이', '주차장', '냉난방', 'TV', '에어컨', '욕실용품'],
         tags: ['가성비', '편리', '관광', '도심'],
@@ -303,12 +294,8 @@ const initData = async () => {
         address: '제주특별자치도 서귀포시 중문관광로 72',
         city: '제주',
         images: [
-          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-          'https://images.unsplash.com/photo-1551524164-6cf77f5e7e8d?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://q-xx.bstatic.com/xdata/images/xphoto/608x352/48361359.webp?k=35ec553b3cc2486ca479d56d71d3829b8eb51d9b5c7e15faf1dbb7e13dead9eb&o=',
+          
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '골프장', '해변', '스파', '피트니스', '키즈클럽'],
         tags: ['리조트', '골프', '해변', '가족'],
@@ -323,12 +310,8 @@ const initData = async () => {
         address: '강원도 평창군 대화면 올림픽로 555',
         city: '평창',
         images: [
-          'https://images.unsplash.com/photo-1551524164-6cf77f5e7e8d?w=800',
-          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://images.unsplash.com/photo-1620841260954-65ceaa8dbee7?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '스키장', '곤돌라', '스파', '피트니스', '사우나'],
         tags: ['스키', '리조트', '액티비티', '겨울'],
@@ -343,12 +326,7 @@ const initData = async () => {
         address: '부산광역시 해운대구 해운대해변로 456',
         city: '부산',
         images: [
-          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
-          'https://images.unsplash.com/photo-1595576508892-0b6b3b0b0e0b?w=800'
+          'https://image.withstatic.com/441/144/58/1cf909be885c46a498d15c51ef827402.png?width=2400&height=1324&format=webp'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '수영장', '해변 접근', '비치 체어', '피트니스', '스파'],
         tags: ['리조트', '해변', '휴양', '가족'],
@@ -363,12 +341,7 @@ const initData = async () => {
         address: '강원도 속초시 해안로 123',
         city: '속초',
         images: [
-          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-          'https://images.unsplash.com/photo-1551524164-6cf77f5e7e8d?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://www.lotteresort.com/static/upload/images/20250813/eec6a587-8ac6-4652-9e35-a5a61e8aec95.webp'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '해수욕장', '피트니스', '사우나', '해산물 식당', '수영장'],
         tags: ['해안', '일출', '해산물', '가족'],
@@ -383,12 +356,7 @@ const initData = async () => {
         address: '전라남도 여수시 오동도로 222',
         city: '여수',
         images: [
-          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-          'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-          'https://images.unsplash.com/photo-1551524164-6cf77f5e7e8d?w=800',
-          'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'
+          'https://yaimg.yanolja.com/v5/2022/09/14/20/640/63224014d8ddc6.46750899.jpg'
         ],
         amenities: ['와이파이', '주차장', '레스토랑', '해변 접근', '피트니스', '스파', '카페', '수영장'],
         tags: ['바다뷰', '프리미엄', '로맨틱', '커플'],
@@ -413,7 +381,7 @@ const initData = async () => {
       return {
         ...hotel,
         location: hotel.address, // location 필드 추가
-        image: hotel.images && hotel.images.length > 0 ? hotel.images[0] : null, // image 필드 추가
+        image: hotel.images && hotel.images.length > 0 ? hotel.images[0] : null, // 호텔 자체 대표 이미지
         imageCount: hotel.images ? hotel.images.length : 0, // imageCount 필드 추가
         stars: calculateStars(hotel.rating || 4.0) // stars 필드 추가 (rating 기반)
       };

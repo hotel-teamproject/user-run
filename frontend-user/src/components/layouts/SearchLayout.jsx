@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useSearchParams } from "react-router-dom";
 import Header from "../common/Header";
 import SearchFilterWrap from "../search/SearchFilterWrap";
 import FilterSidebar from "../search/FilterSidebar";
@@ -7,6 +7,7 @@ import FloatingNav from "../common/FloatingNav";
 import "../../styles/layouts/SearchLayout.scss";
 
 const SearchLayout = () => {
+  const [searchParams] = useSearchParams();
   const [filters, setFilters] = useState({
     destination: "",
     checkIn: "",
@@ -18,6 +19,17 @@ const SearchLayout = () => {
     freebies: [],
     amenities: [],
   });
+
+  // URL 쿼리(destination)로 초기 목적지 설정
+  useEffect(() => {
+    const destinationFromUrl = searchParams.get("destination") || "";
+    if (destinationFromUrl) {
+      setFilters((prev) => ({
+        ...prev,
+        destination: destinationFromUrl,
+      }));
+    }
+  }, [searchParams]);
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({

@@ -129,7 +129,7 @@ const HotelDetailHeader = ({ hotel }) => {
      <div className="hotel-price">
       <div className="price-label">시작가</div>
       <div className="price-amount">
-       ₩{((basePrice || price || 0)).toLocaleString()}/박
+       {((basePrice || price || 0)).toLocaleString()}원/박
       </div>
       <div className="price-note">세금 별도</div>
      </div>

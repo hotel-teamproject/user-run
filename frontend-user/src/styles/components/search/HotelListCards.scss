@@ -198,8 +198,8 @@
 }
 
 .hotel-list-stars {
-  color: #ef4444;
-  font-weight: 600;
+  color: #ff6b6b; /* 찜 목록 카드와 동일한 별 색상 */
+  font-weight: 500;
   padding: 0;
   background: transparent;
   border-radius: 0;
@@ -222,12 +222,12 @@
 }
 
 .rating-score {
-  background: $color-green;
+  background: $color-blue; /* 위시리스트 카드와 동일한 색상 */
   color: #fff;
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   min-width: 44px;
   text-align: center;
 }
@@ -248,11 +248,11 @@
    가격 영역 (오른쪽 상단)
 =========================================== */
 .hotel-list-header .hotel-list-price {
-  text-align: left;
+  text-align: right; /* 위시리스트 카드와 동일한 정렬 */
   flex-shrink: 0 !important;
   display: flex !important;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   min-width: 160px;
   align-self: center;
   order: 2;
@@ -264,27 +264,27 @@
 }
 
 .hotel-list-price .price-label {
-  font-size: 1.1rem;
-  color: #64748b;
+  font-size: 1.5rem;
+  color: #9ca3af;
   margin-bottom: 4px;
-  font-weight: 400;
+  font-weight: 500;
   text-transform: lowercase;
   letter-spacing: 0;
 }
 
 .hotel-list-price .price-amount {
-  font-size: 2.4rem;
+  font-size: 3.2rem;
   font-weight: 700;
-  color: $color-blue;
+  color: #ff6b6b; /* 찜 목록 카드와 동일한 가격 색상 */
   line-height: 1.2;
   margin-bottom: 4px;
   letter-spacing: -0.02em;
 }
 
 .hotel-list-price .price-note {
-  font-size: 1.1rem;
-  color: #94a3b8;
-  font-weight: 400;
+  font-size: 1.4rem;
+  color: #9ca3af;
+  font-weight: 500;
 }
 
 /* ===========================================
@@ -469,8 +469,8 @@
   }
 
   .hotel-list-price {
-    text-align: left;
-    align-items: flex-start;
+    text-align: right;
+    align-items: flex-end;
     width: 100%;
     min-width: auto;
     margin-top: 4px;
