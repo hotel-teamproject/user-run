@@ -12,7 +12,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // ✅ 로컬 dev에선 보통 이게 안전함
+        // NOTE: Vite dev-server proxy only (개발용). docker-compose 안에서 실행하면 backend 서비스명으로 접근해야 함.
+        target: 'http://backend:3000',
         changeOrigin: true,
         secure: false
       }

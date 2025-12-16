@@ -20,9 +20,6 @@ const SignupForm = () => {
 
   const navigate = useNavigate();
 
-  const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"; // 🔥 추가
-
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -76,7 +73,7 @@ const SignupForm = () => {
 
     try {
       // 🔥 백엔드 회원가입 API 호출
-      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, {
+      const response = await axios.post(`/api/auth/register`, {
         email: formData.email,
         password: formData.password,
         name: formData.nickname,
