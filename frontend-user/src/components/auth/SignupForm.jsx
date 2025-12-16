@@ -73,7 +73,8 @@ const SignupForm = () => {
 
     try {
       // 🔥 백엔드 회원가입 API 호출
-      const response = await axios.post(`/api/auth/register`, {
+      const apiBase = window.location.origin;
+      const response = await axios.post(`${apiBase}/api/auth/register`, {
         email: formData.email,
         password: formData.password,
         name: formData.nickname,
