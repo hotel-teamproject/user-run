@@ -192,3 +192,97 @@ export const getCurrentUser = async (req, res) => {
     });
   }
 };
+
+// 소셜 로그인 (카카오, 구글, 애플)
+export const socialLogin = async (req, res) => {
+  try {
+    const { provider, socialId, email, name, profileImage } = req.body;
+
+    if (!provider || !socialId) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '소셜 로그인 정보가 필요합니다',
+        data: null
+      });
+    }
+
+    if (!['kakao', 'google', 'apple'].includes(provider)) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '지원하지 않는 소셜 로그인 제공자입니다',
+        data: null
+      });
+    }
+
+    // 소셜 ID로 기존 사용자 찾기
+    let user = await User.findOne({ 
+      socialProvider: provider,
+      socialId: socialId 
+    });
+
+    if (!user) {
+      // 이메일로도 확인 (이미 가입된 사용자일 수 있음)
+      if (email) {
+        user = await User.findOne({ email: email.toLowerCase() });
+        if (user) {
+          // 기존 사용자에 소셜 정보 추가
+          user.socialProvider = provider;
+          user.socialId = socialId;
+          if (profileImage) user.profileImage = profileImage;
+          await user.save();
+        }
+      }
+
+        // 신규 사용자 생성
+        if (!user) {
+          if (!name || !email) {
+            return res.status(400).json({
+              resultCode: 'FAIL',
+              message: '이름과 이메일 정보가 필요합니다',
+              data: null
+            });
+          }
+
+          // 소셜 로그인 사용자 생성 (비밀번호 없이)
+          user = await User.create({
+            name,
+            email: email.toLowerCase(),
+            socialProvider: provider,
+            socialId: socialId,
+            profileImage: profileImage || ''
+          });
+        }
+    }
+
+    // 토큰 생성
+    const token = generateToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    // 리프레시 토큰 저장
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '소셜 로그인에 성공했습니다',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone || '',
+        role: user.role,
+        socialProvider: user.socialProvider || 'local',
+        profileImage: user.profileImage || '',
+        token,
+        refreshToken
+      }
+    });
+  } catch (error) {
+    console.error('소셜 로그인 오류:', error);
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message || '소셜 로그인에 실패했습니다',
+      data: null
+    });
+  }
+};

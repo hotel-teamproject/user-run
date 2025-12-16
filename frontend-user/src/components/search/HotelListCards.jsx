@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { toggleWishlist, checkWishlist } from "../../api/wishlistClient";
+import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/components/search/HotelListCards.scss";
 
 const HotelListCards = ({ hotels = [] }) => {
@@ -117,7 +118,9 @@ const HotelListCards = ({ hotels = [] }) => {
 
                   <div className="hotel-list-rating">
                     <span className="rating-score">{hotel.rating || hotel.ratingAverage || 0}</span>
-                    <span className="rating-label">{hotel.ratingLabel || "매우 좋음"}</span>
+                    <span className="rating-label">
+                      {getRatingLabel(parseFloat(hotel.rating || hotel.ratingAverage || 0))}
+                    </span>
                     <span className="rating-reviews">
                       리뷰 {hotel.reviewCount || hotel.reviews || 0}개
                     </span>

@@ -29,12 +29,12 @@ export const getRatingDistribution = (reviews = []) => {
  * 평점 라벨
  */
 export const getRatingLabel = (rating) => {
-  if (rating >= 4.5) return "Excellent";
-  if (rating >= 4.0) return "Very Good";
-  if (rating >= 3.5) return "Good";
-  if (rating >= 3.0) return "Average";
-  if (rating >= 2.0) return "Poor";
-  return "Very Poor";
+  if (rating >= 4.5) return "최고";
+  if (rating >= 4.0) return "매우 좋음";
+  if (rating >= 3.5) return "좋음";
+  if (rating >= 3.0) return "보통";
+  if (rating >= 2.0) return "나쁨";
+  return "매우 나쁨";
 };
 
 

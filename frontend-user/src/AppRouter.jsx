@@ -46,6 +46,11 @@ import NoticeDetailPage from "./pages/support/NoticeDetailPage";
 import ContactPage from "./pages/support/ContactPage";
 import SupportPage from "./pages/support/SupportPage";
 
+import AboutPage from "./pages/company/AboutPage";
+import TermsPage from "./pages/company/TermsPage";
+import PrivacyPage from "./pages/company/PrivacyPage";
+import CareersPage from "./pages/company/CareersPage";
+
 import NotFoundPage from "./pages/common/NotFoundPage";
 
 const AppRouter = () => {
@@ -97,6 +102,14 @@ const AppRouter = () => {
      <Route path="notices" element={<NoticeListPage />} />
      <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
      <Route path="contact" element={<ContactPage />} />
+    </Route>
+
+    {/* 회사 정보 */}
+    <Route path="company">
+     <Route path="about" element={<AboutPage />} />
+     <Route path="terms" element={<TermsPage />} />
+     <Route path="privacy" element={<PrivacyPage />} />
+     <Route path="careers" element={<CareersPage />} />
     </Route>
 
     {/* 마이페이지 - 로그인 필요 */}

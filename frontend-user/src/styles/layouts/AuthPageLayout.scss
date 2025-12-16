@@ -262,25 +262,52 @@
           padding: 0;
 
           &:hover {
-            transform: translateY(-1px);
-            box-shadow: $shadow-sm;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          }
+
+          &:active {
+            transform: translateY(0);
           }
 
           .social-icon {
-            font-size: 2rem;
-            font-weight: 600;
+            width: 2.4rem;
+            height: 2.4rem;
+            display: block;
           }
 
-          &.facebook .social-icon {
-            color: #1877f2;
+          &.kakao {
+            background: #FEE500;
+            border-color: #FEE500;
+            
+            &:hover {
+              background: #FDD835;
+              border-color: #FDD835;
+            }
           }
 
-          &.google .social-icon {
-            color: #ea4335;
+          &.google {
+            background: #fff;
+            border-color: #dadce0;
+            
+            &:hover {
+              background: #f8f9fa;
+              border-color: #c4c7c5;
+            }
           }
 
-          &.apple .social-icon {
-            color: #000;
+          &.apple {
+            background: #000;
+            border-color: #000;
+            
+            &:hover {
+              background: #333;
+              border-color: #333;
+            }
+            
+            .social-icon {
+              fill: #fff;
+            }
           }
         }
       }

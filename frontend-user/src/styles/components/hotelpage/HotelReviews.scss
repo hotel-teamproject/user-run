@@ -27,11 +27,11 @@
       transition: all 0.3s ease;
       
       &.btn--primary {
-        background: #00a699;
+        background: $color-blue;
         color: white;
         
         &:hover {
-          background: #008c80;
+          background: $color-blue-dark;
         }
       }
       

@@ -17,9 +17,16 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, '비밀번호를 입력해주세요'],
+    required: function() {
+      // 소셜 로그인 사용자는 비밀번호가 필요 없음
+      return !this.socialProvider || this.socialProvider === 'local';
+    },
     minlength: [4, '비밀번호는 최소 4자 이상이어야 합니다'],
     select: false
+  },
+  profileImage: {
+    type: String,
+    default: ''
   },
   phone: {
     type: String,
@@ -46,7 +53,7 @@ const userSchema = new mongoose.Schema({
   // 소셜 로그인 정보
   socialProvider: {
     type: String,
-    enum: ['local', 'kakao', 'google']
+    enum: ['local', 'kakao', 'google', 'apple']
   },
   socialId: String,
   

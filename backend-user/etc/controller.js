@@ -1,5 +1,5 @@
-const EtcService = require('./service');
-const mongoose = require('mongoose');
+import EtcService from './service.js';
+import mongoose from 'mongoose';
 
 // ===== 리뷰 =====
 const createReview = async (req, res) => {
@@ -277,7 +277,35 @@ const getNoticeById = async (req, res) => {
   }
 };
 
-module.exports = {
+// ===== 구독 =====
+export const subscribeNewsletter = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: '이메일을 입력해주세요.'
+      });
+    }
+
+    const result = await EtcService.subscribe(email);
+
+    return res.status(201).json({
+      success: true,
+      message: result.message,
+      data: result.subscription
+    });
+  } catch (error) {
+    console.error('subscribeNewsletter error:', error);
+    return res.status(400).json({
+      success: false,
+      message: error.message || '구독 처리 중 오류가 발생했습니다.'
+    });
+  }
+};
+
+export {
   // 리뷰
   createReview,
   getHotelReviews,

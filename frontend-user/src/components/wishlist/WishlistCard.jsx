@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/components/wishlist/WishlistCard.scss";
 
 const WishlistCard = ({ hotel, onRemove }) => {
@@ -41,7 +42,7 @@ const WishlistCard = ({ hotel, onRemove }) => {
             {hotel.rating && (
               <div className="hotel-rating">
                 <span className="rating-score">{hotel.rating}</span>
-                <span className="rating-label">{hotel.ratingLabel || "매우 좋음"}</span>
+                <span className="rating-label">{hotel.ratingLabel || getRatingLabel(hotel.rating)}</span>
                 {hotel.reviews && <span className="rating-reviews">{hotel.reviews}건의 후기</span>}
               </div>
             )}

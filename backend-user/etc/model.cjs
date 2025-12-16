@@ -110,13 +110,39 @@ const NoticeSchema = new mongoose.Schema({
   target: { type: String, enum: ['all', 'user', 'admin'], default: 'all' }
 }, { timestamps: true });
 
-// 모델들 export
+// 구독 스키마
+const SubscriptionSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: [true, '이메일을 입력해주세요'],
+    lowercase: true,
+    trim: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, '유효한 이메일을 입력해주세요'],
+    unique: true,
+    index: true
+  },
+  status: {
+    type: String,
+    enum: ['active', 'unsubscribed'],
+    default: 'active'
+  },
+  subscribedAt: {
+    type: Date,
+    default: Date.now
+  },
+  unsubscribedAt: {
+    type: Date
+  }
+}, { timestamps: true });
+
+// 모델들 export (이미 존재하는 경우 기존 모델 사용)
 module.exports = {
-  Review: mongoose.model('Review', ReviewSchema),
-  Wishlist: mongoose.model('Wishlist', WishlistSchema),
-  Coupon: mongoose.model('Coupon', CouponSchema),
-  PointTransaction: mongoose.model('PointTransaction', PointTransactionSchema),
-  Inquiry: mongoose.model('Inquiry', InquirySchema),
-  FAQ: mongoose.model('FAQ', FAQSchema),
-  Notice: mongoose.model('Notice', NoticeSchema)
+  Review: mongoose.models.Review || mongoose.model('Review', ReviewSchema),
+  Wishlist: mongoose.models.Wishlist || mongoose.model('Wishlist', WishlistSchema),
+  Coupon: mongoose.models.Coupon || mongoose.model('Coupon', CouponSchema),
+  PointTransaction: mongoose.models.PointTransaction || mongoose.model('PointTransaction', PointTransactionSchema),
+  Inquiry: mongoose.models.Inquiry || mongoose.model('Inquiry', InquirySchema),
+  FAQ: mongoose.models.FAQ || mongoose.model('FAQ', FAQSchema),
+  Notice: mongoose.models.Notice || mongoose.model('Notice', NoticeSchema),
+  Subscription: mongoose.models.Subscription || mongoose.model('Subscription', SubscriptionSchema)
 };

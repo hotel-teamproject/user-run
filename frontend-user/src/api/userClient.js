@@ -134,17 +134,30 @@ export const getBusinessStatus = async () => {
 // ========================
 
 /**
- * 카카오 로그인 URL 가져오기
+ * 소셜 로그인
+ * @param {Object} socialData - { provider, socialId, email, name, profileImage }
  */
-export const getKakaoLoginUrl = () => {
-  return `${axiosInstance.defaults.baseURL}/auth/kakao`;
-};
-
-/**
- * 구글 로그인 URL 가져오기
- */
-export const getGoogleLoginUrl = () => {
-  return `${axiosInstance.defaults.baseURL}/auth/google`;
+export const socialLogin = async (socialData) => {
+  const response = await axiosInstance.post("/auth/social", socialData);
+  
+  // 에러 처리
+  if (response.data.resultCode === 'FAIL' || !response.data.data) {
+    const error = new Error(response.data.message || '소셜 로그인에 실패했습니다.');
+    error.response = { data: response.data };
+    throw error;
+  }
+  
+  const userData = response.data.data;
+  
+  // 토큰 저장
+  if (userData.token) {
+    localStorage.setItem("accessToken", userData.token);
+  }
+  if (userData.refreshToken) {
+    localStorage.setItem("refreshToken", userData.refreshToken);
+  }
+  
+  return userData;
 };
 
 // ========================
@@ -184,6 +197,7 @@ export default {
   loginUser,
   logoutUser,
   getCurrentUser,
+  socialLogin,
 
   // Profile
   getUserProfile,
@@ -193,10 +207,6 @@ export default {
   // Business
   applyBusiness,
   getBusinessStatus,
-
-  // Social Login
-  getKakaoLoginUrl,
-  getGoogleLoginUrl,
 
   // Utils
   isAuthenticated,

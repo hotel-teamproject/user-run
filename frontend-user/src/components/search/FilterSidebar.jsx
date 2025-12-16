@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/pages/search/FilterSidebar.scss";
 
 const FilterSidebar = ({ filters, onFilterChange }) => {
   const [minPrice, setMinPrice] = useState(filters?.priceRange?.[0] || 30000);
   const [maxPrice, setMaxPrice] = useState(filters?.priceRange?.[1] || 1000000);
-  const [selectedRating, setSelectedRating] = useState(filters?.rating || []);
+  // 평점 필터는 하나만 선택 가능 (배열이 아닌 단일 값)
+  const [selectedRating, setSelectedRating] = useState(
+    Array.isArray(filters?.rating) && filters.rating.length > 0 
+      ? filters.rating[0] 
+      : filters?.rating || 0
+  );
   const [freebies, setFreebies] = useState(filters?.freebies || []);
   const [amenities, setAmenities] = useState(filters?.amenities || []);
   const [showMoreAmenities, setShowMoreAmenities] = useState(false);
@@ -25,12 +31,12 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
   };
 
   const handleRatingClick = (rating) => {
-    const newRating = selectedRating.includes(rating)
-      ? selectedRating.filter(r => r !== rating)
-      : [...selectedRating, rating];
+    // 같은 평점을 다시 클릭하면 전체(0)로 리셋, 아니면 해당 평점 선택
+    const newRating = selectedRating === rating ? 0 : rating;
     setSelectedRating(newRating);
     if (onFilterChange) {
-      onFilterChange("rating", newRating);
+      // 단일 값으로 전달 (배열이 아닌)
+      onFilterChange("rating", newRating === 0 ? [] : [newRating]);
     }
   };
 
@@ -118,15 +124,28 @@ const FilterSidebar = ({ filters, onFilterChange }) => {
         </div>
 
         <div className="filter-body rating-buttons">
-          {[0, 1, 2, 3, 4].map((rating) => (
-            <button
-              key={rating}
-              className={selectedRating.includes(rating) ? "active" : ""}
-              onClick={() => handleRatingClick(rating)}
-            >
-              {rating}+
-            </button>
-          ))}
+          {[0, 1, 2, 3, 4, 5, 6].map((rating) => {
+            const getRatingText = (r) => {
+              if (r === 0) return "전체";
+              if (r === 1) return "매우 나쁨";
+              if (r === 2) return "나쁨";
+              if (r === 3) return "보통";
+              if (r === 4) return "좋음";
+              if (r === 5) return "매우 좋음";
+              if (r === 6) return "최고";
+              return `${r}+`;
+            };
+            
+            return (
+              <button
+                key={rating}
+                className={selectedRating === rating ? "active" : ""}
+                onClick={() => handleRatingClick(rating)}
+              >
+                {getRatingText(rating)}
+              </button>
+            );
+          })}
         </div>
       </div>
 

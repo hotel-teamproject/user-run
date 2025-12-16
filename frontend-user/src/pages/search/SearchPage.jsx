@@ -99,12 +99,29 @@ const SearchPage = () => {
       });
     }
 
-    // 평점 필터
+    // 평점 필터 (정확한 평점 범위로 필터링 - getRatingLabel과 동일한 기준)
     if (filters.rating && filters.rating.length > 0) {
-      const minRating = Math.min(...filters.rating);
       filtered = filtered.filter(hotel => {
-        const rating = hotel.rating || hotel.ratingAverage || 0;
-        return rating >= minRating;
+        const hotelRating = parseFloat(hotel.rating || hotel.ratingAverage || 0);
+        // 선택된 각 평점 필터에 대해 확인
+        return filters.rating.some(selectedFilterRating => {
+          if (selectedFilterRating === 0) { // "전체"
+            return true;
+          } else if (selectedFilterRating === 1) { // "매우 나쁨"
+            return hotelRating < 2.0;
+          } else if (selectedFilterRating === 2) { // "나쁨"
+            return hotelRating >= 2.0 && hotelRating < 3.0;
+          } else if (selectedFilterRating === 3) { // "보통"
+            return hotelRating >= 3.0 && hotelRating < 3.5;
+          } else if (selectedFilterRating === 4) { // "좋음"
+            return hotelRating >= 3.5 && hotelRating < 4.0;
+          } else if (selectedFilterRating === 5) { // "매우 좋음"
+            return hotelRating >= 4.0 && hotelRating < 4.5;
+          } else if (selectedFilterRating === 6) { // "최고"
+            return hotelRating >= 4.5;
+          }
+          return false;
+        });
       });
     }
 

@@ -23,6 +23,7 @@ import {
   FaLeaf,
   FaHotTub,
 } from "react-icons/fa";
+import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/components/hotelpage/HotelOverview.scss";
 
 const HotelOverview = ({ description, rating, reviewCount, tags = [] }) => {
@@ -67,14 +68,6 @@ const HotelOverview = ({ description, rating, reviewCount, tags = [] }) => {
     family: { icon: <FaUsers />, label: "가족 친화적" },
   };
 
-  // 평점 텍스트 변환 (한글)
-  const getRatingText = (rating) => {
-    if (rating >= 4.5) return "매우 좋음";
-    if (rating >= 4.0) return "좋음";
-    if (rating >= 3.5) return "보통";
-    if (rating >= 3.0) return "나쁨";
-    return "매우 나쁨";
-  };
 
   // 실제 rating 값 (null 체크)
   const actualRating = rating || 0;
@@ -89,7 +82,7 @@ const HotelOverview = ({ description, rating, reviewCount, tags = [] }) => {
         {actualRating > 0 && (
           <div className="feature-card rating-card">
             <div className="rating-score">{actualRating.toFixed(1)}</div>
-            <div className="rating-label">{getRatingText(actualRating)}</div>
+            <div className="rating-label">{getRatingLabel(actualRating)}</div>
             {actualReviewCount > 0 && (
               <div className="review-count">리뷰 {actualReviewCount}개</div>
             )}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaStar, FaMapMarkerAlt, FaHeart, FaShare } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getRatingLabel } from "../../util/reviewHelper";
 import HotelGalleryModal from "./HotelGalleryModal";
 import "../../styles/components/hotelpage/HotelDetailHeader.scss";
 
@@ -8,11 +9,13 @@ const HotelDetailHeader = ({ hotel }) => {
  // console.log("HotelDetailHeader props:", hotel);
 
  const navigate = useNavigate();
+ const routerLocation = useLocation();
  const [dateRange, setDateRange] = useState([null, null]);
  const [startDate, endDate] = dateRange;
  const [guests, setGuests] = useState(2);
  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+ const [shareMessage, setShareMessage] = useState("");
  if (!hotel) {
   return <div className="hotel-detail-header loading">로딩 중...</div>;
  }
@@ -37,14 +40,6 @@ const HotelDetailHeader = ({ hotel }) => {
  // 실제 reviewCount 값
  const actualReviewCount = reviewCount || ratingCount || 0;
 
- // rating 값에 따른 평가 레이블 계산
- const getRatingLabel = (rating) => {
-  if (rating >= 4.5) return "매우 좋음";
-  if (rating >= 4.0) return "좋음";
-  if (rating >= 3.5) return "보통";
-  if (rating >= 3.0) return "나쁨";
-  return "매우 나쁨";
- };
 
  // 별점을 별 아이콘으로 표시 (stars 값 사용)
  const renderStars = (starCount) => {
@@ -63,8 +58,61 @@ const HotelDetailHeader = ({ hotel }) => {
   console.log("Add to favorites");
  };
 
- const handleShare = () => {
-  console.log("Share hotel");
+ const handleShare = async () => {
+  const hotelId = hotel._id || hotel.id;
+  const currentUrl = `${window.location.origin}${routerLocation.pathname}`;
+  const shareText = `${name} - STAYBOOK에서 확인하기`;
+  
+  // Web Share API 지원 여부 확인 (모바일 및 일부 데스크톱 브라우저)
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: name,
+        text: shareText,
+        url: currentUrl,
+      });
+    } catch (error) {
+      // 사용자가 공유를 취소한 경우는 에러로 처리하지 않음
+      if (error.name !== 'AbortError') {
+        console.error('공유 실패:', error);
+        // Web Share API 실패 시 클립보드 복사로 대체
+        copyToClipboard(currentUrl);
+      }
+    }
+  } else {
+    // Web Share API를 지원하지 않는 경우 클립보드에 복사
+    copyToClipboard(currentUrl);
+  }
+ };
+
+ const copyToClipboard = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    setShareMessage("링크가 클립보드에 복사되었습니다!");
+    setTimeout(() => {
+      setShareMessage("");
+    }, 3000);
+  } catch (error) {
+    console.error('클립보드 복사 실패:', error);
+    // 클립보드 API를 지원하지 않는 경우 fallback
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      setShareMessage("링크가 클립보드에 복사되었습니다!");
+      setTimeout(() => {
+        setShareMessage("");
+      }, 3000);
+    } catch (err) {
+      console.error('클립보드 복사 실패:', err);
+      alert(`호텔 링크: ${text}`);
+    }
+    document.body.removeChild(textArea);
+  }
  };
 
  const handleBookNow = () => {
@@ -96,9 +144,12 @@ const HotelDetailHeader = ({ hotel }) => {
      <button className="icon-btn" onClick={handleFavorite}>
       <FaHeart />
      </button>
-     <button className="icon-btn" onClick={handleShare}>
+     <button className="icon-btn" onClick={handleShare} title="공유하기">
       <FaShare />
      </button>
+     {shareMessage && (
+       <div className="share-message">{shareMessage}</div>
+     )}
     </div>
    </div>
 

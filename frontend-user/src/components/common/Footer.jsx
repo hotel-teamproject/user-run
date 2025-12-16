@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Newsletter from "./Newsletter";
 import StaybookLogo from "./StaybookLogo";
 import "../../styles/components/common/Footer.scss";
@@ -24,16 +25,40 @@ const Footer = () => {
               STAYBOOK과 함께하세요.
             </p>
             <div className="social-links">
-              <a href="#" className="social-link" aria-label="Facebook">
+              <a 
+                href="https://www.facebook.com/staybook" 
+                className="social-link" 
+                aria-label="Facebook"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/images/Facebook.png" alt="Facebook" />
               </a>
-              <a href="#" className="social-link" aria-label="Twitter">
+              <a 
+                href="https://twitter.com/staybook" 
+                className="social-link" 
+                aria-label="Twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/images/Twitter.png" alt="Twitter" />
               </a>
-              <a href="#" className="social-link" aria-label="YouTube">
+              <a 
+                href="https://www.youtube.com/@staybook" 
+                className="social-link" 
+                aria-label="YouTube"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/images/Youtube.png" alt="YouTube" />
               </a>
-              <a href="#" className="social-link" aria-label="Instagram">
+              <a 
+                href="https://www.instagram.com/staybook" 
+                className="social-link" 
+                aria-label="Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/images/Instagram.png" alt="Instagram" />
               </a>
             </div>
@@ -42,42 +67,42 @@ const Footer = () => {
           {/* 오른쪽: 링크 그룹 */}
           <div className="footer-links">
             <div className="footer-link-group">
-              <h4 className="link-group-title">인기 여행지</h4>
+              <h4 className="link-group-title">인기 지역</h4>
               <ul className="link-list">
-                <li><a href="#">캐나다</a></li>
-                <li><a href="#">알래스카</a></li>
-                <li><a href="#">프랑스</a></li>
-                <li><a href="#">아이슬란드</a></li>
+                <li><Link to="/search?destination=서울">서울</Link></li>
+                <li><Link to="/search?destination=부산">부산</Link></li>
+                <li><Link to="/search?destination=제주도">제주도</Link></li>
+                <li><Link to="/search?destination=경주">경주</Link></li>
               </ul>
             </div>
 
             <div className="footer-link-group">
-              <h4 className="link-group-title">인기 액티비티</h4>
+              <h4 className="link-group-title">서비스</h4>
               <ul className="link-list">
-                <li><a href="#">오로라 투어</a></li>
-                <li><a href="#">크루즈 & 세일링</a></li>
-                <li><a href="#">다양한 액티비티</a></li>
-                <li><a href="#">카약 투어</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-link-group">
-              <h4 className="link-group-title">여행 블로그</h4>
-              <ul className="link-list">
-                <li><a href="#">발리 여행 가이드</a></li>
-                <li><a href="#">스리랑카 여행 가이드</a></li>
-                <li><a href="#">페루 여행 가이드</a></li>
-                <li><a href="#">일본 여행 가이드</a></li>
+                <li><Link to="/search">호텔 검색</Link></li>
+                <li><Link to="/mypage/coupons">쿠폰</Link></li>
+                <li><Link to="/mypage/points">포인트</Link></li>
+                <li><Link to="/mypage/bookings">예약 내역</Link></li>
               </ul>
             </div>
 
             <div className="footer-link-group">
               <h4 className="link-group-title">고객 지원</h4>
               <ul className="link-list">
-                <li><a href="#">회사 소개</a></li>
-                <li><a href="#">채용 정보</a></li>
-                <li><a href="#">문의하기</a></li>
-                <li><a href="#">고객센터</a></li>
+                <li><Link to="/support">고객센터</Link></li>
+                <li><Link to="/support/faq">자주 묻는 질문</Link></li>
+                <li><Link to="/support/notices">공지사항</Link></li>
+                <li><Link to="/support/contact">문의하기</Link></li>
+              </ul>
+            </div>
+
+            <div className="footer-link-group">
+              <h4 className="link-group-title">회사 정보</h4>
+              <ul className="link-list">
+                <li><Link to="/company/about">회사 소개</Link></li>
+                <li><Link to="/company/terms">이용약관</Link></li>
+                <li><Link to="/company/privacy">개인정보처리방침</Link></li>
+                <li><Link to="/company/careers">채용 정보</Link></li>
               </ul>
             </div>
           </div>

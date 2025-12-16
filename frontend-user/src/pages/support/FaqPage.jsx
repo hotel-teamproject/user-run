@@ -27,9 +27,6 @@ const FaqPage = () => {
       <Header />
 
       <div className="support-page">
-        <div className="support-subnav">
-          <button className="support-back" onClick={() => navigate('/support')}>&larr; 뒤로가기</button>
-        </div>
         <div className="support-header">
           <h1>자주 찾는 질문</h1>
           <p>궁금한 내용을 아래에서 찾아보세요.</p>

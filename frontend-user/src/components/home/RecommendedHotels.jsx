@@ -9,6 +9,7 @@ import "swiper/css/autoplay";
 import { AuthContext } from "../../context/AuthContext";
 import { getHotels } from "../../api/hotelClient";
 import { toggleWishlist, checkWishlist } from "../../api/wishlistClient";
+import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/components/home/RecommendedHotels.scss";
 
 const RecommendedHotels = () => {
@@ -158,7 +159,9 @@ const RecommendedHotels = () => {
 
                       <div className="hotel-rating">
                         <span className="rating-score">{hotel.rating || hotel.ratingAverage || 0}</span>
-                        <span className="rating-label">{hotel.ratingLabel || "매우 좋음"}</span>
+                        <span className="rating-label">
+                          {getRatingLabel(parseFloat(hotel.rating || hotel.ratingAverage || 0))}
+                        </span>
                         <span className="rating-reviews">
                           리뷰 {hotel.reviewCount || hotel.reviews || 0}개
                         </span>

@@ -33,15 +33,20 @@
   height: 44px;
   border-radius: 999px;
   border: none;
-  background: #0b6b63;
+  background: $gradient-primary;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(2, 32, 27, 0.12);
+  box-shadow: 0 8px 20px rgba($color-blue, 0.25);
   cursor: pointer;
   font-size: 16px;
-  transition: transform .12s ease, background .12s;
+  transition: transform .12s ease, box-shadow .12s ease;
+  
+  &:hover {
+    background: $gradient-primary-hover;
+    box-shadow: 0 10px 24px rgba($color-blue, 0.35);
+  }
 }
 .fn-toggle:active { transform: scale(.98); }
 
@@ -70,15 +75,21 @@
   height: 48px;
   border-radius: 999px;
   border: none;
-  background: #0b6b63;
+  background: $gradient-primary;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(2, 32, 27, 0.12);
+  box-shadow: 0 8px 20px rgba($color-blue, 0.25);
   cursor: pointer;
-  transition: transform 0.12s ease, opacity 0.12s ease;
+  transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
   font-size: 18px;
+  
+  &:hover {
+    background: $gradient-primary-hover;
+    box-shadow: 0 10px 24px rgba($color-blue, 0.35);
+    transform: translateY(-2px);
+  }
 }
 .fn-btn:active { transform: scale(.97); }
 

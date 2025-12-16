@@ -223,14 +223,20 @@
     }
 
     .rating-score {
+      background: $color-blue;
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 8px;
       font-weight: 700;
-      color: white;
       font-size: 1.6rem;
+      min-width: 44px;
+      text-align: center;
     }
 
     .rating-label {
-      color: #64748b;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1.4rem;
+      color: #1a1a1a;
     }
 
     .rating-reviews {

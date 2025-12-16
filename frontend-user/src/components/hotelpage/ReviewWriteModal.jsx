@@ -121,7 +121,10 @@ const ReviewWriteModal = ({ isOpen, onClose, hotelId, onReviewSubmitted, editRev
 
         <form onSubmit={handleSubmit} className="review-form">
           <div className="form-section rating-section">
-            <label className="form-label">평점</label>
+            <label className="form-label">
+              <span className="label-text">평점을 선택해주세요</span>
+              <span className="label-required">*</span>
+            </label>
             <div className="star-rating-wrapper">
               <div className="star-rating">
                 {[1, 2, 3, 4, 5].map((value) => (
@@ -140,7 +143,9 @@ const ReviewWriteModal = ({ isOpen, onClose, hotelId, onReviewSubmitted, editRev
               </div>
               {rating > 0 && (
                 <div className="rating-info">
-                  <span className="rating-value">{rating}점</span>
+                  <span className="rating-value">{rating}</span>
+                  <span className="rating-separator">/</span>
+                  <span className="rating-max">5</span>
                   <span className="rating-label">{getRatingLabel(rating)}</span>
                 </div>
               )}
@@ -149,15 +154,16 @@ const ReviewWriteModal = ({ isOpen, onClose, hotelId, onReviewSubmitted, editRev
 
           <div className="form-section content-section">
             <label htmlFor="comment" className="form-label">
-              리뷰 내용
+              <span className="label-text">리뷰 내용</span>
+              <span className="label-required">*</span>
             </label>
             <div className="textarea-wrapper">
               <textarea
                 id="comment"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="호텔 이용 경험을 자세히 작성해주세요. (최소 10자 이상)"
-                rows={8}
+                placeholder="호텔 이용 경험을 자세히 작성해주세요.&#10;&#10;• 객실 상태는 어떤가요?&#10;• 직원 서비스는 만족스러우셨나요?&#10;• 위치와 접근성은 어떤가요?&#10;• 전반적인 만족도는 어떠셨나요?"
+                rows={10}
                 maxLength={1000}
                 className="review-textarea"
               />
@@ -191,9 +197,14 @@ const ReviewWriteModal = ({ isOpen, onClose, hotelId, onReviewSubmitted, editRev
               className="btn btn-submit"
               disabled={isSubmitting || rating === 0 || !comment.trim()}
             >
-              {isSubmitting 
-                ? (editReview ? "수정 중..." : "작성 중...") 
-                : (editReview ? "리뷰 수정하기" : "리뷰 작성하기")}
+              {isSubmitting ? (
+                <>
+                  <span className="spinner"></span>
+                  {editReview ? "수정 중..." : "작성 중..."}
+                </>
+              ) : (
+                editReview ? "리뷰 수정하기" : "리뷰 작성하기"
+              )}
             </button>
           </div>
         </form>

@@ -4,6 +4,7 @@ import WishlistCard from "../../components/wishlist/WishlistCard";
 import WishlistEmpty from "../../components/wishlist/WishlistEmpty";
 import { getMyWishlist, toggleWishlist } from "../../api/wishlistClient";
 import { AuthContext } from "../../context/AuthContext";
+import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/pages/mypage/WishlistPage.scss";
 
 const WishlistPage = () => {
@@ -30,16 +31,7 @@ const WishlistPage = () => {
           const hotel = item.hotel || item;
           const rating = hotel.rating || 0;
 
-          let ratingLabel = "";
-          if (rating >= 4.5) {
-            ratingLabel = "최고";
-          } else if (rating >= 4.0) {
-            ratingLabel = "매우 좋음";
-          } else if (rating > 0) {
-            ratingLabel = "좋음";
-          } else {
-            ratingLabel = "";
-          }
+          const ratingLabel = rating > 0 ? getRatingLabel(rating) : "";
 
           return {
             id: hotel._id || hotel.id,

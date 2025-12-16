@@ -14,6 +14,7 @@ import userRoutes from './routes/userRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import cardRoutes from './routes/cardRoutes.js';
+import etcRoutes from './routes/etcRoutes.js';
 
 // Load env variables
 dotenv.config();
@@ -57,6 +58,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/cards', cardRoutes);
+app.use('/api/etc', etcRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

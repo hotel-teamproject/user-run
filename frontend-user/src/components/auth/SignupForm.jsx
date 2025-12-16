@@ -20,13 +20,40 @@ const SignupForm = () => {
 
   const navigate = useNavigate();
 
+  // 전화번호 포맷팅 함수 (010-1234-5678 형식)
+  const formatPhoneNumber = (value) => {
+    // 숫자만 추출
+    const numbers = value.replace(/\D/g, "");
+    
+    // 최대 11자리로 제한 (한국 휴대폰 번호)
+    const limitedNumbers = numbers.slice(0, 11);
+    
+    // 하이픈 자동 추가
+    if (limitedNumbers.length <= 3) {
+      return limitedNumbers;
+    } else if (limitedNumbers.length <= 7) {
+      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3)}`;
+    } else {
+      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7)}`;
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    // 전화번호 필드인 경우 포맷팅 적용
+    if (name === "phoneNumber") {
+      const formatted = formatPhoneNumber(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: formatted,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
 
     setError("");
   };
@@ -149,6 +176,7 @@ const SignupForm = () => {
               placeholder="010-1234-5678"
               value={formData.phoneNumber}
               onChange={handleInputChange}
+              maxLength={13}
             />
           </div>
         </div>

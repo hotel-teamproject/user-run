@@ -5,9 +5,19 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hotel-project</title>
+    <!-- 카카오 SDK -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <!-- 구글 Sign-In SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Apple Sign In SDK -->
+    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // 카카오 SDK 초기화는 LoginForm 컴포넌트에서 처리
+      // HTML에서는 환경변수에 접근할 수 없으므로 컴포넌트에서 초기화
+    </script>
   </body>
 </html>
