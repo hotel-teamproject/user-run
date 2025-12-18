@@ -23,30 +23,52 @@ const LoginForm = () => {
  }, [isAuthed, navigate]);
 
  // 카카오 SDK 초기화
- useEffect(() => {
-   const initKakaoSDK = () => {
-     if (window.Kakao) {
-       if (!window.Kakao.isInitialized()) {
-         const kakaoAppKey = import.meta.env.VITE_KAKAO_APP_KEY || '';
-         if (kakaoAppKey && kakaoAppKey !== 'YOUR_KAKAO_APP_KEY') {
-           try {
-             window.Kakao.init(kakaoAppKey);
-             console.log('카카오 SDK 초기화 완료');
-           } catch (err) {
-             console.error('카카오 SDK 초기화 실패:', err);
-           }
-         } else {
-           console.log('카카오 앱 키가 설정되지 않았습니다. 개발 모드로 작동합니다.');
-         }
-       }
-     } else {
-       // SDK가 아직 로드되지 않은 경우 재시도
-       setTimeout(initKakaoSDK, 100);
-     }
-   };
-   
-   initKakaoSDK();
- }, []);
+useEffect(() => {
+  // 초기 마운트 시에만 한 번 SDK 초기화 시도 (실제 로드는 클릭 시에도 보강 처리)
+  const tryInitKakao = () => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      const kakaoAppKey = import.meta.env.VITE_KAKAO_APP_KEY || '';
+      if (kakaoAppKey && kakaoAppKey !== 'YOUR_KAKAO_APP_KEY') {
+        try {
+          window.Kakao.init(kakaoAppKey);
+          console.log('카카오 SDK 초기화 완료');
+        } catch (err) {
+          console.error('카카오 SDK 초기화 실패:', err);
+        }
+      } else {
+        console.log('카카오 앱 키가 설정되지 않았습니다.');
+      }
+    }
+  };
+
+  // 이미 스크립트가 로드되어 있다면 바로 초기화
+  tryInitKakao();
+}, []);
+
+// 카카오 SDK 동적 로더 (버튼 클릭 시 마지막으로 한 번 더 보장)
+const loadKakaoSDK = () => {
+  return new Promise((resolve, reject) => {
+    if (window.Kakao) {
+      resolve();
+      return;
+    }
+
+    const existingScript = document.querySelector('script[src="https://developers.kakao.com/sdk/js/kakao.js"]');
+    if (existingScript) {
+      // 이미 스크립트 태그는 있지만 아직 window.Kakao가 없는 경우 로드 완료까지 대기
+      existingScript.addEventListener('load', () => resolve());
+      existingScript.addEventListener('error', (err) => reject(err));
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = (err) => reject(err);
+    document.head.appendChild(script);
+  });
+};
 
  const handleInputChange = (e) => {
   const { name, value, type, checked } = e.target;
@@ -127,182 +149,132 @@ const LoginForm = () => {
 
     let socialData = null;
 
-    // 카카오 로그인
+    // 카카오 로그인 (실제 카카오 계정으로만 로그인, 더 이상 데모 모드 사용 안 함)
     if (provider === "kakao") {
-      // 카카오 SDK가 로드되어 있는지 확인
-      if (window.Kakao && window.Kakao.Auth) {
-        // SDK가 초기화되지 않았다면 초기화 시도
+      try {
+        // 1차: SDK 스크립트 로드 보장
+        await loadKakaoSDK();
+
+        if (!window.Kakao) {
+          setError('카카오 SDK를 불러오지 못했습니다. 인터넷 연결을 확인 후 다시 시도해주세요.');
+          setLoading(false);
+          return;
+        }
+
+        // 2차: SDK 초기화 보장
         if (!window.Kakao.isInitialized()) {
           const kakaoAppKey = import.meta.env.VITE_KAKAO_APP_KEY || '';
           if (kakaoAppKey && kakaoAppKey !== 'YOUR_KAKAO_APP_KEY') {
             window.Kakao.init(kakaoAppKey);
+          } else {
+            setError('카카오 앱 키가 올바르게 설정되지 않았습니다.');
+            setLoading(false);
+            return;
           }
         }
-        
-        if (window.Kakao.isInitialized()) {
-        try {
-          // 카카오 로그인 실행 (Promise로 래핑)
-          await new Promise((resolve, reject) => {
-            window.Kakao.Auth.login({
-              success: async (authObj) => {
-                try {
-                  // 사용자 정보 가져오기
-                  window.Kakao.API.request({
-                    url: '/v2/user/me',
-                    success: async (res) => {
-                      const kakaoAccount = res.kakao_account;
-                      socialData = {
-                        provider: 'kakao',
-                        socialId: res.id.toString(),
-                        email: kakaoAccount?.email || `kakao_${res.id}@kakao.com`,
-                        name: kakaoAccount?.profile?.nickname || `카카오사용자${res.id}`,
-                        profileImage: kakaoAccount?.profile?.profile_image_url || ''
-                      };
-                      
-                      // 백엔드로 소셜 로그인 요청
-                      const userData = await socialLogin(socialData);
-                      handleSocialLoginSuccess(userData);
-                      resolve();
-                    },
-                    fail: (err) => {
-                      console.error('카카오 사용자 정보 조회 실패:', err);
-                      setError('카카오 로그인에 실패했습니다.');
-                      setLoading(false);
-                      reject(err);
-                    }
-                  });
-                } catch (err) {
-                  console.error('카카오 로그인 처리 오류:', err);
-                  setError('카카오 로그인 처리 중 오류가 발생했습니다.');
-                  setLoading(false);
-                  reject(err);
-                }
-              },
-              fail: (err) => {
-                console.error('카카오 로그인 실패:', err);
-                setError('카카오 로그인에 실패했습니다.');
+
+        // 3차: 실제 로그인 호출
+        await new Promise((resolve, reject) => {
+          window.Kakao.Auth.login({
+            success: async () => {
+              try {
+                window.Kakao.API.request({
+                  url: '/v2/user/me',
+                  success: async (res) => {
+                    const kakaoAccount = res.kakao_account;
+                    socialData = {
+                      provider: 'kakao',
+                      socialId: res.id.toString(),
+                      email: kakaoAccount?.email || `kakao_${res.id}@kakao.com`,
+                      name: kakaoAccount?.profile?.nickname || `카카오사용자${res.id}`,
+                      profileImage: kakaoAccount?.profile?.profile_image_url || ''
+                    };
+
+                    const userData = await socialLogin(socialData);
+                    handleSocialLoginSuccess(userData);
+                    resolve();
+                  },
+                  fail: (err) => {
+                    console.error('카카오 사용자 정보 조회 실패:', err);
+                    setError('카카오 로그인에 실패했습니다.');
+                    setLoading(false);
+                    reject(err);
+                  }
+                });
+              } catch (err) {
+                console.error('카카오 로그인 처리 오류:', err);
+                setError('카카오 로그인 처리 중 오류가 발생했습니다.');
                 setLoading(false);
                 reject(err);
               }
-            });
+            },
+            fail: (err) => {
+              console.error('카카오 로그인 실패:', err);
+              setError('카카오 로그인에 실패했습니다.');
+              setLoading(false);
+              reject(err);
+            }
           });
-        } catch (err) {
-          console.error('카카오 SDK 오류:', err);
-          // 카카오 SDK 오류 시 개발용 시뮬레이션
-          handleSocialLoginDemo('kakao');
-        }
-        } else {
-          // SDK 초기화 실패 시 개발용 시뮬레이션
-          handleSocialLoginDemo('kakao');
-        }
-      } else {
-        // 카카오 SDK가 없는 경우 개발용 시뮬레이션
-        handleSocialLoginDemo('kakao');
+        });
+      } catch (err) {
+        console.error('카카오 SDK 로드 오류:', err);
+        setError('카카오 로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        setLoading(false);
+        return;
       }
     }
-    // 구글 로그인
+    // 구글 로그인 (실제 구글 계정으로만 로그인)
     else if (provider === "google") {
-      // Google Sign-In SDK가 로드되어 있는지 확인
-      if (window.google && window.google.accounts) {
-        try {
-          const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
-          
-          if (!googleClientId) {
-            // 클라이언트 ID가 없으면 개발용 시뮬레이션
-            handleSocialLoginDemo('google');
-            return;
-          }
+      const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
+      if (!googleClientId) {
+        setError('구글 클라이언트 ID가 설정되지 않았습니다.');
+        setLoading(false);
+        return;
+      }
+
+      // Google Sign-In SDK가 로드되어 있는지 확인
+      if (window.google && window.google.accounts && window.google.accounts.oauth2) {
+        try {
           // 구글 로그인 팝업 표시
-          window.google.accounts.oauth2.initTokenClient({
-            client_id: googleClientId,
-            scope: 'openid email profile',
-            callback: async (response) => {
-              try {
-                // 토큰으로 사용자 정보 가져오기
-                const userInfoResponse = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${response.access_token}`);
-                const userInfo = await userInfoResponse.json();
-                
-                socialData = {
-                  provider: 'google',
-                  socialId: userInfo.id,
-                  email: userInfo.email,
-                  name: userInfo.name,
-                  profileImage: userInfo.picture || ''
-                };
-                
-                const userData = await socialLogin(socialData);
-                handleSocialLoginSuccess(userData);
-              } catch (err) {
-                console.error('구글 사용자 정보 조회 오류:', err);
-                setError('구글 로그인 처리 중 오류가 발생했습니다.');
-                setLoading(false);
+          window.google.accounts.oauth2
+            .initTokenClient({
+              client_id: googleClientId,
+              scope: 'openid email profile',
+              callback: async (response) => {
+                try {
+                  // 토큰으로 사용자 정보 가져오기
+                  const userInfoResponse = await fetch(
+                    `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${response.access_token}`
+                  );
+                  const userInfo = await userInfoResponse.json();
+
+                  socialData = {
+                    provider: 'google',
+                    socialId: userInfo.id,
+                    email: userInfo.email,
+                    name: userInfo.name,
+                    profileImage: userInfo.picture || ''
+                  };
+
+                  const userData = await socialLogin(socialData);
+                  handleSocialLoginSuccess(userData);
+                } catch (err) {
+                  console.error('구글 사용자 정보 조회 오류:', err);
+                  setError('구글 로그인 처리 중 오류가 발생했습니다.');
+                  setLoading(false);
+                }
               }
-            }
-          }).requestAccessToken();
+            })
+            .requestAccessToken();
         } catch (err) {
           console.error('구글 SDK 오류:', err);
-          // 구글 SDK 오류 시 개발용 시뮬레이션
-          handleSocialLoginDemo('google');
+          setError('구글 로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          setLoading(false);
         }
       } else {
-        // 구글 SDK가 없는 경우 개발용 시뮬레이션
-        handleSocialLoginDemo('google');
-      }
-    }
-    // 애플 로그인
-    else if (provider === "apple") {
-      // Apple Sign In SDK가 로드되어 있는지 확인
-      if (window.AppleID && window.AppleID.auth) {
-        try {
-          window.AppleID.auth.init({
-            clientId: import.meta.env.VITE_APPLE_CLIENT_ID || '',
-            scope: 'name email',
-            redirectURI: `${window.location.origin}/auth/apple/callback`,
-            usePopup: true,
-            state: 'apple-login-state'
-          });
-
-          window.AppleID.auth.signIn({
-            success: async (response) => {
-              try {
-                // Apple ID 토큰에서 사용자 정보 추출
-                const idToken = response.authorization.id_token;
-                const payload = JSON.parse(atob(idToken.split('.')[1]));
-                
-                socialData = {
-                  provider: 'apple',
-                  socialId: payload.sub,
-                  email: payload.email || `apple_${payload.sub}@privaterelay.appleid.com`,
-                  name: response.user?.name?.firstName && response.user?.name?.lastName 
-                    ? `${response.user.name.firstName} ${response.user.name.lastName}`
-                    : `Apple User ${payload.sub.slice(0, 8)}`,
-                  profileImage: ''
-                };
-                
-                // 백엔드로 소셜 로그인 요청
-                const userData = await socialLogin(socialData);
-                handleSocialLoginSuccess(userData);
-              } catch (err) {
-                console.error('애플 로그인 처리 오류:', err);
-                setError('애플 로그인 처리 중 오류가 발생했습니다.');
-                setLoading(false);
-              }
-            },
-            error: (err) => {
-              console.error('애플 로그인 실패:', err);
-              setError('애플 로그인에 실패했습니다.');
-              setLoading(false);
-            }
-          });
-        } catch (err) {
-          console.error('애플 SDK 오류:', err);
-          // 애플 SDK 오류 시 개발용 시뮬레이션
-          handleSocialLoginDemo('apple');
-        }
-      } else {
-        // 애플 SDK가 없는 경우 개발용 시뮬레이션
-        handleSocialLoginDemo('apple');
+        setError('구글 SDK를 불러오지 못했습니다. 인터넷 연결을 확인 후 다시 시도해주세요.');
+        setLoading(false);
       }
     }
   } catch (err) {
@@ -329,13 +301,6 @@ const LoginForm = () => {
         socialId: `google_${Date.now()}`,
         email: `google_${Date.now()}@gmail.com`,
         name: '구글 사용자',
-        profileImage: ''
-      },
-      apple: {
-        provider: 'apple',
-        socialId: `apple_${Date.now()}`,
-        email: `apple_${Date.now()}@privaterelay.appleid.com`,
-        name: 'Apple 사용자',
         profileImage: ''
       }
     };
@@ -367,10 +332,23 @@ const LoginForm = () => {
       phone: userData.phone || "",
       role: userData.role || "user",
     };
-    
+
     localStorage.setItem("user", JSON.stringify(userInfo));
     login(userInfo);
-    window.location.href = "/";
+
+    // 사용자가 원래 가려던 경로로 리다이렉트 (없으면 홈으로)
+    let intendedPath = "/";
+    try {
+      const stored = sessionStorage.getItem("intendedPath");
+      if (stored && stored !== "/login") {
+        intendedPath = stored;
+      }
+      sessionStorage.removeItem("intendedPath");
+    } catch {
+      // sessionStorage 사용 불가 시에는 기본값(/) 사용
+    }
+
+    window.location.href = intendedPath;
   } else {
     setError("소셜 로그인 응답이 올바르지 않습니다.");
     setLoading(false);
@@ -495,17 +473,6 @@ const LoginForm = () => {
          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-       </svg>
-      </button>
-      <button
-       type="button"
-       className="btn--social apple"
-       onClick={() => handleSocialLogin("apple")}
-       disabled={loading}
-       title="Apple 로그인"
-      >
-       <svg className="social-icon" viewBox="0 0 24 24" width="24" height="24" fill="#000">
-         <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
        </svg>
       </button>
      </div>

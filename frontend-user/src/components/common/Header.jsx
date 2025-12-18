@@ -10,6 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [couponCount, setCouponCount] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const hideDropdownTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const Header = () => {
 
   const handleLogout = () => {
     setShowDropdown(false);
+    setIsMobileMenuOpen(false);
     logout();
     window.location.href = "/";
   };
@@ -69,6 +71,18 @@ const Header = () => {
             <StaybookLogo size="medium" />
           </Link>
         </div>
+
+        {/* 모바일 햄버거 버튼 */}
+        <button
+          type="button"
+          className={`header-menu-toggle ${isMobileMenuOpen ? "is-open" : ""}`}
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          aria-label="메뉴 열기"
+        >
+          <span className="bar" />
+          <span className="bar" />
+          <span className="bar" />
+        </button>
 
         {/* 네비게이션 */}
         <nav className="header-nav">
@@ -223,6 +237,86 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      {/* 모바일 전용 드롭다운 메뉴 */}
+      {isMobileMenuOpen && (
+        <div className="header-mobile-menu">
+          <nav className="mobile-nav">
+            <NavLink
+              to="/search"
+              className={({ isActive }) => (isActive ? "mobile-nav-link active" : "mobile-nav-link")}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              숙소 찾기
+            </NavLink>
+
+            {isAuthed && (
+              <NavLink
+                to="/mypage/wishlist"
+                className={({ isActive }) => (isActive ? "mobile-nav-link active" : "mobile-nav-link")}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                찜 목록
+              </NavLink>
+            )}
+
+            <NavLink
+              to="/support"
+              className={({ isActive }) => (isActive ? "mobile-nav-link active" : "mobile-nav-link")}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              고객센터
+            </NavLink>
+          </nav>
+
+          <div className="mobile-auth">
+            {isAuthed ? (
+              <>
+                <button
+                  type="button"
+                  className="mobile-auth-link"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    navigate("/mypage");
+                  }}
+                >
+                  마이페이지
+                </button>
+                <button
+                  type="button"
+                  className="mobile-auth-link logout"
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="mobile-auth-link"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    navigate("/login");
+                  }}
+                >
+                  로그인
+                </button>
+                <button
+                  type="button"
+                  className="mobile-auth-link primary"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    navigate("/signup");
+                  }}
+                >
+                  회원가입
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };

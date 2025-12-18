@@ -5,9 +5,14 @@ import User from '../models/User.js';
 export const protect = async (req, res, next) => {
   let token;
 
-  // Authorization 헤더에서 토큰 추출
+  // 1) Authorization 헤더에서 토큰 추출
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
+  }
+
+  // 2) 헤더에 없으면 accessToken 쿠키에서 추출
+  if (!token && req.cookies?.accessToken) {
+    token = req.cookies.accessToken;
   }
 
   if (!token) {
@@ -58,24 +63,24 @@ export const authorize = (...roles) => {
   };
 };
 
-// JWT 토큰 생성 함수
+// JWT 토큰 생성 함수 (액세스 토큰: 기본 10분)
 export const generateToken = (id) => {
   const secret = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
   if (!secret) {
     throw new Error('JWT_SECRET is not configured');
   }
   return jwt.sign({ id }, secret, {
-    expiresIn: process.env.JWT_EXPIRE || '7d'
+    expiresIn: process.env.JWT_EXPIRE || '10m'
   });
 };
 
-// Refresh 토큰 생성 함수
+// Refresh 토큰 생성 함수 (기본 60분)
 export const generateRefreshToken = (id) => {
   const secret = process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-key-change-in-production';
   if (!secret) {
     throw new Error('JWT_REFRESH_SECRET is not configured');
   }
   return jwt.sign({ id }, secret, {
-    expiresIn: process.env.JWT_REFRESH_EXPIRE || '30d'
+    expiresIn: process.env.JWT_REFRESH_EXPIRE || '60m'
   });
 };

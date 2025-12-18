@@ -193,12 +193,15 @@
 
 @media (max-width: 768px) {
   .footer-links {
-    flex-direction: column;
-    gap: 30px;
+    /* 너무 세로로만 쌓이지 않도록 2열 그리드 느낌으로 배치 */
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
   .footer-link-group {
-    width: 100%;
+    width: calc(50% - 10px);
+    min-width: 140px;
   }
 
   .footer-bottom-content {

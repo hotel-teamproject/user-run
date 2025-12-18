@@ -2,6 +2,29 @@ import jwt from 'jsonwebtoken';
 import { generateRefreshToken, generateToken } from '../middleware/auth.js';
 import User from '../models/User.js';
 
+// 공통 쿠키 옵션
+const isProd = process.env.NODE_ENV === 'production';
+
+const setAuthCookies = (res, accessToken, refreshToken) => {
+  // accessToken: 10분, JS에서도 읽을 수 있는 쿠키
+  res.cookie('accessToken', accessToken, {
+    httpOnly: false,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    maxAge: 10 * 60 * 1000,
+    path: '/',
+  });
+
+  // refreshToken: 60분, httpOnly 쿠키
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    maxAge: 60 * 60 * 1000,
+    path: '/',
+  });
+};
+
 // 회원가입
 export const register = async (req, res) => {
   try {
@@ -42,6 +65,9 @@ export const register = async (req, res) => {
     // 리프레시 토큰 저장
     user.refreshToken = refreshToken;
     await user.save();
+
+    // 쿠키에 토큰 설정
+    setAuthCookies(res, token, refreshToken);
 
     res.status(201).json({
       resultCode: 'SUCCESS',
@@ -109,6 +135,9 @@ export const login = async (req, res) => {
     user.refreshToken = refreshToken;
     await user.save();
 
+    // 쿠키에 토큰 설정
+    setAuthCookies(res, token, refreshToken);
+
     res.json({
       resultCode: 'SUCCESS',
       message: '로그인에 성공했습니다',
@@ -134,7 +163,9 @@ export const login = async (req, res) => {
 // 토큰 갱신
 export const refreshToken = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const bodyToken = req.body?.refreshToken;
+    const cookieToken = req.cookies?.refreshToken;
+    const refreshToken = bodyToken || cookieToken;
 
     if (!refreshToken) {
       return res.status(401).json({
@@ -159,6 +190,15 @@ export const refreshToken = async (req, res) => {
 
     // 새 액세스 토큰 생성
     const newAccessToken = generateToken(user._id);
+
+    // 액세스 토큰 쿠키 업데이트 (리프레시 토큰은 유지)
+    res.cookie('accessToken', newAccessToken, {
+      httpOnly: false,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
+      maxAge: 10 * 60 * 1000,
+      path: '/',
+    });
 
     res.json({
       resultCode: 'SUCCESS',
@@ -261,6 +301,9 @@ export const socialLogin = async (req, res) => {
     // 리프레시 토큰 저장
     user.refreshToken = refreshToken;
     await user.save();
+
+    // 쿠키에 토큰 설정
+    setAuthCookies(res, token, refreshToken);
 
     res.json({
       resultCode: 'SUCCESS',

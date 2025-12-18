@@ -1,4 +1,5 @@
 import axios from "axios";
+import useAuthStore from "../store/authStore";
 
 // API 기본 URL 설정
 // 개발 환경: Vite 프록시 사용 (/api -> http://backend:3000)
@@ -64,9 +65,30 @@ axiosInstance.interceptors.response.use(
      }
     }
    } catch (refreshError) {
-    // 리프레시 토큰도 만료된 경우 로그인 페이지로 이동
+    // 리프레시 토큰도 만료된 경우: 현재 페이지를 저장해 두고 로그인 페이지로 이동
+    try {
+      const currentPath =
+        window.location.pathname +
+        window.location.search +
+        window.location.hash;
+
+      // Zustand 스토어 및 sessionStorage에 의도한 경로 저장
+      const { setIntendedPath, clearUser } = useAuthStore.getState();
+      setIntendedPath(currentPath);
+      try {
+        sessionStorage.setItem("intendedPath", currentPath);
+      } catch {
+        // sessionStorage 사용 불가한 환경은 무시
+      }
+
+      clearUser?.();
+    } catch {
+      // window 또는 스토어 접근 실패 시에도 기본 로그아웃만 수행
+    }
+
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
     window.location.href = "/login";
     return Promise.reject(refreshError);
    }

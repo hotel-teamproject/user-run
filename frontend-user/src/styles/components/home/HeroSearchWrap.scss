@@ -76,3 +76,37 @@
 .destination-input {}
 .date-input {}
 .guests-select {}
+
+/* 모바일 / 작은 화면 대응 */
+@media (max-width: $breakpoint-md) {
+    .hero-search-container {
+        margin: -40px auto 24px;
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .search-form {
+        gap: 12px;
+
+        h3 {
+            font-size: 1.6rem;
+        }
+    }
+
+    .form-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-group {
+        label {
+            font-size: 1.3rem;
+        }
+
+        input,
+        select {
+            font-size: 1.4rem;
+            padding: 10px 12px;
+        }
+    }
+}

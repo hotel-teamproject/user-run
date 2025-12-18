@@ -1,4 +1,6 @@
 /* Frame 36 기반 hero-card 스타일 */
+@use "../../common/variables" as *;
+
 .hero-card {
     /* 오토레이아웃 */
     display: flex;
@@ -66,4 +68,34 @@
     line-height: 1.6;
     max-width: 540px;
     opacity: 0.9;
+}
+
+/* 모바일 / 작은 화면 대응 */
+@media (max-width: $breakpoint-md) {
+    .hero-card {
+        padding: 0 $spacing-md $spacing-xl $spacing-md;
+        height: auto;
+        min-height: 320px;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .hero-card-container {
+        padding-top: $spacing-xl;
+        padding-bottom: $spacing-xl;
+        gap: $spacing-sm;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.6rem;
+    }
+
+    .hero-description {
+        font-size: 1.4rem;
+        max-width: 100%;
+    }
 }
