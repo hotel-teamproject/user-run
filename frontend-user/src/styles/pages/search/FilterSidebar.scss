@@ -198,3 +198,125 @@
     }
   }
 }
+
+/* ===========================================
+   반응형
+=========================================== */
+@media (max-width: 1024px) {
+  .filter-sidebar {
+    padding: 12px 0;
+    gap: 24px;
+
+    .filter-title {
+      font-size: 1.7rem;
+    }
+
+    .filter-section {
+      gap: 10px;
+
+      .filter-header span {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-sidebar {
+    padding: 8px 0;
+    gap: 20px;
+
+    .filter-title {
+      font-size: 1.6rem;
+      margin-bottom: 2px;
+    }
+
+    hr {
+      margin: 10px 0;
+    }
+
+    .filter-section {
+      gap: 8px;
+
+      .filter-header {
+        span {
+          font-size: 1.4rem;
+        }
+
+        .toggle-btn {
+          font-size: 1.4rem;
+        }
+      }
+
+      .filter-body {
+        gap: 12px;
+      }
+    }
+
+    .price-slider {
+      padding: 24px 0 12px;
+    }
+
+    .price-values {
+      font-size: 1.3rem;
+    }
+
+    .rating-buttons {
+      gap: 6px;
+
+      button {
+        padding: 5px 10px;
+        font-size: 1.3rem;
+      }
+    }
+
+    .checkbox-list {
+      gap: 6px;
+
+      label {
+        font-size: 1.3rem;
+        gap: 5px;
+
+        input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .show-more-btn {
+        padding: 6px 10px;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-sidebar {
+    padding: 6px 0;
+    gap: 16px;
+
+    .filter-title {
+      font-size: 1.5rem;
+    }
+
+    .filter-section {
+      .filter-header span {
+        font-size: 1.3rem;
+      }
+    }
+
+    .price-slider {
+      padding: 20px 0 10px;
+    }
+
+    .rating-buttons {
+      flex-wrap: wrap;
+      
+      button {
+        padding: 4px 8px;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

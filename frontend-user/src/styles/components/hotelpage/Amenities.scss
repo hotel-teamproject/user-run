@@ -57,4 +57,106 @@
    color: white;
   }
  }
+
+ /* ===========================================
+    반응형
+ ========================================== */
+ @media (max-width: 1024px) {
+   padding: 32px 0;
+
+   .amenities-title {
+     font-size: 2.4rem;
+     margin-bottom: 20px;
+   }
+
+   .amenities-grid {
+     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+     gap: 14px;
+   }
+
+   .amenity-item {
+     padding: 10px;
+     gap: 10px;
+
+     .amenity-icon {
+       font-size: 2.2rem;
+       width: 26px;
+     }
+
+     .amenity-name {
+       font-size: 1.5rem;
+     }
+   }
+
+   .show-more-btn {
+     padding: 9px 20px;
+     font-size: 1.3rem;
+   }
+ }
+
+ @media (max-width: 768px) {
+   padding: 24px 0;
+
+   .amenities-title {
+     font-size: 2.2rem;
+     margin-bottom: 18px;
+   }
+
+   .amenities-grid {
+     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+     gap: 12px;
+   }
+
+   .amenity-item {
+     padding: 9px;
+     gap: 8px;
+
+     .amenity-icon {
+       font-size: 2rem;
+       width: 24px;
+     }
+
+     .amenity-name {
+       font-size: 1.4rem;
+     }
+   }
+
+   .show-more-btn {
+     padding: 8px 18px;
+     font-size: 1.3rem;
+   }
+ }
+
+ @media (max-width: 480px) {
+   padding: 20px 0;
+
+   .amenities-title {
+     font-size: 2rem;
+     margin-bottom: 16px;
+   }
+
+   .amenities-grid {
+     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+     gap: 10px;
+   }
+
+   .amenity-item {
+     padding: 8px;
+     gap: 6px;
+
+     .amenity-icon {
+       font-size: 1.8rem;
+       width: 22px;
+     }
+
+     .amenity-name {
+       font-size: 1.3rem;
+     }
+   }
+
+   .show-more-btn {
+     padding: 8px 16px;
+     font-size: 1.2rem;
+   }
+ }
 }

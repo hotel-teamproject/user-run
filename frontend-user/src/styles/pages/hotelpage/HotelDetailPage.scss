@@ -105,15 +105,17 @@
 
 @media (max-width: 480px) {
   .hotel-detail-container {
-    padding: 18px 12px 48px;
-    gap: 32px;
+    padding: 16px 12px 40px;
+    gap: 28px;
   }
 
   .detail-section {
     padding: 14px 12px;
+    border-radius: 10px;
   }
 
   .hotel-detail-section-title {
-    font-size: 20px;
+    font-size: 1.9rem;
+    margin-bottom: 18px;
   }
 }

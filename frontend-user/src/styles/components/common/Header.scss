@@ -34,30 +34,29 @@
   background: transparent;
   cursor: pointer;
   flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 
   .bar {
     display: block;
     width: 22px;
     height: 2px;
-    margin: 0 auto;
     background: #00234d;
     border-radius: 999px;
     transition: transform 0.2s ease, opacity 0.2s ease;
-
-    &:not(:last-child) {
-      margin-bottom: 4px;
-    }
   }
 
   &.is-open {
     .bar:nth-child(1) {
-      transform: translateY(4px) rotate(45deg);
+      transform: translateY(6px) rotate(45deg);
     }
     .bar:nth-child(2) {
       opacity: 0;
     }
     .bar:nth-child(3) {
-      transform: translateY(-4px) rotate(-45deg);
+      transform: translateY(-6px) rotate(-45deg);
     }
   }
 }

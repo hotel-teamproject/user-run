@@ -84,12 +84,149 @@
     }
   }
 
+  @media (max-width: 1024px) {
+    padding: 32px 0;
+
+    .overview-title {
+      font-size: 2.4rem;
+      margin-bottom: 24px;
+    }
+
+    .overview-features {
+      gap: 16px;
+      margin-bottom: 24px;
+
+      .feature-card {
+        min-width: 140px;
+        padding: 18px;
+
+        &.rating-card {
+          .rating-score {
+            font-size: 4.8rem;
+          }
+
+          .rating-label {
+            font-size: 1.6rem;
+          }
+
+          .review-count {
+            font-size: 1.4rem;
+          }
+        }
+
+        .feature-icon {
+          font-size: 3.2rem;
+          margin-bottom: 10px;
+        }
+
+        .feature-label {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .overview-description {
+      p {
+        font-size: 1.7rem;
+        line-height: 1.8;
+      }
+    }
+  }
+
   @media (max-width: 768px) {
+    padding: 24px 0;
+
+    .overview-title {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+    }
+
     .overview-features {
       flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
 
       .feature-card {
         min-width: 100%;
+        padding: 16px;
+
+        &.rating-card {
+          .rating-score {
+            font-size: 4.4rem;
+          }
+
+          .rating-label {
+            font-size: 1.5rem;
+          }
+
+          .review-count {
+            font-size: 1.3rem;
+          }
+        }
+
+        .feature-icon {
+          font-size: 3rem;
+          margin-bottom: 8px;
+        }
+
+        .feature-label {
+          font-size: 1.4rem;
+        }
+      }
+    }
+
+    .overview-description {
+      p {
+        font-size: 1.6rem;
+        line-height: 1.7;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 0;
+
+    .overview-title {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .overview-features {
+      gap: 10px;
+      margin-bottom: 16px;
+
+      .feature-card {
+        padding: 14px;
+
+        &.rating-card {
+          .rating-score {
+            font-size: 4rem;
+          }
+
+          .rating-label {
+            font-size: 1.4rem;
+          }
+
+          .review-count {
+            font-size: 1.2rem;
+          }
+        }
+
+        .feature-icon {
+          font-size: 2.6rem;
+          margin-bottom: 6px;
+        }
+
+        .feature-label {
+          font-size: 1.3rem;
+        }
+      }
+    }
+
+    .overview-description {
+      p {
+        font-size: 1.5rem;
+        line-height: 1.6;
       }
     }
   }
