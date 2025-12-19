@@ -105,6 +105,24 @@ export const changePassword = async (passwordData) => {
   return response.data;
 };
 
+/**
+ * 비밀번호 찾기 (이메일로 리셋 토큰 요청)
+ * @param {string} email - 사용자 이메일
+ */
+export const forgotPassword = async (email) => {
+  const response = await axiosInstance.post("/auth/forgot-password", { email });
+  return response.data;
+};
+
+/**
+ * 비밀번호 재설정
+ * @param {Object} resetData - { token, password }
+ */
+export const resetPassword = async (resetData) => {
+  const response = await axiosInstance.post("/auth/reset-password", resetData);
+  return response.data;
+};
+
 // ========================
 // 사업자 신청 관련 API
 // ========================

@@ -26,7 +26,7 @@ const Footer = () => {
             </p>
             <div className="social-links">
               <a 
-                href="https://www.facebook.com/staybook" 
+                href="https://www.facebook.com" 
                 className="social-link" 
                 aria-label="Facebook"
                 target="_blank"
@@ -35,7 +35,7 @@ const Footer = () => {
                 <img src="/images/Facebook.png" alt="Facebook" />
               </a>
               <a 
-                href="https://twitter.com/staybook" 
+                href="https://twitter.com" 
                 className="social-link" 
                 aria-label="Twitter"
                 target="_blank"
@@ -44,7 +44,7 @@ const Footer = () => {
                 <img src="/images/Twitter.png" alt="Twitter" />
               </a>
               <a 
-                href="https://www.youtube.com/@staybook" 
+                href="https://www.youtube.com" 
                 className="social-link" 
                 aria-label="YouTube"
                 target="_blank"
@@ -53,7 +53,7 @@ const Footer = () => {
                 <img src="/images/Youtube.png" alt="YouTube" />
               </a>
               <a 
-                href="https://www.instagram.com/staybook" 
+                href="https://www.instagram.com" 
                 className="social-link" 
                 aria-label="Instagram"
                 target="_blank"

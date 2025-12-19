@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { generateRefreshToken, generateToken } from '../middleware/auth.js';
 import User from '../models/User.js';
 
@@ -325,6 +326,130 @@ export const socialLogin = async (req, res) => {
     res.status(500).json({
       resultCode: 'FAIL',
       message: error.message || '소셜 로그인에 실패했습니다',
+      data: null
+    });
+  }
+};
+
+// 비밀번호 찾기 (이메일로 리셋 토큰 전송)
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '이메일을 입력해주세요',
+        data: null
+      });
+    }
+
+    // 사용자 조회 (소셜 로그인 사용자는 제외)
+    const user = await User.findOne({ 
+      email: email.toLowerCase(),
+      $or: [
+        { socialProvider: { $exists: false } },
+        { socialProvider: 'local' }
+      ]
+    });
+
+    if (!user) {
+      // 보안을 위해 존재하지 않는 이메일이어도 성공 메시지 반환
+      return res.json({
+        resultCode: 'SUCCESS',
+        message: '이메일로 비밀번호 재설정 링크를 전송했습니다',
+        data: null
+      });
+    }
+
+    // 리셋 토큰 생성
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // 토큰과 만료 시간 저장 (10분)
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10분
+    await user.save({ validateBeforeSave: false });
+
+    // 실제 프로덕션에서는 이메일로 리셋 토큰을 전송해야 함
+    // 여기서는 개발 환경을 위해 토큰을 응답에 포함
+    // 프로덕션에서는 이 부분을 제거하고 이메일로만 전송
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
+
+    // 개발 환경에서만 토큰 반환 (프로덕션에서는 제거)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('비밀번호 재설정 링크:', resetUrl);
+    }
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '이메일로 비밀번호 재설정 링크를 전송했습니다',
+      data: process.env.NODE_ENV !== 'production' ? { resetToken, resetUrl } : null
+    });
+  } catch (error) {
+    console.error('비밀번호 찾기 오류:', error);
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message || '비밀번호 찾기에 실패했습니다',
+      data: null
+    });
+  }
+};
+
+// 비밀번호 재설정
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '토큰과 새 비밀번호를 입력해주세요',
+        data: null
+      });
+    }
+
+    if (password.length < 4) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '비밀번호는 최소 4자 이상이어야 합니다',
+        data: null
+      });
+    }
+
+    // 토큰 해시화
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // 토큰과 만료 시간 확인
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    }).select('+password');
+
+    if (!user) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '유효하지 않거나 만료된 토큰입니다',
+        data: null
+      });
+    }
+
+    // 비밀번호 변경
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '비밀번호가 성공적으로 변경되었습니다',
+      data: null
+    });
+  } catch (error) {
+    console.error('비밀번호 재설정 오류:', error);
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message || '비밀번호 재설정에 실패했습니다',
       data: null
     });
   }

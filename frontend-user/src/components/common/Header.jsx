@@ -94,16 +94,6 @@ const Header = () => {
             <span className="nav-text">숙소 찾기</span>
           </NavLink>
 
-          {isAuthed && (
-            <NavLink
-              to="/mypage/wishlist"
-              className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
-            >
-              <span className="nav-icon">❤️</span>
-              <span className="nav-text">찜 목록</span>
-            </NavLink>
-          )}
-
           <NavLink
             to="/support"
             className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
@@ -170,6 +160,15 @@ const Header = () => {
                     >
                       <span className="dropdown-icon">👤</span>
                       <span>마이페이지</span>
+                    </Link>
+
+                    <Link
+                      to="/mypage/wishlist"
+                      className="dropdown-item"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      <span className="dropdown-icon">❤️</span>
+                      <span>찜 목록</span>
                     </Link>
 
                     <Link
@@ -249,16 +248,6 @@ const Header = () => {
             >
               숙소 찾기
             </NavLink>
-
-            {isAuthed && (
-              <NavLink
-                to="/mypage/wishlist"
-                className={({ isActive }) => (isActive ? "mobile-nav-link active" : "mobile-nav-link")}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                찜 목록
-              </NavLink>
-            )}
 
             <NavLink
               to="/support"

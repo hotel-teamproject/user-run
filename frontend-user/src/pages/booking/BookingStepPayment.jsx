@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { getHotelDetail } from "../../api/hotelClient";
 import { createReservation } from "../../api/reservationClient";
 import { getUserCards } from "../../api/cardClient";
 import { getUserCoupons, applyCoupon } from "../../api/couponClient";
+import { AuthContext } from "../../context/AuthContext";
 import "../../styles/pages/booking/BookingStep.scss";
 
 const BookingStepPayment = () => {
   const navigate = useNavigate();
   const { hotelId } = useParams();
   const location = useLocation();
+  const { isAuthed } = useContext(AuthContext);
   const [hotel, setHotel] = useState(null);
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
+  
+  // 비회원 정보
+  const [guestName, setGuestName] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
+  const [guestPhone, setGuestPhone] = useState("");
 
   const qs = new URLSearchParams(location.search);
   const checkIn = qs.get("checkIn");
@@ -93,41 +100,52 @@ const BookingStepPayment = () => {
           });
         }
 
-        // 사용 가능한 쿠폰 조회
-        try {
-          const basePrice = roomPriceFromUrl > 0 ? roomPriceFromUrl : (selectedRoom?.price || 0);
-          const nights = calculateNights();
-          const totalAmount = (basePrice * nights) + extrasPrice;
-          const availableCoupons = await getUserCoupons();
-          setCoupons(availableCoupons.available || []);
-        } catch (err) {
-          console.error("쿠폰 목록 조회 실패:", err);
+        // 사용 가능한 쿠폰 조회 (회원만)
+        if (isAuthed) {
+          try {
+            const basePrice = roomPriceFromUrl > 0 ? roomPriceFromUrl : (selectedRoom?.price || 0);
+            const nights = calculateNights();
+            const totalAmount = (basePrice * nights) + extrasPrice;
+            const availableCoupons = await getUserCoupons();
+            setCoupons(availableCoupons.available || []);
+          } catch (err) {
+            console.error("쿠폰 목록 조회 실패:", err);
+            setCoupons([]);
+          }
+        } else {
           setCoupons([]);
         }
 
-        // 저장된 카드 목록 조회
-        try {
-          const cards = await getUserCards();
-          setSavedCards(cards || []);
-          // 기본 카드가 있으면 자동 선택
-          if (cards && cards.length > 0) {
-            const defaultCard = cards.find(c => c.isDefault);
-            if (defaultCard) {
-              setSelectedCardId(defaultCard._id);
-              setUseNewCard(false);
+        // 저장된 카드 목록 조회 (회원만)
+        if (isAuthed) {
+          try {
+            const cards = await getUserCards();
+            setSavedCards(cards || []);
+            // 기본 카드가 있으면 자동 선택
+            if (cards && cards.length > 0) {
+              const defaultCard = cards.find(c => c.isDefault);
+              if (defaultCard) {
+                setSelectedCardId(defaultCard._id);
+                setUseNewCard(false);
+              } else {
+                // 기본 카드가 없으면 첫 번째 카드 선택
+                setSelectedCardId(cards[0]._id);
+                setUseNewCard(false);
+              }
             } else {
-              // 기본 카드가 없으면 첫 번째 카드 선택
-              setSelectedCardId(cards[0]._id);
-              setUseNewCard(false);
+              // 저장된 카드가 없으면 새 카드 입력 모드
+              setUseNewCard(true);
+              setSelectedCardId(null);
             }
-          } else {
-            // 저장된 카드가 없으면 새 카드 입력 모드
+          } catch (err) {
+            console.error("카드 목록 조회 실패:", err);
+            // 카드 조회 실패 시 새 카드 입력으로 전환
             setUseNewCard(true);
             setSelectedCardId(null);
           }
-        } catch (err) {
-          console.error("카드 목록 조회 실패:", err);
-          // 카드 조회 실패 시 새 카드 입력으로 전환
+        } else {
+          // 비회원은 항상 새 카드 입력
+          setSavedCards([]);
           setUseNewCard(true);
           setSelectedCardId(null);
         }
@@ -183,6 +201,21 @@ const BookingStepPayment = () => {
   };
 
   const handlePayment = async () => {
+    // 비회원인 경우 정보 확인
+    if (!isAuthed) {
+      if (!guestName || !guestEmail || !guestPhone) {
+        alert("비회원 예약을 위해 이름, 이메일, 전화번호를 모두 입력해주세요.");
+        return;
+      }
+      
+      // 이메일 형식 검증
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(guestEmail)) {
+        alert("올바른 이메일 형식을 입력해주세요.");
+        return;
+      }
+    }
+    
     // 간단한 유효성 검사
     if (paymentMethod === "card") {
       // 저장된 카드를 사용하지 않고 새 카드를 사용하는 경우
@@ -225,6 +258,13 @@ const BookingStepPayment = () => {
           nameOnCard: cardName,
         } : null,
       };
+
+      // 비회원인 경우 비회원 정보 추가
+      if (!isAuthed) {
+        reservationData.guestName = guestName;
+        reservationData.guestEmail = guestEmail;
+        reservationData.guestPhone = guestPhone;
+      }
 
       const response = await createReservation(reservationData);
 
@@ -348,6 +388,52 @@ const BookingStepPayment = () => {
               </div>
             )}
           </div>
+
+          {/* 비회원 정보 입력 섹션 */}
+          {!isAuthed && (
+            <div className="guest-info-section">
+              <h3>예약자 정보</h3>
+              <div className="form-group">
+                <label>이름</label>
+                <input
+                  type="text"
+                  placeholder="홍길동"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>이메일</label>
+                <input
+                  type="email"
+                  placeholder="example@email.com"
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>전화번호</label>
+                <input
+                  type="tel"
+                  placeholder="010-1234-5678"
+                  value={guestPhone}
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 3 && value.length <= 7) {
+                      value = value.substring(0, 3) + '-' + value.substring(3);
+                    } else if (value.length > 7) {
+                      value = value.substring(0, 3) + '-' + value.substring(3, 7) + '-' + value.substring(7, 11);
+                    }
+                    setGuestPhone(value);
+                  }}
+                  maxLength={13}
+                  required
+                />
+              </div>
+            </div>
+          )}
 
           <div className="payment-section">
             <h3>결제 수단</h3>

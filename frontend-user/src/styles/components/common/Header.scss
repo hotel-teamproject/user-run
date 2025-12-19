@@ -240,6 +240,10 @@
     font-size: 15px;
     font-weight: 500;
     color: #222;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .dropdown-arrow {
@@ -419,6 +423,12 @@
         font-size: 18px;
       }
     }
+  }
+}
+
+@media (max-width: 1024px) {
+  .user-button .user-name {
+    max-width: 80px;
   }
 }
 

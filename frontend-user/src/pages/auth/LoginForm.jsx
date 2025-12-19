@@ -413,7 +413,14 @@ const loadKakaoSDK = () => {
       />
       <span className="checkbox-label">비밀번호 기억하기</span>
      </label>
-     <a href="#" className="forgot-password">
+     <a 
+      href="/reset-password" 
+      className="forgot-password"
+      onClick={(e) => {
+        e.preventDefault();
+        navigate("/reset-password");
+      }}
+     >
       비밀번호를 잊으셨나요?
      </a>
     </div>

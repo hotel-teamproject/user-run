@@ -31,6 +31,31 @@ export const cancelReservation = async (reservationId, cancelReason = "") => {
  return response.data;
 };
 
+// 비회원 예약 목록 조회
+export const getGuestReservations = async (email, phone) => {
+ const response = await axiosInstance.get("/reservations/guest", {
+  params: { email, phone }
+ });
+ return response.data;
+};
+
+// 비회원 예약 상세 조회
+export const getGuestReservationDetail = async (reservationId, email, phone) => {
+ const response = await axiosInstance.get(`/reservations/guest/${reservationId}`, {
+  params: { email, phone }
+ });
+ return response.data;
+};
+
+// 비회원 예약 취소
+export const cancelGuestReservation = async (reservationId, email, phone, cancelReason = "") => {
+ const response = await axiosInstance.patch(
+  `/reservations/guest/${reservationId}/cancel`,
+  { email, phone, cancelReason }
+ );
+ return response.data;
+};
+
 // 예약 가능한 객실 조회 (호텔별)
 export const getAvailableRooms = async (params) => {
  const { hotelId, guests, checkIn, checkOut } = params;

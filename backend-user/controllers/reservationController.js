@@ -15,8 +15,26 @@ export const createReservation = async (req, res) => {
       totalPrice,  // 프론트엔드에서 계산된 최종 금액 (쿠폰 할인 포함)
       discount,    // 쿠폰 할인 금액
       extrasPrice, // 추가 옵션 가격
-      couponCode   // 사용된 쿠폰 코드
+      couponCode,  // 사용된 쿠폰 코드
+      // 비회원 정보
+      guestName,
+      guestEmail,
+      guestPhone
     } = req.body;
+
+    // 비회원 예약인지 확인
+    const isGuestReservation = !req.user && (guestName || guestEmail || guestPhone);
+    
+    // 비회원 예약인 경우 필수 정보 확인
+    if (isGuestReservation) {
+      if (!guestName || !guestEmail || !guestPhone) {
+        return res.status(400).json({
+          resultCode: 'FAIL',
+          message: '비회원 예약을 위해 이름, 이메일, 전화번호를 모두 입력해주세요',
+          data: null
+        });
+      }
+    }
 
     if (!hotelId || !roomId || !checkIn || !checkOut || !guests) {
       return res.status(400).json({
@@ -83,8 +101,7 @@ export const createReservation = async (req, res) => {
     }
 
     // 예약 생성 (결제 완료로 간주하여 바로 confirmed 상태로 생성)
-    const reservation = await Reservation.create({
-      user: req.user._id,
+    const reservationData = {
       hotel: hotelId,
       room: roomId,
       checkIn: checkInDate,
@@ -97,7 +114,18 @@ export const createReservation = async (req, res) => {
       specialRequests,
       status: 'confirmed',
       paymentStatus: 'paid'
-    });
+    };
+
+    // 회원/비회원 구분
+    if (isGuestReservation) {
+      reservationData.guestName = guestName;
+      reservationData.guestEmail = guestEmail.toLowerCase();
+      reservationData.guestPhone = guestPhone;
+    } else {
+      reservationData.user = req.user._id;
+    }
+
+    const reservation = await Reservation.create(reservationData);
 
     // 생성된 예약 정보 조회 (populate)
     const populatedReservation = await Reservation.findById(reservation._id)
@@ -199,6 +227,182 @@ export const cancelReservation = async (req, res) => {
       return res.status(403).json({
         resultCode: 'FAIL',
         message: '본인의 예약만 취소할 수 있습니다',
+        data: null
+      });
+    }
+
+    // 이미 취소된 예약인지 확인
+    if (reservation.status === 'cancelled') {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '이미 취소된 예약입니다',
+        data: null
+      });
+    }
+
+    // 체크인 날짜가 지났는지 확인
+    if (new Date(reservation.checkIn) < new Date()) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '체크인 날짜가 지난 예약은 취소할 수 없습니다',
+        data: null
+      });
+    }
+
+    // 예약 취소
+    reservation.status = 'cancelled';
+    reservation.cancelReason = cancelReason || '사용자 요청';
+    reservation.cancelledAt = new Date();
+    await reservation.save();
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '예약이 취소되었습니다',
+      data: reservation
+    });
+  } catch (error) {
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message,
+      data: null
+    });
+  }
+};
+
+// 비회원 예약 조회 (이메일과 전화번호로 조회)
+export const getGuestReservations = async (req, res) => {
+  try {
+    const { email, phone } = req.query;
+
+    if (!email || !phone) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '이메일과 전화번호를 입력해주세요',
+        data: null
+      });
+    }
+
+    const reservations = await Reservation.find({
+      guestEmail: email.toLowerCase(),
+      guestPhone: phone,
+      user: null // 비회원 예약만 조회
+    })
+      .sort('-createdAt')
+      .populate('hotel', 'name address city images')
+      .populate('room', 'name type price');
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '예약 목록 조회 성공',
+      data: reservations
+    });
+  } catch (error) {
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message,
+      data: null
+    });
+  }
+};
+
+// 비회원 예약 상세 조회
+export const getGuestReservationDetail = async (req, res) => {
+  try {
+    const { email, phone } = req.query;
+    const reservationId = req.params.reservationId;
+
+    if (!email || !phone) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '이메일과 전화번호를 입력해주세요',
+        data: null
+      });
+    }
+
+    const reservation = await Reservation.findById(reservationId)
+      .populate('hotel', 'name address city images amenities')
+      .populate('room', 'name type price images amenities');
+
+    if (!reservation) {
+      return res.status(404).json({
+        resultCode: 'FAIL',
+        message: '예약을 찾을 수 없습니다',
+        data: null
+      });
+    }
+
+    // 비회원 예약인지 확인
+    if (reservation.user) {
+      return res.status(403).json({
+        resultCode: 'FAIL',
+        message: '회원 예약은 로그인 후 조회해주세요',
+        data: null
+      });
+    }
+
+    // 이메일과 전화번호 일치 확인
+    if (reservation.guestEmail.toLowerCase() !== email.toLowerCase() || 
+        reservation.guestPhone !== phone) {
+      return res.status(403).json({
+        resultCode: 'FAIL',
+        message: '예약 정보가 일치하지 않습니다',
+        data: null
+      });
+    }
+
+    res.json({
+      resultCode: 'SUCCESS',
+      message: '예약 상세 조회 성공',
+      data: reservation
+    });
+  } catch (error) {
+    res.status(500).json({
+      resultCode: 'FAIL',
+      message: error.message,
+      data: null
+    });
+  }
+};
+
+// 비회원 예약 취소
+export const cancelGuestReservation = async (req, res) => {
+  try {
+    const { email, phone, cancelReason } = req.body;
+    const reservationId = req.params.reservationId;
+
+    if (!email || !phone) {
+      return res.status(400).json({
+        resultCode: 'FAIL',
+        message: '이메일과 전화번호를 입력해주세요',
+        data: null
+      });
+    }
+
+    const reservation = await Reservation.findById(reservationId);
+
+    if (!reservation) {
+      return res.status(404).json({
+        resultCode: 'FAIL',
+        message: '예약을 찾을 수 없습니다',
+        data: null
+      });
+    }
+
+    // 비회원 예약인지 확인
+    if (reservation.user) {
+      return res.status(403).json({
+        resultCode: 'FAIL',
+        message: '회원 예약은 로그인 후 취소해주세요',
+        data: null
+      });
+    }
+
+    // 이메일과 전화번호 일치 확인
+    if (reservation.guestEmail.toLowerCase() !== email.toLowerCase() || 
+        reservation.guestPhone !== phone) {
+      return res.status(403).json({
+        resultCode: 'FAIL',
+        message: '예약 정보가 일치하지 않습니다',
         data: null
       });
     }

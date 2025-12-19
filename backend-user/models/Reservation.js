@@ -4,7 +4,30 @@ const reservationSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: function() {
+      // 비회원 예약인 경우 user는 선택사항
+      return !this.guestEmail;
+    }
+  },
+  // 비회원 예약 정보
+  guestName: {
+    type: String,
+    required: function() {
+      return !this.user;
+    }
+  },
+  guestEmail: {
+    type: String,
+    required: function() {
+      return !this.user;
+    },
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, '유효한 이메일을 입력해주세요']
+  },
+  guestPhone: {
+    type: String,
+    required: function() {
+      return !this.user;
+    }
   },
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
@@ -75,6 +98,8 @@ const reservationSchema = new mongoose.Schema({
 
 // 인덱스 설정
 reservationSchema.index({ user: 1, createdAt: -1 });
+reservationSchema.index({ guestEmail: 1, createdAt: -1 });
+reservationSchema.index({ guestPhone: 1, createdAt: -1 });
 reservationSchema.index({ hotel: 1, checkIn: 1, checkOut: 1 });
 reservationSchema.index({ status: 1 });
 
