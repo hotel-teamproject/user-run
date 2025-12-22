@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { registerUser } from "../../api/userClient";
+import { registerUser, socialLogin } from "../../api/userClient";
 
 const SignupForm = () => {
  const [formData, setFormData] = useState({
@@ -18,6 +18,48 @@ const SignupForm = () => {
  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
  const navigate = useNavigate();
  const { login } = useContext(AuthContext);
+
+ // 카카오 SDK 초기화
+ useEffect(() => {
+  const tryInitKakao = () => {
+   if (window.Kakao && !window.Kakao.isInitialized()) {
+    const kakaoAppKey = import.meta.env.VITE_KAKAO_APP_KEY || '';
+    if (kakaoAppKey && kakaoAppKey !== 'YOUR_KAKAO_APP_KEY') {
+     try {
+      window.Kakao.init(kakaoAppKey);
+      console.log('카카오 SDK 초기화 완료');
+     } catch (err) {
+      console.error('카카오 SDK 초기화 실패:', err);
+     }
+    }
+   }
+  };
+  tryInitKakao();
+ }, []);
+
+ // 카카오 SDK 동적 로더
+ const loadKakaoSDK = () => {
+  return new Promise((resolve, reject) => {
+   if (window.Kakao) {
+    resolve();
+    return;
+   }
+
+   const existingScript = document.querySelector('script[src="https://developers.kakao.com/sdk/js/kakao.js"]');
+   if (existingScript) {
+    existingScript.addEventListener('load', () => resolve());
+    existingScript.addEventListener('error', (err) => reject(err));
+    return;
+   }
+
+   const script = document.createElement('script');
+   script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+   script.async = true;
+   script.onload = () => resolve();
+   script.onerror = (err) => reject(err);
+   document.head.appendChild(script);
+  });
+ };
 
  const handleInputChange = (e) => {
   const { name, value, type, checked } = e.target;
@@ -96,9 +138,182 @@ const SignupForm = () => {
   }
  };
 
- const handleSocialSignup = (provider) => {
-  // 소셜 회원가입 로직 구현 예정
-  console.log(`${provider} signup`);
+ const handleSocialSignup = async (provider) => {
+  try {
+   setLoading(true);
+   setError("");
+
+   let socialData = null;
+
+   // 카카오 회원가입
+   if (provider === "kakao") {
+    try {
+     await loadKakaoSDK();
+
+     if (!window.Kakao) {
+      setError('카카오 SDK를 불러오지 못했습니다. 인터넷 연결을 확인 후 다시 시도해주세요.');
+      setLoading(false);
+      return;
+     }
+
+     if (!window.Kakao.isInitialized()) {
+      const kakaoAppKey = import.meta.env.VITE_KAKAO_APP_KEY || '';
+      if (kakaoAppKey && kakaoAppKey !== 'YOUR_KAKAO_APP_KEY') {
+       window.Kakao.init(kakaoAppKey);
+      } else {
+       setError('카카오 앱 키가 올바르게 설정되지 않았습니다.');
+       setLoading(false);
+       return;
+      }
+     }
+
+     // 카카오 개발자 콘솔에 등록된 리다이렉트 URI와 일치해야 함
+     const redirectUri = `${window.location.origin}/oauth/kakao/callback`;
+     
+     await new Promise((resolve, reject) => {
+      window.Kakao.Auth.login({
+       redirectUri: redirectUri, // 명시적으로 리다이렉트 URI 설정
+       success: async () => {
+        try {
+         window.Kakao.API.request({
+          url: '/v2/user/me',
+          success: async (res) => {
+           const kakaoAccount = res.kakao_account;
+           socialData = {
+            provider: 'kakao',
+            socialId: res.id.toString(),
+            email: kakaoAccount?.email || `kakao_${res.id}@kakao.com`,
+            name: kakaoAccount?.profile?.nickname || `카카오사용자${res.id}`,
+            profileImage: kakaoAccount?.profile?.profile_image_url || ''
+           };
+
+           const userData = await socialLogin(socialData);
+           handleSocialSignupSuccess(userData);
+           resolve();
+          },
+          fail: (err) => {
+           console.error('카카오 사용자 정보 조회 실패:', err);
+           setError('카카오 회원가입에 실패했습니다.');
+           setLoading(false);
+           reject(err);
+          }
+         });
+        } catch (err) {
+         console.error('카카오 회원가입 처리 오류:', err);
+         setError('카카오 회원가입 처리 중 오류가 발생했습니다.');
+         setLoading(false);
+         reject(err);
+        }
+       },
+       fail: (err) => {
+        console.error('카카오 로그인 실패:', err);
+        setError('카카오 회원가입에 실패했습니다.');
+        setLoading(false);
+        reject(err);
+       }
+      });
+     });
+    } catch (err) {
+     console.error('카카오 SDK 로드 오류:', err);
+     setError('카카오 회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+     setLoading(false);
+     return;
+    }
+   }
+   // 구글 회원가입
+   else if (provider === "google") {
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+
+    if (!googleClientId) {
+     setError('구글 클라이언트 ID가 설정되지 않았습니다.');
+     setLoading(false);
+     return;
+    }
+
+    if (window.google && window.google.accounts && window.google.accounts.oauth2) {
+     try {
+      // 현재 페이지의 origin을 리다이렉트 URI로 사용
+      const redirectUri = window.location.origin;
+      
+      window.google.accounts.oauth2
+       .initTokenClient({
+        client_id: googleClientId,
+        scope: 'openid email profile',
+        redirect_uri: redirectUri, // 명시적으로 리다이렉트 URI 설정
+        callback: async (response) => {
+         try {
+          const userInfoResponse = await fetch(
+           `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${response.access_token}`
+          );
+          const userInfo = await userInfoResponse.json();
+
+          socialData = {
+           provider: 'google',
+           socialId: userInfo.id,
+           email: userInfo.email,
+           name: userInfo.name,
+           profileImage: userInfo.picture || ''
+          };
+
+          const userData = await socialLogin(socialData);
+          handleSocialSignupSuccess(userData);
+         } catch (err) {
+          console.error('구글 사용자 정보 조회 오류:', err);
+          setError('구글 회원가입 처리 중 오류가 발생했습니다.');
+          setLoading(false);
+         }
+        }
+       })
+       .requestAccessToken();
+     } catch (err) {
+      console.error('구글 SDK 오류:', err);
+      setError('구글 회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setLoading(false);
+     }
+    } else {
+     setError('구글 SDK를 불러오지 못했습니다. 인터넷 연결을 확인 후 다시 시도해주세요.');
+     setLoading(false);
+    }
+   }
+   // 페이스북 회원가입 (미구현 - 필요시 추가)
+   else if (provider === "facebook") {
+    setError('페이스북 회원가입은 현재 지원하지 않습니다.');
+    setLoading(false);
+   }
+   // 애플 회원가입 (미구현 - 필요시 추가)
+   else if (provider === "apple") {
+    setError('애플 회원가입은 현재 지원하지 않습니다.');
+    setLoading(false);
+   }
+  } catch (err) {
+   console.error('소셜 회원가입 오류:', err);
+   setError(err.response?.data?.message || '소셜 회원가입에 실패했습니다.');
+   setLoading(false);
+  }
+ };
+
+ // 소셜 회원가입 성공 처리
+ const handleSocialSignupSuccess = (userData) => {
+  if (userData && userData._id) {
+   const userInfo = {
+    _id: userData._id,
+    name: userData.name,
+    email: userData.email,
+    phone: userData.phone || "",
+    role: userData.role || "user",
+   };
+
+   localStorage.setItem("user", JSON.stringify(userInfo));
+   login(userInfo);
+
+   // 회원가입 성공 후 마이페이지로 이동
+   setTimeout(() => {
+    window.location.href = "/mypage";
+   }, 200);
+  } else {
+   setError("소셜 회원가입 응답이 올바르지 않습니다.");
+   setLoading(false);
+  }
  };
 
  const togglePasswordVisibility = (field) => {

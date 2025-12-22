@@ -53,14 +53,14 @@ const SearchFilterWrap = ({ filters, onFilterChange }) => {
  };
 
  return (
-    <div className="search-form inner">
+    <div className="search-form">
      <h3>어디로 떠나시나요?</h3>
      <div className="form-container">
       <div className="form-group">
-       <label>목적지 입력</label>
+       <label>목적지</label>
        <input
         type="text"
-        placeholder="예) 서울"
+        placeholder="도시, 지역 또는 호텔명"
         className="destination-input"
         maxLength={100}
         value={destination}

@@ -109,6 +109,7 @@ const RecommendedHotels = () => {
           disableOnInteraction: false,
         }}
         loop={true}
+        watchOverflow={true}
         className="hotels-swiper"
       >
         {hotels.map((hotel) => {

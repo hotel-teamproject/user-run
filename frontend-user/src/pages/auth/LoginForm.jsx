@@ -22,6 +22,18 @@ const LoginForm = () => {
    }
  }, [isAuthed, navigate]);
 
+ // 저장된 이메일 불러오기 (비밀번호 기억하기)
+ useEffect(() => {
+   const rememberedEmail = localStorage.getItem("rememberedEmail");
+   if (rememberedEmail) {
+     setFormData((prev) => ({
+       ...prev,
+       email: rememberedEmail,
+       rememberMe: true,
+     }));
+   }
+ }, []);
+
  // 카카오 SDK 초기화
 useEffect(() => {
   // 초기 마운트 시에만 한 번 SDK 초기화 시도 (실제 로드는 클릭 시에도 보강 처리)
@@ -116,9 +128,11 @@ const loadKakaoSDK = () => {
     // 사용자 정보 저장
     login(userInfo);
     
-    // 비밀번호 기억하기 옵션 처리
+    // 비밀번호 기억하기 옵션 처리 (이메일만 저장, 보안상 비밀번호는 저장하지 않음)
     if (formData.rememberMe) {
-     // 추가 처리 필요시 여기에 구현
+     localStorage.setItem("rememberedEmail", formData.email);
+    } else {
+     localStorage.removeItem("rememberedEmail");
     }
 
     // 로그인 성공 후 즉시 메인 화면으로 이동
@@ -174,8 +188,12 @@ const loadKakaoSDK = () => {
         }
 
         // 3차: 실제 로그인 호출
+        // 카카오 개발자 콘솔에 등록된 리다이렉트 URI와 일치해야 함
+        const redirectUri = `${window.location.origin}/oauth/kakao/callback`;
+        
         await new Promise((resolve, reject) => {
           window.Kakao.Auth.login({
+            redirectUri: redirectUri, // 명시적으로 리다이렉트 URI 설정
             success: async () => {
               try {
                 window.Kakao.API.request({
@@ -236,11 +254,15 @@ const loadKakaoSDK = () => {
       // Google Sign-In SDK가 로드되어 있는지 확인
       if (window.google && window.google.accounts && window.google.accounts.oauth2) {
         try {
+          // 현재 페이지의 origin을 리다이렉트 URI로 사용
+          const redirectUri = window.location.origin;
+          
           // 구글 로그인 팝업 표시
           window.google.accounts.oauth2
             .initTokenClient({
               client_id: googleClientId,
               scope: 'openid email profile',
+              redirect_uri: redirectUri, // 명시적으로 리다이렉트 URI 설정
               callback: async (response) => {
                 try {
                   // 토큰으로 사용자 정보 가져오기

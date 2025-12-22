@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -9,6 +10,7 @@ import DestinationCard from "./DestinationCard";
 import { getHotels } from "../../api/hotelClient";
 
 const PopularDestinations = () => {
+  const navigate = useNavigate();
   const [destinations, setDestinations] = useState([]);
 
   // 도시별 대표 이미지 (지역 카드 전용, 호텔 이미지와 분리)
@@ -77,7 +79,12 @@ const PopularDestinations = () => {
                         <p>지역마다 인기 있는 숙소를 한눈에 비교해 보세요</p>
                     </div>
 
-                    <button className="btn-see-all">전체보기</button>
+                    <button 
+                      className="btn-see-all" 
+                      onClick={() => navigate("/search")}
+                    >
+                      전체보기
+                    </button>
                 </div>
 
                 <Swiper

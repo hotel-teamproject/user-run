@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaStar, FaMapMarkerAlt, FaHeart, FaShare } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import { getRatingLabel } from "../../util/reviewHelper";
+import { toggleWishlist, checkWishlist } from "../../api/wishlistClient";
 import HotelGalleryModal from "./HotelGalleryModal";
 import "../../styles/components/hotelpage/HotelDetailHeader.scss";
 
@@ -10,12 +12,14 @@ const HotelDetailHeader = ({ hotel }) => {
 
  const navigate = useNavigate();
  const routerLocation = useLocation();
+ const { isAuthed } = useContext(AuthContext);
  const [dateRange, setDateRange] = useState([null, null]);
  const [startDate, endDate] = dateRange;
  const [guests, setGuests] = useState(2);
  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
  const [shareMessage, setShareMessage] = useState("");
+ const [isWishlisted, setIsWishlisted] = useState(false);
  if (!hotel) {
   return <div className="hotel-detail-header loading">로딩 중...</div>;
  }
@@ -40,6 +44,28 @@ const HotelDetailHeader = ({ hotel }) => {
  // 실제 reviewCount 값
  const actualReviewCount = reviewCount || ratingCount || 0;
 
+ // 호텔 ID 가져오기
+ const hotelId = hotel._id || hotel.id;
+
+ // 초기 위시리스트 상태 확인
+ useEffect(() => {
+  if (!isAuthed || !hotelId) {
+   setIsWishlisted(false);
+   return;
+  }
+
+  const checkWishlistStatus = async () => {
+   try {
+    const isWishlistedStatus = await checkWishlist(hotelId);
+    setIsWishlisted(isWishlistedStatus);
+   } catch (error) {
+    console.error("Failed to check wishlist:", error);
+    setIsWishlisted(false);
+   }
+  };
+
+  checkWishlistStatus();
+ }, [hotelId, isAuthed]);
 
  // 별점을 별 아이콘으로 표시 (stars 값 사용)
  const renderStars = (starCount) => {
@@ -54,8 +80,25 @@ const HotelDetailHeader = ({ hotel }) => {
   return stars;
  };
 
- const handleFavorite = () => {
-  console.log("Add to favorites");
+ const handleFavorite = async () => {
+  if (!isAuthed) {
+   alert("로그인이 필요합니다.");
+   navigate("/login");
+   return;
+  }
+
+  if (!hotelId) {
+   alert("호텔 정보를 불러올 수 없습니다.");
+   return;
+  }
+
+  try {
+   await toggleWishlist(hotelId);
+   setIsWishlisted((prev) => !prev);
+  } catch (error) {
+   console.error("Failed to toggle wishlist:", error);
+   alert("위시리스트 처리 중 오류가 발생했습니다.");
+  }
  };
 
  const handleShare = async () => {
@@ -141,7 +184,11 @@ const HotelDetailHeader = ({ hotel }) => {
      &gt; <span>{name}</span>
     </div>
     <div className="header-actions">
-     <button className="icon-btn" onClick={handleFavorite}>
+     <button 
+      className={`icon-btn ${isWishlisted ? "wishlisted" : ""}`} 
+      onClick={handleFavorite}
+      title={isWishlisted ? "찜 목록에서 제거" : "찜 목록에 추가"}
+     >
       <FaHeart />
      </button>
      <button className="icon-btn" onClick={handleShare} title="공유하기">

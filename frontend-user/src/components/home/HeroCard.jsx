@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/components/home/HeroCard.scss";
 
 const HeroCard = ({
@@ -9,6 +10,12 @@ const HeroCard = ({
     searchForm = true,
     className = "",
 }) => {
+    const navigate = useNavigate();
+
+    const handleSearchClick = () => {
+        navigate("/search");
+    };
+
     return (
         <div
             className={`hero-card ${className}`}
@@ -22,9 +29,12 @@ const HeroCard = ({
                     <h2 className="hero-subtitle">{subtitle}</h2>
                     <p className="hero-description">{description}</p>
                 </div>
-
-
-
+                <button 
+                    className="hero-cta-button"
+                    onClick={handleSearchClick}
+                >
+                    숙소 찾기
+                </button>
             </div>
         </div>
     );

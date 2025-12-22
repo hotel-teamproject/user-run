@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addCard } from "../../api/cardClient";
 
 const PaymentForm = () => {
  const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const PaymentForm = () => {
   saveCard: false,
  });
  const [error, setError] = useState("");
+ const [loading, setLoading] = useState(false);
  const navigate = useNavigate();
 
  const handleInputChange = (e) => {
@@ -48,7 +50,7 @@ const PaymentForm = () => {
   setError("");
  };
 
- const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   // 기본 검증
@@ -75,11 +77,27 @@ const PaymentForm = () => {
    return;
   }
 
-  // 결제수단 추가 로직 구현 예정
-  console.log("Payment data:", formData);
+  try {
+   setLoading(true);
+   setError("");
 
-  // 성공 후 이전 페이지로 이동
-  navigate(-1);
+   // 카드 추가 API 호출
+   await addCard({
+    cardNumber: cleanCardNumber,
+    expDate: formData.expiryDate,
+    cvc: formData.cvc,
+    nameOnCard: formData.nameOnCard,
+    isDefault: formData.saveCard,
+   });
+
+   // 성공 후 이전 페이지로 이동
+   navigate(-1);
+  } catch (err) {
+   console.error("카드 추가 실패:", err);
+   setError(err.response?.data?.message || "카드 추가에 실패했습니다.");
+  } finally {
+   setLoading(false);
+  }
  };
 
  const handleBack = () => {
@@ -182,8 +200,12 @@ const PaymentForm = () => {
      </label>
     </div>
 
-    <button type="submit" className="btn btn--primary btn--block payment-button">
-     결제수단 추가
+    <button 
+     type="submit" 
+     className="btn btn--primary btn--block payment-button"
+     disabled={loading}
+    >
+     {loading ? "추가 중..." : "결제수단 추가"}
     </button>
 
      <div className="security-info">

@@ -70,6 +70,34 @@
     opacity: 0.9;
 }
 
+/* CTA 버튼 */
+.hero-cta-button {
+    background: $color-blue;
+    color: white;
+    border: none;
+    padding: 14px 56px;
+    border-radius: 12px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 16px rgba($color-blue, 0.3);
+    min-width: 200px;
+    margin-top: 40px;
+    text-align: center;
+    display: inline-block;
+
+    &:hover {
+        background: $color-blue-dark;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 20px rgba($color-blue, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
 /* 모바일 / 작은 화면 대응 */
 @media (max-width: $breakpoint-md) {
     .hero-card {
@@ -97,5 +125,13 @@
     .hero-description {
         font-size: 1.4rem;
         max-width: 100%;
+    }
+
+    .hero-cta-button {
+        padding: 12px 44px;
+        font-size: 1.6rem;
+        min-width: 160px;
+        margin-top: 24px;
+        text-align: center;
     }
 }
