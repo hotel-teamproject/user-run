@@ -5,7 +5,7 @@ import { toggleWishlist, checkWishlist } from "../../api/wishlistClient";
 import { getRatingLabel } from "../../util/reviewHelper";
 import "../../styles/components/search/HotelListCards.scss";
 
-const HotelListCards = ({ hotels = [] }) => {
+const HotelListCards = ({ hotels = [], filters = {} }) => {
   const navigate = useNavigate();
   const { isAuthed } = useContext(AuthContext);
   const [wishlistStatus, setWishlistStatus] = useState({});
@@ -72,7 +72,17 @@ const HotelListCards = ({ hotels = [] }) => {
           <div
             key={hotelId || i}
             className="hotel-list-card"
-            onClick={() => hotelId && navigate(`/hotels/${hotelId}`)}
+            onClick={() => {
+              if (hotelId) {
+                // 검색 페이지에서 선택한 날짜 정보를 URL 파라미터로 전달
+                const params = new URLSearchParams();
+                if (filters.checkIn) params.set("checkIn", filters.checkIn);
+                if (filters.checkOut) params.set("checkOut", filters.checkOut);
+                if (filters.guests) params.set("guests", typeof filters.guests === 'object' ? filters.guests.guests : filters.guests);
+                const queryString = params.toString();
+                navigate(`/hotels/${hotelId}${queryString ? `?${queryString}` : ''}`);
+              }
+            }}
           >
             {/* ========== LEFT IMAGE (꽉 채우기) ========== */}
             <div className="hotel-list-image">
@@ -106,7 +116,7 @@ const HotelListCards = ({ hotels = [] }) => {
                         {Array.from({ length: hotel.stars }).map((_, idx) => (
                           <span key={idx}>★</span>
                         ))}{" "}
-                        {hotel.stars}성급
+                        <span className="star-grade-text">{hotel.stars}성급</span>
                       </span>
                     )}
                     {hotel.amenities && (
@@ -153,7 +163,13 @@ const HotelListCards = ({ hotels = [] }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (hotelId) {
-                      navigate(`/hotels/${hotelId}`);
+                      // 검색 페이지에서 선택한 날짜 정보를 URL 파라미터로 전달
+                      const params = new URLSearchParams();
+                      if (filters.checkIn) params.set("checkIn", filters.checkIn);
+                      if (filters.checkOut) params.set("checkOut", filters.checkOut);
+                      if (filters.guests) params.set("guests", typeof filters.guests === 'object' ? filters.guests.guests : filters.guests);
+                      const queryString = params.toString();
+                      navigate(`/hotels/${hotelId}${queryString ? `?${queryString}` : ''}`);
                     }
                   }}
                 >

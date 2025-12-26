@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Amenities from "../../components/hotelpage/Amenities";
 import AvailableRooms from "../../components/hotelpage/AvailableRooms";
 import HotelDetailHeader from "../../components/hotelpage/HotelDetailHeader";
@@ -14,11 +14,18 @@ import { getReviews } from "../../api/reviewClient";
 
 const HotelDetailPage = () => {
   const { hotelId } = useParams(); // URL에서 호텔 ID 추출
+  const location = useLocation();
   const [hotel, setHotel] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reviews, setReviews] = useState([]);
+  
+  // URL 파라미터에서 날짜 정보 가져오기
+  const qs = new URLSearchParams(location.search);
+  const checkIn = qs.get("checkIn");
+  const checkOut = qs.get("checkOut");
+  const guests = qs.get("guests");
 
   const fetchReviews = async () => {
     try {
@@ -93,7 +100,13 @@ const HotelDetailPage = () => {
         tags={hotel.tags || []}
       />
       <Amenities amenities={hotel.amenities} />
-      <AvailableRooms rooms={rooms} hotelId={hotelId} />
+      <AvailableRooms 
+        rooms={rooms} 
+        hotelId={hotelId}
+        checkIn={checkIn}
+        checkOut={checkOut}
+        guests={guests}
+      />
       <HotelMap address={hotel.address} location={hotel.location} />
       <HotelReviews
         hotelId={hotelId}

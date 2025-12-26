@@ -202,25 +202,6 @@
 /* ===========================================
    반응형
 =========================================== */
-@media (max-width: 1024px) {
-  .filter-sidebar {
-    padding: 12px 0;
-    gap: 24px;
-
-    .filter-title {
-      font-size: 1.7rem;
-    }
-
-    .filter-section {
-      gap: 10px;
-
-      .filter-header span {
-        font-size: 1.5rem;
-      }
-    }
-  }
-}
-
 @media (max-width: 768px) {
   .filter-sidebar {
     padding: 8px 0;

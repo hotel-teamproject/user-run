@@ -100,21 +100,6 @@
 /* ===========================================
    반응형
 =========================================== */
-@media (max-width: 1024px) {
-  .hotel-types-tabs {
-    gap: 32px;
-    padding: 18px 24px 10px 24px;
-  }
-
-  .tab-label {
-    font-size: 16px;
-  }
-
-  .tab-count {
-    font-size: 13px;
-  }
-}
-
 @media (max-width: 768px) {
   .hotel-types-tabs {
     gap: 20px;

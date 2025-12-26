@@ -108,9 +108,23 @@ const RecommendedHotels = () => {
           delay: 4000,
           disableOnInteraction: false,
         }}
-        loop={true}
+        loop={false}
         watchOverflow={true}
         className="hotels-swiper"
+        breakpoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 16,
+          },
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+        }}
       >
         {hotels.map((hotel) => {
           const hotelId = hotel.id || hotel._id;
@@ -148,7 +162,7 @@ const RecommendedHotels = () => {
                             {Array.from({ length: hotel.stars }).map((_, idx) => (
                               <span key={idx}>★</span>
                             ))}{" "}
-                            {hotel.stars}성급
+                            <span className="star-grade-text">{hotel.stars}성급</span>
                           </span>
                         )}
                         {hotel.amenities && (

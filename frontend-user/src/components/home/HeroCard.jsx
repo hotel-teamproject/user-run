@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/components/home/HeroCard.scss";
 
 const HeroCard = ({
     title,
@@ -33,7 +32,8 @@ const HeroCard = ({
                     className="hero-cta-button"
                     onClick={handleSearchClick}
                 >
-                    숙소 찾기
+                    <span className="button-icon">🔍</span>
+                    <span className="button-text">숙소 찾기</span>
                 </button>
             </div>
         </div>

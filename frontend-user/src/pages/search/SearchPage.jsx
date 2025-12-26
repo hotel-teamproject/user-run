@@ -241,7 +241,7 @@ const SearchPage = () => {
           showing={currentHotels.length}
           onSortChange={handleSortChange}
         />
-        <HotelListCards hotels={currentHotels} />
+        <HotelListCards hotels={currentHotels} filters={filters} />
         
         {/* 페이지네이션 */}
         {totalPages > 1 && (

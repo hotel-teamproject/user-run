@@ -33,7 +33,8 @@ const WishlistCard = ({ hotel, onRemove }) => {
                 <span className="hotel-stars">
                   {Array.from({ length: hotel.stars }).map((_, i) => (
                     <span key={i}>★</span>
-                  ))} {hotel.stars}성급
+                  ))}{" "}
+                  <span className="star-grade-text">{hotel.stars}성급</span>
                 </span>
               )}
               {hotel.amenities && <span className="hotel-amenities">편의시설 {hotel.amenities}개</span>}

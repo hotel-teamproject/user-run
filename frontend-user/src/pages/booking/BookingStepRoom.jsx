@@ -16,6 +16,11 @@ const BookingStepRoom = () => {
   const checkIn = qs.get("checkIn");
   const checkOut = qs.get("checkOut");
   const guests = qs.get("guests");
+  // URL 파라미터에서 객실 정보 가져오기 (호텔 상세 페이지에서 전달된 경우)
+  const preSelectedRoomId = qs.get("roomId");
+  const preSelectedRoomPrice = qs.get("roomPrice");
+  const preSelectedRoomName = qs.get("roomName");
+  const preSelectedRoomType = qs.get("roomType");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +37,25 @@ const BookingStepRoom = () => {
         ]);
         setHotel(hotelData);
         setRooms(roomsData || []);
+        
+        // URL 파라미터에 객실 ID가 있으면 해당 객실을 자동 선택
+        if (preSelectedRoomId && roomsData && roomsData.length > 0) {
+          const foundRoom = roomsData.find(
+            (r) => String(r._id || r.id) === String(preSelectedRoomId)
+          );
+          if (foundRoom) {
+            setSelectedRoom(foundRoom);
+          } else if (preSelectedRoomId && preSelectedRoomPrice) {
+            // 객실 목록에 없어도 URL 파라미터 정보로 객실 객체 생성
+            setSelectedRoom({
+              _id: preSelectedRoomId,
+              id: preSelectedRoomId,
+              name: preSelectedRoomName || "선택한 객실",
+              type: preSelectedRoomType || "",
+              price: parseFloat(preSelectedRoomPrice) || 0,
+            });
+          }
+        }
       } catch (err) {
         console.error("Failed to load data:", err);
         alert("정보를 불러오는데 실패했습니다.");
@@ -41,7 +65,7 @@ const BookingStepRoom = () => {
     };
 
     fetchData();
-  }, [hotelId, checkIn, checkOut, navigate]);
+  }, [hotelId, checkIn, checkOut, navigate, preSelectedRoomId, preSelectedRoomPrice, preSelectedRoomName, preSelectedRoomType]);
 
   const handleNext = () => {
     if (!selectedRoom) {

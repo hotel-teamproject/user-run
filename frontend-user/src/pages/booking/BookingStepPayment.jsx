@@ -200,7 +200,114 @@ const BookingStepPayment = () => {
     }
   };
 
+  const handleKakaoPay = async () => {
+    // 비회원인 경우 정보 확인
+    if (!isAuthed) {
+      if (!guestName || !guestEmail || !guestPhone) {
+        alert("비회원 예약을 위해 이름, 이메일, 전화번호를 모두 입력해주세요.");
+        return;
+      }
+      
+      // 이메일 형식 검증
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(guestEmail)) {
+        alert("올바른 이메일 형식을 입력해주세요.");
+        return;
+      }
+    }
+
+    try {
+      setProcessing(true);
+
+      // 먼저 예약 생성 (결제 대기 상태)
+      const reservationData = {
+        hotelId,
+        roomId,
+        checkIn: new Date(checkIn).toISOString(),
+        checkOut: new Date(checkOut).toISOString(),
+        guests: parseInt(guests),
+        specialRequests,
+        extras: selectedExtras,
+        extrasPrice,
+        couponCode: selectedCoupon?.code,
+        discount,
+        totalPrice: finalPrice,
+        paymentMethod: "kakao",
+      };
+
+      // 비회원인 경우 비회원 정보 추가
+      if (!isAuthed) {
+        reservationData.guestName = guestName;
+        reservationData.guestEmail = guestEmail;
+        reservationData.guestPhone = guestPhone;
+      }
+
+      const response = await createReservation(reservationData);
+
+      if (response.resultCode === "SUCCESS") {
+        const reservationId = response.data._id;
+        
+        // PortOne을 사용한 카카오페이 결제
+        if (window.PortOne) {
+          const portone = window.PortOne();
+          
+          portone.requestPayment({
+            storeId: import.meta.env.VITE_PORTONE_STORE_ID || "store-1234567890", // 환경 변수로 관리 권장
+            channelKey: import.meta.env.VITE_PORTONE_CHANNEL_KEY || "channel-key-1234567890", // 환경 변수로 관리 권장
+            paymentId: `kakao-${reservationId}-${Date.now()}`,
+            orderName: `${hotel?.name || "호텔"} 예약`,
+            totalAmount: finalPrice,
+            currency: "KRW",
+            customData: {
+              reservationId,
+              hotelId,
+            },
+            payMethod: "카카오페이",
+            customer: {
+              fullName: isAuthed ? (guestName || "회원") : guestName,
+              email: isAuthed ? (guestEmail || "") : guestEmail,
+              phoneNumber: isAuthed ? (guestPhone || "") : guestPhone,
+            },
+            noticeUrl: `${window.location.origin}/api/payments/kakao/notice`,
+            confirmUrl: `${window.location.origin}/api/payments/kakao/confirm`,
+          })
+          .then((result) => {
+            // 결제 성공
+            if (result.status === "PAID") {
+              navigate(`/booking/${hotelId}/complete?reservationId=${reservationId}&paymentId=${result.paymentId}`);
+            } else {
+              alert("결제가 완료되지 않았습니다.");
+              setProcessing(false);
+            }
+          })
+          .catch((error) => {
+            console.error("카카오페이 결제 실패:", error);
+            alert(error.message || "결제 처리 중 오류가 발생했습니다.");
+            setProcessing(false);
+          });
+        } else {
+          // PortOne SDK가 로드되지 않은 경우 시뮬레이션 모드
+          alert("카카오페이 결제는 PortOne 연동이 필요합니다. 현재는 시뮬레이션 모드로 진행됩니다.");
+          navigate(`/booking/${hotelId}/complete?reservationId=${reservationId}`);
+        }
+      } else {
+        alert(response.message || "예약에 실패했습니다.");
+        setProcessing(false);
+      }
+    } catch (err) {
+      console.error("Failed to process kakao pay:", err);
+      alert(err.response?.data?.message || "결제 처리 중 오류가 발생했습니다.");
+      setProcessing(false);
+    }
+  };
+
   const handlePayment = async () => {
+    // 카카오페이는 별도 처리
+    if (paymentMethod === "kakao") {
+      await handleKakaoPay();
+      return;
+    }
+
     // 비회원인 경우 정보 확인
     if (!isAuthed) {
       if (!guestName || !guestEmail || !guestPhone) {
@@ -591,13 +698,56 @@ const BookingStepPayment = () => {
               </>
             )}
 
-            {paymentMethod !== "card" && (
-              <div className="payment-info">
-                <p>
-                  {paymentMethod === "bank"
-                    ? "계좌이체 결제는 예약 완료 후 안내드립니다."
-                    : "카카오페이 결제는 예약 완료 후 안내드립니다."}
-                </p>
+            {paymentMethod === "bank" && (
+              <div className="bank-transfer-info">
+                <h4>입금 계좌 정보</h4>
+                <div className="bank-account-details">
+                  <div className="bank-account-row">
+                    <span className="bank-account-label">은행명</span>
+                    <span className="bank-account-value">국민은행</span>
+                  </div>
+                  <div className="bank-account-row">
+                    <span className="bank-account-label">계좌번호</span>
+                    <span className="bank-account-value">123-456-789012</span>
+                  </div>
+                  <div className="bank-account-row">
+                    <span className="bank-account-label">예금주</span>
+                    <span className="bank-account-value">(주)스테이북</span>
+                  </div>
+                  <div className="bank-account-row">
+                    <span className="bank-account-label">입금 금액</span>
+                    <span className="bank-account-value amount">₩{finalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className="bank-transfer-notice">
+                  <p className="notice-title">⚠️ 입금 안내</p>
+                  <ul className="notice-list">
+                    <li>입금 기한: 예약 완료 후 24시간 이내</li>
+                    <li>입금자명은 예약자명과 동일하게 입금해주세요</li>
+                    <li>입금 확인 후 예약이 확정됩니다</li>
+                    <li>입금 기한 내 미입금 시 예약이 자동 취소됩니다</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {paymentMethod === "kakao" && (
+              <div className="kakao-pay-section">
+                <div className="kakao-pay-info">
+                  <div className="kakao-pay-logo">
+                    <h4>카카오페이로 결제하기</h4>
+                  </div>
+                  <div className="kakao-pay-amount">
+                    <span className="amount-label">결제 금액</span>
+                    <span className="amount-value">₩{finalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className="kakao-pay-notice">
+                  <p className="notice-text">
+                    💡 카카오페이는 간편하게 결제할 수 있는 서비스입니다.<br/>
+                    결제하기 버튼을 클릭하면 카카오페이 결제창이 열립니다.
+                  </p>
+                </div>
               </div>
             )}
           </div>

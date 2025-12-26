@@ -11,7 +11,18 @@ const MyBookingDetailPage = () => {
   const [error, setError] = useState(null);
   const [isCancelling, setIsCancelling] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [cancelReason, setCancelReason] = useState("");
+  const [selectedCancelReason, setSelectedCancelReason] = useState("");
+  const [otherReason, setOtherReason] = useState("");
+  
+  // 취소 사유 옵션
+  const cancelReasonOptions = [
+    { value: "schedule_change", label: "일정 변경" },
+    { value: "other_hotel", label: "다른 호텔 선택" },
+    { value: "personal_reason", label: "개인 사정" },
+    { value: "booking_mistake", label: "예약 실수" },
+    { value: "price_issue", label: "가격 문제" },
+    { value: "other", label: "기타 사유" }
+  ];
 
   useEffect(() => {
     const fetchReservation = async () => {
@@ -114,16 +125,27 @@ const MyBookingDetailPage = () => {
   const canCancel = () => {
     if (!reservation) return false;
     const status = reservation.status;
+    
+    // 이미 취소된 예약은 취소 불가
+    if (status === "cancelled") return false;
+    
     const checkInDate = new Date(reservation.checkIn || reservation.checkInDate);
     const now = new Date();
     
-    // 확정된 예약이고 체크인 날짜가 아직 지나지 않았으면 취소 가능
-    return (status === "confirmed" || status === "pending") && checkInDate > now;
+    // 체크인 날짜가 아직 지나지 않았으면 취소 가능
+    return checkInDate > now;
   };
 
   const handleCancelReservation = async () => {
-    if (!cancelReason.trim()) {
-      alert("취소 사유를 입력해주세요.");
+    // 취소 사유 선택 확인
+    if (!selectedCancelReason) {
+      alert("취소 사유를 선택해주세요.");
+      return;
+    }
+
+    // 기타 사유 선택 시 입력 확인
+    if (selectedCancelReason === "other" && !otherReason.trim()) {
+      alert("기타 사유를 입력해주세요.");
       return;
     }
 
@@ -133,7 +155,14 @@ const MyBookingDetailPage = () => {
 
     try {
       setIsCancelling(true);
-      const response = await cancelReservation(bookingId, cancelReason.trim());
+      
+      // 취소 사유 조합 (선택된 사유 + 기타 사유가 있으면 추가)
+      let finalReason = cancelReasonOptions.find(opt => opt.value === selectedCancelReason)?.label || "";
+      if (selectedCancelReason === "other" && otherReason.trim()) {
+        finalReason = `기타 사유: ${otherReason.trim()}`;
+      }
+      
+      const response = await cancelReservation(bookingId, finalReason);
       
       if (response.resultCode === "SUCCESS") {
         alert("예약이 취소되었습니다.");
@@ -143,7 +172,8 @@ const MyBookingDetailPage = () => {
           setReservation(updatedResponse.data);
         }
         setShowCancelModal(false);
-        setCancelReason("");
+        setSelectedCancelReason("");
+        setOtherReason("");
       } else {
         alert(response.message || "예약 취소에 실패했습니다.");
       }
@@ -303,22 +333,22 @@ const MyBookingDetailPage = () => {
 
         {/* 액션 버튼 */}
         <div className="detail-actions">
-          {canCancel() && (
+          {reservation.status !== "cancelled" && (
             <button 
               className="btn-cancel"
-              onClick={() => setShowCancelModal(true)}
+              onClick={() => canCancel() ? setShowCancelModal(true) : alert("체크인 날짜가 지나서 취소할 수 없습니다.")}
+              disabled={!canCancel()}
+              style={{ opacity: canCancel() ? 1 : 0.5, cursor: canCancel() ? 'pointer' : 'not-allowed' }}
             >
               예약 취소
             </button>
           )}
-          {reservation.status === "confirmed" && (
-            <button 
-              className="btn-primary"
-              onClick={() => navigate(`/hotels/${hotel._id || hotel.id}`)}
-            >
-              호텔 상세보기
-            </button>
-          )}
+          <button 
+            className="btn-primary"
+            onClick={() => navigate(`/hotels/${hotel._id || hotel.id}`)}
+          >
+            호텔 상세보기
+          </button>
         </div>
       </div>
 
@@ -328,21 +358,53 @@ const MyBookingDetailPage = () => {
           <div className="cancel-modal" onClick={(e) => e.stopPropagation()}>
             <h3 className="modal-title">예약 취소</h3>
             <p className="modal-description">
-              예약을 취소하시겠습니까? 취소 사유를 입력해주세요.
+              예약을 취소하시겠습니까? 취소 사유를 선택해주세요.
             </p>
-            <textarea
-              className="cancel-reason-input"
-              placeholder="취소 사유를 입력해주세요 (선택사항)"
-              value={cancelReason}
-              onChange={(e) => setCancelReason(e.target.value)}
-              rows={4}
-            />
+            
+            {/* 취소 사유 선택 */}
+            <div className="cancel-reason-select-wrapper">
+              <label className="cancel-reason-label">취소 사유 *</label>
+              <select
+                className="cancel-reason-select"
+                value={selectedCancelReason}
+                onChange={(e) => {
+                  setSelectedCancelReason(e.target.value);
+                  // 기타 사유가 아닌 경우 기타 사유 입력란 초기화
+                  if (e.target.value !== "other") {
+                    setOtherReason("");
+                  }
+                }}
+              >
+                <option value="">사유를 선택해주세요</option>
+                {cancelReasonOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 기타 사유 입력란 (기타 사유 선택 시에만 표시) */}
+            {selectedCancelReason === "other" && (
+              <div className="other-reason-wrapper">
+                <label className="other-reason-label">기타 사유 입력 *</label>
+                <textarea
+                  className="other-reason-input"
+                  placeholder="취소 사유를 자세히 입력해주세요"
+                  value={otherReason}
+                  onChange={(e) => setOtherReason(e.target.value)}
+                  rows={4}
+                />
+              </div>
+            )}
+
             <div className="modal-actions">
               <button
                 className="btn-modal-secondary"
                 onClick={() => {
                   setShowCancelModal(false);
-                  setCancelReason("");
+                  setSelectedCancelReason("");
+                  setOtherReason("");
                 }}
                 disabled={isCancelling}
               >
@@ -351,7 +413,7 @@ const MyBookingDetailPage = () => {
               <button
                 className="btn-modal-primary"
                 onClick={handleCancelReservation}
-                disabled={isCancelling}
+                disabled={isCancelling || !selectedCancelReason || (selectedCancelReason === "other" && !otherReason.trim())}
               >
                 {isCancelling ? "취소 중..." : "예약 취소하기"}
               </button>

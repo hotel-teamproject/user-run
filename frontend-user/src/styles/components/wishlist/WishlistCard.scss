@@ -108,8 +108,13 @@
 }
 
 .hotel-stars {
-  color: #ff6b6b;
+  color: #ffd700; /* 호텔 디테일 페이지와 동일한 별 색상 */
   font-weight: 500;
+  font-size: 20px;
+
+  .star-grade-text {
+    color: #000000; /* 성급 텍스트는 검은색 */
+  }
 }
 
 .hotel-amenities {

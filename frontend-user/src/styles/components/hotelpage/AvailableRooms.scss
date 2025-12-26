@@ -102,61 +102,6 @@
  /* ===========================================
     반응형
  ========================================== */
- @media (max-width: 1024px) {
-   padding: 32px 0;
-   gap: 24px;
-
-   h3 {
-     font-size: 2.4rem;
-     margin-bottom: 20px;
-   }
-
-   .room-card {
-     gap: 20px;
-     padding-bottom: 24px;
-
-     .left {
-       gap: 16px;
-
-       .img-wrap {
-         width: 24rem;
-         height: 18rem;
-       }
-
-       .room-info {
-         gap: 6px;
-       }
-
-       .room-name {
-         font-size: 1.8rem;
-       }
-
-       .room-details {
-         gap: 5px;
-       }
-
-       .room-detail-item,
-       .room-type {
-         font-size: 1.6rem;
-       }
-     }
-
-     .right {
-       gap: 12px;
-
-       .room-price {
-         font-size: 2.8rem;
-       }
-
-       .btn {
-         padding: 14px 40px;
-         font-size: 1.7rem;
-         min-width: 160px;
-       }
-     }
-   }
- }
-
  @media (max-width: 768px) {
    padding: 24px 0;
    gap: 20px;

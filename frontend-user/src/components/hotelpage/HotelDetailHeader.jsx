@@ -13,9 +13,21 @@ const HotelDetailHeader = ({ hotel }) => {
  const navigate = useNavigate();
  const routerLocation = useLocation();
  const { isAuthed } = useContext(AuthContext);
- const [dateRange, setDateRange] = useState([null, null]);
+ 
+ // URL 파라미터에서 날짜 정보 가져오기
+ const qs = new URLSearchParams(routerLocation.search);
+ const urlCheckIn = qs.get("checkIn");
+ const urlCheckOut = qs.get("checkOut");
+ const urlGuests = qs.get("guests");
+ 
+ // URL에서 날짜 정보가 있으면 초기값으로 설정
+ const initialDateRange = urlCheckIn && urlCheckOut 
+   ? [new Date(urlCheckIn), new Date(urlCheckOut)]
+   : [null, null];
+ 
+ const [dateRange, setDateRange] = useState(initialDateRange);
  const [startDate, endDate] = dateRange;
- const [guests, setGuests] = useState(2);
+ const [guests, setGuests] = useState(urlGuests ? Number(urlGuests) : 2);
  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
  const [shareMessage, setShareMessage] = useState("");
@@ -46,6 +58,16 @@ const HotelDetailHeader = ({ hotel }) => {
 
  // 호텔 ID 가져오기
  const hotelId = hotel._id || hotel.id;
+
+ // URL 파라미터 변경 시 날짜와 인원 정보 업데이트
+ useEffect(() => {
+  if (urlCheckIn && urlCheckOut) {
+    setDateRange([new Date(urlCheckIn), new Date(urlCheckOut)]);
+  }
+  if (urlGuests) {
+    setGuests(Number(urlGuests));
+  }
+ }, [urlCheckIn, urlCheckOut, urlGuests]);
 
  // 초기 위시리스트 상태 확인
  useEffect(() => {

@@ -145,7 +145,7 @@
 
         .rating-text {
           font-size: 16px;
-          color: #666;
+          color: #000000; /* 성급 텍스트는 검은색 */
           font-weight: 600;
         }
       }
@@ -364,128 +364,11 @@
     }
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     .header-top {
       flex-direction: column;
       align-items: flex-start;
       gap: 16px;
-      margin-bottom: 24px;
-
-      .breadcrumb {
-        font-size: 1.4rem;
-
-        span {
-          font-size: 1.4rem;
-
-          &:last-child {
-            font-size: 1.6rem;
-          }
-        }
-      }
-
-      .header-actions {
-        width: 100%;
-        justify-content: space-between;
-        gap: 12px;
-
-        .icon-btn {
-          font-size: 2rem;
-        }
-      }
-    }
-
-    .hotel-info {
-      padding: 16px;
-      min-height: auto;
-
-      .hotel-title-section {
-        padding-right: 200px;
-
-        .hotel-name {
-          font-size: 2.8rem;
-        }
-
-        .rating-section {
-          gap: 10px;
-
-          .stars {
-            .star-filled,
-            .star-empty {
-              font-size: 1.8rem;
-            }
-          }
-
-          .rating-text {
-            font-size: 1.5rem;
-          }
-        }
-
-        .location-section {
-          .location-icon {
-            font-size: 1.6rem;
-          }
-
-          .address {
-            font-size: 1.5rem;
-          }
-        }
-
-        .review-section {
-          gap: 10px;
-
-          .review-score {
-            font-size: 1.3rem;
-            padding: 5px 10px;
-          }
-
-          .review-text,
-          .review-count {
-            font-size: 1.5rem;
-          }
-        }
-      }
-
-      .price-section {
-        width: 180px;
-
-        .hotel-price {
-          .price-label {
-            font-size: 1.3rem;
-          }
-
-          .price-amount {
-            font-size: 2.8rem;
-          }
-
-          .price-note {
-            font-size: 1.3rem;
-          }
-        }
-
-        .btn-book-now {
-          padding: 12px 20px;
-          font-size: 1.5rem;
-        }
-      }
-    }
-
-    .hotel-images {
-      gap: 10px;
-
-      .main-image {
-        height: 500px;
-      }
-
-      .sub-images {
-        .sub-image {
-          height: 245px;
-        }
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-    .header-top {
       margin-bottom: 20px;
 
       .breadcrumb {
@@ -502,6 +385,8 @@
       }
 
       .header-actions {
+        width: 100%;
+        justify-content: space-between;
         gap: 10px;
 
         .icon-btn {

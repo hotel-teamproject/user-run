@@ -8,7 +8,7 @@
     justify-content: center;
     align-items: flex-start;
 
-    padding: 0 174px 120px 126px;
+    padding: 0;
     gap: 10px;
 
     position: relative; /* absolute 제거 → 웹에서 정상 작동 */
@@ -34,8 +34,9 @@
 /* hero-card 내부 컨테이너 */
 .hero-card-container {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1232px;
     margin: 0 auto;
+    padding: 0 24px 120px;
 
     display: flex;
     flex-direction: column;
@@ -75,33 +76,51 @@
     background: $color-blue;
     color: white;
     border: none;
-    padding: 14px 56px;
-    border-radius: 12px;
-    font-size: 1.8rem;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0px 4px 16px rgba($color-blue, 0.3);
-    min-width: 200px;
-    margin-top: 40px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba($color-blue, 0.3);
+    width: 30rem;
+    min-width: auto;
+    margin-top: 32px;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    .button-icon {
+        font-size: 1.2rem;
+        display: inline-block;
+    }
+
+    .button-text {
+        position: relative;
+    }
 
     &:hover {
         background: $color-blue-dark;
-        transform: translateY(-2px);
-        box-shadow: 0px 6px 20px rgba($color-blue, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($color-blue, 0.3);
     }
 
     &:active {
         transform: translateY(0);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 4px 12px rgba($color-blue, 0.3), 0 0 0 3px rgba($color-blue, 0.2);
     }
 }
 
 /* 모바일 / 작은 화면 대응 */
 @media (max-width: $breakpoint-md) {
     .hero-card {
-        padding: 0 $spacing-md $spacing-xl $spacing-md;
+        padding: 0;
         height: auto;
         min-height: 320px;
         align-items: flex-start;
@@ -109,8 +128,7 @@
     }
 
     .hero-card-container {
-        padding-top: $spacing-xl;
-        padding-bottom: $spacing-xl;
+        padding: $spacing-xl 16px $spacing-xl;
         gap: $spacing-sm;
     }
 
@@ -128,10 +146,25 @@
     }
 
     .hero-cta-button {
-        padding: 12px 44px;
-        font-size: 1.6rem;
-        min-width: 160px;
-        margin-top: 24px;
-        text-align: center;
+        padding: 12px 24px;
+        font-size: 15px;
+        font-weight: 700;
+        min-width: auto;
+        width: 25rem;
+        margin-top: 20px;
+        gap: 8px;
+        border-radius: 10px;
+        background: $color-blue;
+        box-shadow: 0 4px 12px rgba($color-blue, 0.3);
+
+        .button-icon {
+            font-size: 1.2rem;
+        }
+
+        &:hover {
+            background: $color-blue-dark;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($color-blue, 0.3);
+        }
     }
 }

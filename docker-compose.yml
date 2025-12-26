@@ -20,6 +20,9 @@ services:
     volumes:
       - ./backend-user:/app
       - /app/node_modules
+    tmpfs:
+      - /tmp
+      - /var/run
     depends_on:
       - mongo
     restart: unless-stopped
@@ -37,6 +40,10 @@ services:
       - "80:80"
     env_file:
       - .env
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run
     depends_on:
       - backend
     restart: unless-stopped
@@ -51,6 +58,9 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    tmpfs:
+      - /tmp
+      - /var/run
     restart: unless-stopped
     networks:
       - app-network

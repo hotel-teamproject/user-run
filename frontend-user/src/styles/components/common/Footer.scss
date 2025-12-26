@@ -174,7 +174,7 @@
    ========== Responsive ==========
    ========================================================= */
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .footer-main .footer-inner {
     flex-direction: column;
     gap: 40px;
@@ -189,9 +189,6 @@
     width: 100%;
     gap: 40px;
   }
-}
-
-@media (max-width: 768px) {
   .footer-links {
     /* 너무 세로로만 쌓이지 않도록 2열 그리드 느낌으로 배치 */
     flex-direction: row;

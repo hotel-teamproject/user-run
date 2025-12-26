@@ -84,55 +84,6 @@
     }
   }
 
-  @media (max-width: 1024px) {
-    padding: 32px 0;
-
-    .overview-title {
-      font-size: 2.4rem;
-      margin-bottom: 24px;
-    }
-
-    .overview-features {
-      gap: 16px;
-      margin-bottom: 24px;
-
-      .feature-card {
-        min-width: 140px;
-        padding: 18px;
-
-        &.rating-card {
-          .rating-score {
-            font-size: 4.8rem;
-          }
-
-          .rating-label {
-            font-size: 1.6rem;
-          }
-
-          .review-count {
-            font-size: 1.4rem;
-          }
-        }
-
-        .feature-icon {
-          font-size: 3.2rem;
-          margin-bottom: 10px;
-        }
-
-        .feature-label {
-          font-size: 1.5rem;
-        }
-      }
-    }
-
-    .overview-description {
-      p {
-        font-size: 1.7rem;
-        line-height: 1.8;
-      }
-    }
-  }
-
   @media (max-width: 768px) {
     padding: 24px 0;
 

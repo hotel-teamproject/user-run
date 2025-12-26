@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/components/hotelpage/AvailableRooms.scss";
 
-const AvailableRooms = ({ rooms = [], hotelId }) => {
+const AvailableRooms = ({ rooms = [], hotelId, checkIn, checkOut, guests }) => {
   const navigate = useNavigate();
   // 침대 타입을 한글로 변환
   const getBedTypeKorean = (bedType) => {
@@ -63,7 +63,17 @@ const AvailableRooms = ({ rooms = [], hotelId }) => {
                 className="btn btn--primary"
                 onClick={() => {
                   if (hotelId) {
-                    navigate(`/booking/${hotelId}`);
+                    // 선택한 객실 정보와 날짜 정보를 URL 파라미터로 전달
+                    const params = new URLSearchParams();
+                    params.set("roomId", roomId);
+                    params.set("roomPrice", roomPrice.toString());
+                    params.set("roomName", room.name || "");
+                    params.set("roomType", room.type || "");
+                    // 검색 페이지에서 전달된 날짜 정보 유지
+                    if (checkIn) params.set("checkIn", checkIn);
+                    if (checkOut) params.set("checkOut", checkOut);
+                    if (guests) params.set("guests", guests);
+                    navigate(`/booking/${hotelId}?${params.toString()}`);
                   } else {
                     alert("호텔 정보를 불러올 수 없습니다.");
                   }

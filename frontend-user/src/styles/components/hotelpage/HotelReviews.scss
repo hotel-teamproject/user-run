@@ -60,12 +60,12 @@
       gap: 12px;
       
       .star-filled {
-        color: #ffb800;
+        color: #ffd700; /* 호텔 디테일 페이지와 동일한 별 색상 */
         font-size: 20px;
       }
       
       .star-empty {
-        color: #ddd;
+        color: #ddd; /* 호텔 디테일 페이지와 동일한 빈 별 색상 */
         font-size: 20px;
       }
       
@@ -161,12 +161,12 @@
                 gap: 4px;
                 
                 .star-filled {
-                  color: #ffb800;
+                  color: #ffd700; /* 호텔 디테일 페이지와 동일한 별 색상 */
                   font-size: 16px;
                 }
                 
                 .star-empty {
-                  color: #ddd;
+                  color: #ddd; /* 호텔 디테일 페이지와 동일한 빈 별 색상 */
                   font-size: 16px;
                 }
               }
@@ -244,93 +244,6 @@
   /* ===========================================
      반응형
   ========================================== */
-  @media (max-width: 1024px) {
-    padding: 32px 0 32px 0;
-
-    .reviews-header {
-      margin-bottom: 20px;
-
-      h3 {
-        font-size: 2.4rem;
-      }
-
-      .btn {
-        padding: 10px 20px;
-        font-size: 1.5rem;
-      }
-    }
-
-    .average-rating-section {
-      margin-bottom: 28px;
-
-      .average-rating {
-        gap: 10px;
-
-        .star-filled,
-        .star-empty {
-          font-size: 1.8rem;
-        }
-
-        .rating-value,
-        .rating-label {
-          font-size: 1.7rem;
-        }
-      }
-    }
-
-    .review-list {
-      .review-item {
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-
-        .review-content {
-          gap: 10px;
-
-          .review-header-info {
-            gap: 12px;
-
-            .profile-image {
-              width: 44px;
-              height: 44px;
-
-              .profile-avatar {
-                font-size: 1.8rem;
-              }
-            }
-
-            .review-meta {
-              gap: 6px;
-
-              .review-author {
-                font-size: 1.5rem;
-              }
-
-              .review-rating-date {
-                gap: 10px;
-
-                .review-rating {
-                  .star-filled,
-                  .star-empty {
-                    font-size: 1.5rem;
-                  }
-                }
-
-                .review-date {
-                  font-size: 1.3rem;
-                }
-              }
-            }
-          }
-
-          .review-text {
-            font-size: 1.5rem;
-            padding-left: 56px;
-          }
-        }
-      }
-    }
-  }
-
   @media (max-width: 768px) {
     padding: 24px 0 24px 0;
 

@@ -182,11 +182,16 @@
 }
 
 .hotel-list-stars {
-  color: #ff6b6b; /* 찜 목록 카드와 동일한 별 색상 */
+  color: #ffd700; /* 호텔 디테일 페이지와 동일한 별 색상 */
   font-weight: 500;
   padding: 0;
   background: transparent;
   border-radius: 0;
+  font-size: 20px;
+
+  .star-grade-text {
+    color: #000000; /* 성급 텍스트는 검은색 */
+  }
 }
 
 .hotel-list-amenities {
@@ -356,38 +361,6 @@
 
   .hotel-list-price .price-amount {
     font-size: 2.8rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .hotel-list-image {
-    width: 300px;
-    min-width: 280px;
-  }
-
-  .hotel-list-content {
-    min-height: 280px;
-  }
-
-  .hotel-list-header {
-    gap: 18px;
-  }
-
-  .hotel-list-name {
-    font-size: 2.2rem;
-  }
-
-  .hotel-list-price {
-    min-width: 140px;
-  }
-
-  .hotel-list-price .price-amount {
-    font-size: 2.6rem;
-  }
-
-  .hotel-list-price .price-label,
-  .hotel-list-price .price-note {
-    font-size: 1.2rem;
   }
 }
 

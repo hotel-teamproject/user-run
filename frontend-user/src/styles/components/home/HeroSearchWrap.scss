@@ -130,13 +130,16 @@
 /* ===========================================
    반응형
 =========================================== */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
     .hero-search-wrapper {
-        margin: -60px auto 32px;
+        margin: -50px auto 24px;
     }
 
     .hero-search-toggle-btn {
         display: flex;
+        margin-bottom: 12px;
+        padding: 12px 14px;
+        font-size: 1.4rem;
     }
 
     .hero-search-container {
@@ -147,52 +150,6 @@
         padding: 0 24px;
         border-radius: 12px;
 
-        &.open {
-            max-height: 600px;
-            margin-bottom: 16px;
-            padding: 20px 24px;
-        }
-    }
-
-    .search-form {
-        gap: 14px;
-
-        h3 {
-            font-size: 1.8rem;
-        }
-    }
-
-    .form-container {
-        gap: 12px;
-    }
-
-    .form-group {
-        gap: 6px;
-
-        label {
-            font-size: 1.4rem;
-        }
-
-        input,
-        select {
-            padding: 10px 14px;
-            font-size: 1.4rem;
-        }
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-search-wrapper {
-        margin: -50px auto 24px;
-    }
-
-    .hero-search-toggle-btn {
-        margin-bottom: 12px;
-        padding: 12px 14px;
-        font-size: 1.4rem;
-    }
-
-    .hero-search-container {
         &.open {
             max-height: 700px;
             margin-bottom: 12px;

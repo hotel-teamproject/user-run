@@ -233,8 +233,8 @@
       
       &.filled {
         svg {
-          color: #ffb800;
-          filter: drop-shadow(0 4px 12px rgba(255, 184, 0, 0.5));
+          color: #ffd700; /* 호텔 디테일 페이지와 동일한 별 색상 */
+          filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.5));
         }
         
         &:hover {
@@ -244,12 +244,12 @@
       
       &.empty {
         svg {
-          color: #d0d0d0;
+          color: #ddd; /* 호텔 디테일 페이지와 동일한 빈 별 색상 */
         }
         
         &:hover {
           svg {
-            color: #ffd700;
+            color: #ffd700; /* 호텔 디테일 페이지와 동일한 별 색상 */
             transform: scale(1.2);
           }
         }

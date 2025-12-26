@@ -14,6 +14,11 @@ const BookingStepDates = () => {
   const initialCheckIn = qs.get("checkIn") ? new Date(qs.get("checkIn")) : null;
   const initialCheckOut = qs.get("checkOut") ? new Date(qs.get("checkOut")) : null;
   const initialGuests = qs.get("guests") ? Number(qs.get("guests")) : 2;
+  // 호텔 상세 페이지에서 전달된 객실 정보 유지
+  const roomId = qs.get("roomId");
+  const roomPrice = qs.get("roomPrice");
+  const roomName = qs.get("roomName");
+  const roomType = qs.get("roomType");
 
   const formatDateInput = (d) => (d ? d.toISOString().slice(0, 10) : "");
 
@@ -59,6 +64,14 @@ const BookingStepDates = () => {
     params.set("checkIn", new Date(checkIn).toISOString());
     params.set("checkOut", new Date(checkOut).toISOString());
     params.set("guests", String(guests));
+    
+    // 호텔 상세 페이지에서 전달된 객실 정보가 있으면 유지
+    if (roomId) {
+      params.set("roomId", roomId);
+      if (roomPrice) params.set("roomPrice", roomPrice);
+      if (roomName) params.set("roomName", roomName);
+      if (roomType) params.set("roomType", roomType);
+    }
 
     navigate(`/booking/${hotelId}/room?${params.toString()}`);
   };

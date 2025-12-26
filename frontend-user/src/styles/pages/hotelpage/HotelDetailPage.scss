@@ -70,22 +70,6 @@
   }
 }
 
-@media (max-width: 1024px) {
-  .hotel-detail-container {
-    max-width: 900px;
-    padding: 30px 18px 80px;
-    gap: 52px;
-  }
-
-  .detail-section {
-    padding: 24px;
-  }
-
-  .hotel-detail-section-title {
-    font-size: 24px;
-  }
-}
-
 @media (max-width: 768px) {
   .hotel-detail-container {
     width: 100%;

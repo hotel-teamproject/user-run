@@ -76,30 +76,6 @@
 /* ============================================
    반응형
 ============================================ */
-@media (max-width: 1024px) {
-  .hotel-results-header {
-    margin-bottom: 16px;
-    padding: 4px 2px;
-  }
-
-  .results-info {
-    font-size: 1.4rem;
-  }
-
-  .sort-dropdown {
-    gap: 8px;
-  }
-
-  .sort-dropdown label {
-    font-size: 1.3rem;
-  }
-
-  .sort-dropdown select {
-    padding: 5px 8px;
-    font-size: 1.3rem;
-  }
-}
-
 @media (max-width: 768px) {
   .hotel-results-header {
     flex-direction: column;
