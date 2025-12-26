@@ -44,6 +44,8 @@ services:
     tmpfs:
       - /tmp
       - /var/run
+      - /var/cache/nginx
+      - /var/log/nginx
     depends_on:
       - backend
     restart: unless-stopped
